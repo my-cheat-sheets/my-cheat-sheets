@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>MongoDB Cheat Sheet</title></head>
+<body>
+  <h1>MongoDB Cheat Sheet (NoSQL)</h1>
+
+  <section id="basic">
+    <h2>Basic / CRUD & Collections</h2>
+    <ul>
+      <li><strong>Use / Create DB:</strong>
+        <pre><code>use blog;</code></pre>
+      </li>
+      <li><strong>Create / Insert Document:</strong>
+        <pre><code>
+db.users.insertOne({
+  name: "Alice",
+  age: 28,
+  roles: ["user","admin"]
+});
+        </code></pre>
+      </li>
+      <li><strong>Find All / With Condition:</strong>
+        <pre><code>db.users.find();\ndb.users.find({ age: { $gt: 25 } });</code></pre>
+      </li>
+      <li><strong>Update Document:</strong>
+        <pre><code>
+db.users.updateOne(
+  { name: "Alice" },
+  { $set: { age: 29 } }
+);
+        </code></pre>
+      </li>
+      <li><strong>Delete Document:</strong>
+        <pre><code>db.users.deleteOne({ name: "Alice" });</code></pre>
+      </li>
+    </ul>
+  </section>
+
+  <section id="advanced">
+    <h2>Advanced / Aggregation & Indexes</h2>
+    <ul>
+      <li><strong>Find & Projection:</strong>
+        <pre><code>db.products.find({ stock: { $gt: 0 } }, { name: 1, price: 1 });</code></pre>
+      </li>
+      <li><strong>Aggregation Example:</strong>
+        <pre><code>
+db.orders.aggregate([
+  { $match: { status: "completed" } },
+  { $group: {
+      _id: "$userId",
+      totalSpent: { $sum: "$amount" }
+    }
+  },
+  { $sort: { totalSpent: -1 } }
+]);
+        </code></pre>
+      </li>
+      <li><strong>Create Index:</strong>
+        <pre><code>db.users.createIndex({ email: 1 }, { unique: true });</code></pre>
+      </li>
+    </ul>
+  </section>
+
+  <section id="pro">
+    <h2>Pro / Useful MongoDB Operations</h2>
+    <ul>
+      <li><strong>Update Many:</strong>
+        <pre><code>db.users.updateMany({ active: false }, { $set: { active: true } });</code></pre>
+      </li>
+      <li><strong>Delete Many:</strong>
+        <pre><code>db.logs.deleteMany({ timestamp: { $lt: new Date("2024-01-01") } });</code></pre>
+      </li>
+      <li><strong>Bulk Insert:</strong>
+        <pre><code>
+db.users.insertMany([
+  { name: "John", age: 22 },
+  { name: "Doe", age: 25 }
+]);
+        </code></pre>
+      </li>
+    </ul>
+  </section>
+</body>
+</html>

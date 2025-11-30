@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>PostgreSQL Cheatsheet</title></head>
+<body>
+  <h1>PostgreSQL Cheatsheet</h1>
+
+  <section id="basic">
+    <h2>Basic / DDL & DML</h2>
+    <ul>
+      <li><strong>Create Database:</strong>
+        <pre><code>CREATE DATABASE mydb;</code></pre>
+      </li>
+      <li><strong>Drop Database:</strong>
+        <pre><code>DROP DATABASE IF EXISTS mydb;</code></pre>
+      </li>
+      <li><strong>Create Table:</strong>
+        <pre><code>
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  age INT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+        </code></pre>
+      </li>
+      <li><strong>Insert:</strong>
+        <pre><code>INSERT INTO users(name, age) VALUES('Alice', 30);</code></pre>
+      </li>
+      <li><strong>Select / Where:</strong>
+        <pre><code>SELECT * FROM users WHERE age &gt; 25;</code></pre>
+      </li>
+      <li><strong>Update:</strong>
+        <pre><code>UPDATE users SET age = age + 1 WHERE name = 'Alice';</code></pre>
+      </li>
+      <li><strong>Delete:</strong>
+        <pre><code>DELETE FROM users WHERE id = 5;</code></pre>
+      </li>
+    </ul>
+  </section>
+
+  <section id="advanced">
+    <h2>Advanced Queries & Features</h2>
+    <ul>
+      <li><strong>Aggregate + GROUP BY:</strong>
+        <pre><code>
+SELECT department, COUNT(*) AS num_users, AVG(age) AS avg_age
+FROM users
+GROUP BY department
+HAVING COUNT(*) > 5;
+        </code></pre>
+      </li>
+      <li><strong>Join (INNER):</strong>
+        <pre><code>
+SELECT u.name, o.amount
+FROM users u
+JOIN orders o ON u.id = o.user_id
+WHERE o.amount &gt; 100;
+        </code></pre>
+      </li>
+      <li><strong>Subquery:</strong>
+        <pre><code>
+SELECT name FROM users
+WHERE id IN (
+  SELECT user_id FROM orders WHERE amount &gt; 500
+);
+        </code></pre>
+      </li>
+      <li><strong>Window Function (Ranking):</strong>
+        <pre><code>
+SELECT name, salary,
+       RANK() OVER (ORDER BY salary DESC) AS salary_rank
+FROM employees;
+        </code></pre>
+      </li>
+      <li><strong>JSONB & Array Data Types:</strong>
+        <pre><code>
+CREATE TABLE settings (
+  id SERIAL PRIMARY KEY,
+  config JSONB,
+  tags TEXT[]
+);
+
+INSERT INTO settings (config, tags)
+VALUES ('{"theme":"dark","lang":"en"}', ARRAY['web','api']);
+        </code></pre>
+      </li>
+    </ul>
+  </section>
+
+  <section id="pro">
+    <h2>Pro / Advanced‑2</h2>
+    <ul>
+      <li><strong>Upsert / On Conflict:</strong>
+        <pre><code>
+INSERT INTO users(id, name, age)
+VALUES (1, 'Bob', 25)
+ON CONFLICT (id) DO UPDATE SET
+  name = EXCLUDED.name,
+  age = EXCLUDED.age;
+        </code></pre>
+      </li>
+      <li><strong>Create View:</strong>
+        <pre><code>
+CREATE VIEW active_users AS
+SELECT id, name FROM users WHERE active = TRUE;
+        </code></pre>
+      </li>
+      <li><strong>Transactions:</strong>
+        <pre><code>
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+COMMIT;
+        </code></pre>
+      </li>
+      <li><strong>Create Index:</strong>
+        <pre><code>
+CREATE INDEX idx_users_age ON users(age);
+        </code></pre>
+      </li>
+    </ul>
+  </section>
+</body>
+</html>

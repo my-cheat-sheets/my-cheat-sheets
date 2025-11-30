@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>PySpark Cheatsheet</title></head>
+<body>
+  <h1>PySpark Cheatsheet</h1>
+
+  <section id="basic">
+    <h2>Setup & DataFrame Creation</h2>
+    <ul>
+      <li><strong>Init SparkSession</strong><br>
+        <pre><code>from pyspark.sql import SparkSession
+spark = SparkSession.builder \
+    .appName("MyApp") \
+    .getOrCreate()</code></pre>
+      </li>
+      <li><strong>Create DataFrame from list</strong><br>
+        <pre><code>data = [('Alice',25), ('Bob',30)]
+columns = ['name','age']
+df = spark.createDataFrame(data, columns)</code></pre>
+      </li>
+      <li><strong>Read CSV / JSON to DataFrame</strong><br>
+        <pre><code>df = spark.read.csv('data.csv', header=True, inferSchema=True)
+df = spark.read.json('data.json')</code></pre>
+      </li>
+    </ul>
+  </section>
+
+  <section id="advanced">
+    <h2>Operations — Select / Filter / Transform</h2>
+    <ul>
+      <li><strong>Select / Show / Print Schema</strong><br>
+        <pre><code>df.select('name','age').show()
+df.printSchema()</code></pre>
+      </li>
+      <li><strong>Filter / Where</strong><br>
+        <pre><code>from pyspark.sql.functions import col
+df2 = df.filter(col('age') > 25)</code></pre>
+      </li>
+      <li><strong>Add / Modify Column</strong><br>
+        <pre><code>from pyspark.sql.functions import upper
+df3 = df.withColumn('name_upper', upper(col('name')))</code></pre>
+      </li>
+      <li><strong>Group / Aggregation</strong><br>
+        <pre><code>from pyspark.sql.functions import avg, count
+df.groupBy('age').agg(count('*'), avg('age')).show()</code></pre>
+      </li>
+    </ul>
+  </section>
+
+  <section id="pro">
+    <h2>Advanced / Useful Patterns</h2>
+    <ul>
+      <li><strong>Convert to pandas (small data)</strong><br>
+        <pre><code>pdf = df.toPandas()</code></pre>
+      </li>
+      <li><strong>Save / Write DataFrame</strong><br>
+        <pre><code>df.write.parquet('output.parquet')
+df.write.json('output.json')</code></pre>
+      </li>
+      <li><strong>Run SQL on DataFrame</strong><br>
+        <pre><code>df.createOrReplaceTempView('tbl')
+res = spark.sql("SELECT name, age FROM tbl WHERE age > 20")</code></pre>
+      </li>
+      <li><strong>Stop SparkSession</strong><br>
+        <pre><code>spark.stop()</code></pre>
+      </li>
+    </ul>
+  </section>
+</body>
+</html>

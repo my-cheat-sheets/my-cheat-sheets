@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML Cheatsheet</title>
+</head>
+<body>
+  <h1>HTML Cheatsheet</h1>
+
+  <!-- Basic Document Structure -->
+  <section id="basic">
+    <h2>Basic Structure</h2>
+    <pre><code>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Title</title>
+</head>
+<body>
+
+</body>
+</html>
+    </code></pre>
+  </section>
+
+  <!-- Common Tags -->
+  <section id="common-tags">
+    <h2>Common Tags / Elements</h2>
+    <ul>
+      <li><strong>Headings:</strong> &lt;h1&gt; … &lt;h6&gt;</li>
+      <li><strong>Paragraph:</strong> &lt;p&gt;</li>
+      <li><strong>Links:</strong> &lt;a href="url"&gt;…&lt;/a&gt;</li>
+      <li><strong>Images:</strong> &lt;img src="path" alt="description"&gt;</li>
+      <li><strong>Lists:</strong>
+        <ul>
+          <li>Ordered: &lt;ol&gt;</li>
+          <li>Unordered: &lt;ul&gt;</li>
+          <li>List item: &lt;li&gt;</li>
+        </ul>
+      </li>
+      <li><strong>Div / Span:</strong> &lt;div&gt;, &lt;span&gt;</li>
+      <li><strong>Code / Preformatted:</strong> &lt;pre&gt;, &lt;code&gt;</li>
+    </ul>
+  </section>
+
+  <!-- Forms -->
+  <section id="forms">
+    <h2>Forms & Input Controls</h2>
+    <pre><code>
+<form action="/submit" method="post">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" placeholder="Your name">
+  
+  <label>
+    <input type="checkbox" name="subscribe" checked>
+    Subscribe to newsletter
+  </label>
+
+  <button type="submit">Submit</button>
+</form>
+    </code></pre>
+  </section>
+
+  <!-- Multimedia -->
+  <section id="media">
+    <h2>Media & Multimedia Elements</h2>
+    <pre><code>
+<audio src="audio.mp3" controls></audio>
+
+<video src="video.mp4" controls width="320" height="240"></video>
+    </code></pre>
+  </section>
+
+  <!-- Table -->
+  <section id="table">
+    <h2>Table Structure</h2>
+    <pre><code>
+<table>
+  <thead>
+    <tr>
+      <th>Header 1</th><th>Header 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Row1‑Col1</td><td>Row1‑Col2</td>
+    </tr>
+    <tr>
+      <td>Row2‑Col1</td><td>Row2‑Col2</td>
+    </tr>
+  </tbody>
+</table>
+    </code></pre>
+  </section>
+
+  <!-- Semantic Tags & Meta -->
+  <section id="semantic">
+    <h2>Semantic Tags & Metadata</h2>
+    <ul>
+      <li><strong>Metadata / Document head:</strong> &lt;meta&gt;, &lt;title&gt;, &lt;base&gt;, &lt;link&gt;, &lt;script&gt;, etc.</li>
+      <li><strong>Semantic layout tags:</strong> &lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;section&gt;, &lt;article&gt;, &lt;aside&gt;, &lt;footer&gt;</li>
+      <li><strong>Figure / Caption:</strong> &lt;figure&gt;, &lt;figcaption&gt;</li>
+      <li><strong>Accessibility / ARIA roles (basic):</strong> role attributes on elements for screen‑readers</li>
+    </ul>
+  </section>
+
+  <!-- HTML5 APIs / Script Basics -->
+  <section id="html5-js">
+    <h2>HTML5 & JS Basics (Integration)</h2>
+    <pre><code>
+// Basic JS insertion
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      console.log("Page loaded!");
+  });
+</script>
+
+// Link external script
+<script src="app.js"></script>
+
+</code></pre>
+  </section>
+</body>
+</html>

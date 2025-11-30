@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>pandas & NumPy Cheatsheet</title></head>
+<body>
+  <h1>pandas & NumPy Cheatsheet</h1>
+
+  <section id="basic">
+    <h2>NumPy — Arrays & Basics</h2>
+    <ul>
+      <li><strong>Import</strong><br>
+        <code>import numpy as np</code>
+      </li>
+      <li><strong>Create array</strong><br>
+        <pre><code>a = np.array([1,2,3,4])</code></pre>
+      </li>
+      <li><strong>Arithmetic ops</strong><br>
+        <pre><code>b = a * 2     # element‑wise multiply
+c = a + b           # element‑wise add</code></pre>
+      </li>
+      <li><strong>Matrix / 2D array</strong><br>
+        <pre><code>m = np.array([[1,2,3],
+                  [4,5,6]])
+print(m.shape)  # (2,3)</code></pre>
+      </li>
+    </ul>
+  </section>
+
+  <section id="advanced">
+    <h2>pandas — DataFrame & Series</h2>
+    <ul>
+      <li><strong>Import & DataFrame</strong><br>
+        <pre><code>import pandas as pd
+df = pd.DataFrame({
+  'name': ['Alice','Bob','Charlie'],
+  'age': [25, 30, 35]
+})</code></pre>
+      </li>
+      <li><strong>Read / Write CSV</strong><br>
+        <pre><code>df = pd.read_csv('data.csv')
+df.to_csv('out.csv', index=False)</code></pre>
+      </li>
+      <li><strong>Info & Describe</strong><br>
+        <pre><code>df.info()
+df.describe()</code></pre>
+      </li>
+      <li><strong>Filter / Select</strong><br>
+        <pre><code>df2 = df[df.age > 30]
+names = df['name']</code></pre>
+      </li>
+      <li><strong>Group / Aggregation</strong><br>
+        <pre><code>df.groupby('age').count()
+df['age'].mean()</code></pre>
+      </li>
+    </ul>
+  </section>
+
+  <section id="pro">
+    <h2>Advanced / Combined Usage</h2>
+    <ul>
+      <li><strong>NumPy → pandas conversion</strong><br>
+        <pre><code>arr = np.random.rand(5,3)
+df = pd.DataFrame(arr, columns=['A','B','C'])</code></pre>
+      </li>
+      <li><strong>pandas read/write SQL via SQLAlchemy</strong><br>
+        <pre><code>from sqlalchemy import create_engine
+engine = create_engine('sqlite:///mydb.db')
+df.to_sql('table_name', engine, if_exists='replace', index=False)
+df2 = pd.read_sql_table('table_name', engine)</code></pre>
+      </li>
+    </ul>
+  </section>
+</body>
+</html>

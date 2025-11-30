@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>SQLAlchemy Cheatsheet</title></head>
+<body>
+  <h1>SQLAlchemy Cheatsheet</h1>
+
+  <section id="setup">
+    <h2>Setup / Engine / Session / Core</h2>
+    <pre><code>
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+# Engine (SQLite example)
+engine = create_engine("sqlite:///mydb.db", echo=True)
+
+# Base
+Base = declarative_base()
+
+# Session
+SessionLocal = sessionmaker(bind=engine)
+session = SessionLocal()
+
+# Create tables
+Base.metadata.create_all(engine)
+    </code></pre>
+  </section>
+
+  <section id="core-sql">
+    <h2>Core / Raw SQL / Expression Language</h2>
+    <pre><code>
+from sqlalchemy import MetaData, Table, Column, Integer, String, insert, select, update, delete
+
+metadata = MetaData()
+
+users = Table(
+    'users', metadata,
+    Column('id', Integer, primary_key=True),
+    Column('name', String),
+    Column('age', Integer)
+)
+
+metadata.create_all(engine)
+
+# Insert
+stmt = insert(users).values(name='Alice', age=30)
+engine.execute(stmt)
+
+# Select
+stmt = select(users).where(users.c.age > 20)
+for row in engine.execute(stmt):
+    print(row)
+    </code></pre>
+  </section>
+
+  <section id="models">
+    <h2>ORM – Model Definition & Relationships</h2>
+    <pre><code>
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    age = Column(Integer)
+
+class Address(Base):
+    __tablename__ = 'addresses'
+    id = Column(Integer, primary_key=True)
+    email = Column(String, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship("User", back_populates="addresses")
+
+User.addresses = relationship("Address", back_populates="user", cascade="all, delete-orphan")
+    </code></pre>
+  </section>
+
+  <section id="crud">
+    <h2>CRUD – Create, Read, Update, Delete (ORM)</h2>
+    <pre><code>
+# Create
+new_user = User(name='Bob', age=25)
+session.add(new_user)
+session.commit()
+
+# Read / Filter / Query
+users = session.query(User).filter(User.age > 20).all()
+
+# Update
+user = session.query(User).filter_by(name='Bob').first()
+user.age = 26
+session.commit()
+
+# Delete
+session.delete(user)
+session.commit()
+    </code></pre>
+  </section>
+
+  <section id="joins-and-subquery">
+    <h2>Joins, Aggregations, Subqueries & Advanced Queries</h2>
+    <pre><code>
+from sqlalchemy import func, select
+
+# Join
+users = session.query(User, Address).join(Address).all()
+
+# Aggregation
+count = session.query(func.count(User.id)).scalar()
+
+# Subquery / correlated query
+subq = session.query(Address.user_id).filter(Address.email.like('%@example.com')).subquery()
+users = session.query(User).filter(User.id.in_(subq)).all()
+    </code></pre>
+  </section>
+
+  <section id="bulk-and-raw">
+    <h2>Bulk / Raw SQL / Mixed Use</h2>
+    <pre><code>
+# Bulk insert
+session.bulk_save_objects([
+    User(name='User1', age=20),
+    User(name='User2', age=22),
+])
+session.commit()
+
+# Raw SQL execution
+result = session.execute("SELECT * FROM users WHERE age > :age", {'age': 20})
+for row in result:
+    print(row)
+    </code></pre>
+  </section>
+
+  <!-- Add more sections: migrations, async, Core‑ORM mix, performance tips, etc. -->
+
+</body>
+</html>

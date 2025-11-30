@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>MySQL / SQL Cheatsheet</title></head>
+<body>
+  <h1>MySQL & Generic SQL Cheatsheet</h1>
+
+  <section id="basic">
+    <h2>Basic / CRUD & Queries</h2>
+    <ul>
+      <li><strong>Create DB / Use:</strong>
+        <pre><code>CREATE DATABASE shop;\nUSE shop;</code></pre>
+      </li>
+      <li><strong>Create Table:</strong>
+        <pre><code>
+CREATE TABLE products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  price DECIMAL(10,2),
+  stock INT
+);
+        </code></pre>
+      </li>
+      <li><strong>Insert:</strong>
+        <pre><code>INSERT INTO products(name, price, stock) VALUES('Pen', 1.25, 100);</code></pre>
+      </li>
+      <li><strong>Select / Where:</strong>
+        <pre><code>SELECT name, price FROM products WHERE stock &gt; 0;</code></pre>
+      </li>
+      <li><strong>Update:</strong>
+        <pre><code>UPDATE products SET stock = stock - 1 WHERE id = 2;</code></pre>
+      </li>
+      <li><strong>Delete:</strong>
+        <pre><code>DELETE FROM products WHERE stock = 0;</code></pre>
+      </li>
+    </ul>
+  </section>
+
+  <section id="advanced">
+    <h2>Advanced Queries</h2>
+    <ul>
+      <li><strong>JOINs:</strong>
+        <pre><code>
+SELECT o.id, u.name, o.order_date, p.name
+FROM orders o
+JOIN users u ON o.user_id = u.id
+JOIN products p ON o.product_id = p.id;
+        </code></pre>
+      </li>
+      <li><strong>Aggregate Functions:</strong>
+        <pre><code>
+SELECT category, COUNT(*) AS num, AVG(price) AS avg_price
+FROM products
+GROUP BY category
+HAVING num &gt; 5;
+        </code></pre>
+      </li>
+      <li><strong>LIMIT & OFFSET:</strong>
+        <pre><code>
+SELECT * FROM products ORDER BY price DESC LIMIT 10 OFFSET 20;
+        </code></pre>
+      </li>
+    </ul>
+  </section>
+
+  <section id="pro">
+    <h2>Pro / Useful Commands</h2>
+    <ul>
+      <li><strong>Stored Procedure Example:</strong>
+        <pre><code>
+DELIMITER //
+CREATE PROCEDURE AddProduct(IN nm VARCHAR(255), IN pr DECIMAL(10,2))
+BEGIN
+  INSERT INTO products(name, price) VALUES(nm, pr);
+END;
+//
+DELIMITER ;
+        </code></pre>
+      </li>
+      <li><strong>Transactions (InnoDB):</strong>
+        <pre><code>
+START TRANSACTION;
+UPDATE accounts SET balance = balance - 500 WHERE id = 1;
+UPDATE accounts SET balance = balance + 500 WHERE id = 2;
+COMMIT;
+        </code></pre>
+      </li>
+      <li><strong>Create Index:</strong>
+        <pre><code>CREATE INDEX idx_price ON products(price);</code></pre>
+      </li>
+    </ul>
+  </section>
+</body>
+</html>

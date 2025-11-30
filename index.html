@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cheatsheets Hub</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="nav-container">
+      <div class="brand"><a href="#">Cheatsheets Hub</a></div>
+      <div class="menu-toggle" id="mobile-menu">☰</div>
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="brand"><a href="#" onclick="handleHome()">Cheatsheets Hub</a></div>
+          <div class="menu-toggle" id="mobile-menu">☰</div>
+          <ul class="nav-menu" id="main-nav"> <!-- give an id to nav-menu -->
+            <li class="dropdown">
+              <a href="#">Languages ▾</a>
+              <ul class="dropdown-menu">
+                <li><a href="#cheat=css&category=languages">CSS</a></li>
+                <li><a href="#cheat=html&category=languages">HTML</a></li>
+                <li><a href="#cheat=javascript&category=languages">JavaScript</a></li>
+                <li><a href="#cheat=python&category=languages">Python</a></li>
+                <li><a href="#cheat=sql&category=languages">SQL</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="#">Frameworks / Libs ▾</a>
+              <ul class="dropdown-menu">
+                <li><a href="#cheat=pandas_numpy&category=frameworks">Pandas & NumPy</a></li>
+                <li><a href="#cheat=pyspark&category=frameworks">PySpark</a></li>
+                <li><a href="#cheat=sqlalchemy&category=frameworks">SQLAlchemy</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="#">Databases ▾</a>
+              <ul class="dropdown-menu">
+                <li><a href="#cheat=mysql&category=databases">MySQL / SQL</a></li>
+                <li><a href="#cheat=postgresql&category=databases">PostgreSQL</a></li>
+                <li><a href="#cheat=mongodb&category=databases">MongoDB</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <button id="theme-toggle" class="theme-toggle">🌙</button>
+    </div>
+  </header>
+
+  <main id="content">
+    <div class="welcome">
+      <h1>Welcome to Cheatsheets Hub</h1>
+      <p>Select a language from the menu to view cheatsheet.</p>
+    </div>
+  </main>
+
+  <script src="assets/js/script.js"></script>
+</body>
+
+</html>
