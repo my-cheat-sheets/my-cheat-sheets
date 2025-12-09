@@ -213,6 +213,157 @@ delta_table.alias("target") \
 </details>
 
 <details>
+<summary>🌊 Structured Streaming (Modern)</summary>
+<ul>
+<li>Basic Stream<code>from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("Streaming").getOrCreate()
+
+# Read stream
+df = spark.readStream \
+    .format("kafka") \
+    .option("kafka.bootstrap.servers", "localhost:9092") \
+    .option("subscribe", "topic1") \
+    .load()
+
+# Process
+processed = df.selectExpr("CAST(value AS STRING)", "timestamp")
+
+# Write stream
+query = processed.writeStream \
+    .outputMode("append") \
+    .format("console") \
+    .trigger(processingTime="10 seconds") \
+    .start()
+
+query.awaitTermination()</code></li>
+<li>Output Modes<code># append (default) - new rows only
+# complete - all results
+# update - changed rows only
+query = df.writeStream.outputMode("complete").start()</code></li>
+<li>Triggers<code># ProcessingTime
+.trigger(processingTime="10 seconds")
+.trigger(processingTime='1 minute')
+
+# Once (batch)
+.trigger(once=True)
+
+# Continuous (experimental)
+.trigger(continuous="1 second")</code></li>
+<li>Watermark (Late Data)<code>df.withWatermark("event_time", "10 minutes") \
+    .groupBy(window("event_time", "10 minutes")) \
+    .count()</code></li>
+<li>Windows<code># Tumbling (fixed)
+.groupBy(window(col("timestamp"), "10 minutes"))
+
+# Sliding
+.groupBy(window(col("timestamp"), "10 minutes", "5 minutes"))
+
+# Session
+.groupBy(session_window("timestamp", "10 minutes"))</code></li>
+<li>Kafka Sink<code>df.writeStream \
+    .format("kafka") \
+    .option("kafka.bootstrap.servers", "localhost:9092") \
+    .option("topic", "output-topic") \
+    .start()</code></li>
+<li>File Sink<code>df.writeStream \
+    .format("parquet") \
+    .option("path", "/path/to/output") \
+    .option("checkpointLocation", "/path/checkpoint") \
+    .start()</code></li>
+</ul>
+</details>
+
+<details>
+<summary>📡 Sources & Sinks</summary>
+<ul>
+<li>Sources<code># Files
+spark.readStream.format("csv").load("input/")
+spark.readStream.text("input/")
+spark.readStream.parquet("input/")
+
+# Kafka
+.option("kafka.bootstrap.servers", "host:9092")
+.option("subscribe", "topic1,topic2")
+
+# Socket
+.format("socket").option("host", "localhost").option("port", 9999)
+
+# Rate (testing)
+.format("rate").option("rowsPerSecond", 10)</code></li>
+<li>Sinks<code># Console (debug)
+.format("console")
+
+# Memory (testing)
+.format("memory").queryName("test_table")
+
+# Files
+.format("parquet").option("path", "output/")
+
+# Kafka
+.format("kafka")
+
+# ForeachBatch (custom)
+.foreachBatch(lambda batch_df, batch_id: batch_df.write.parquet(f"output/batch_{batch_id}"))
+
+# Delta
+.format("delta").option("checkpointLocation", "/checkpoint")</code></li>
+</ul>
+</details>
+
+<details>
+<summary>⚡ Legacy DStreams (Deprecated)</summary>
+<ul>
+<li>Basic<code>from pyspark.streaming import StreamingContext
+ssc = StreamingContext(spark.sparkContext, 2)  # 2s batches
+
+# Socket stream
+lines = ssc.socketTextStream("localhost", 9999)
+words = lines.flatMap(lambda line: line.split(" "))
+wordCounts = words.map(lambda word: (word, 1)).reduceByKey(lambda a, b: a + b)
+
+wordCounts.pprint()
+ssc.start()
+ssc.awaitTermination()</code></li>
+<li>Warning<code># ⚠️ LEGACY - Use Structured Streaming instead
+# DStreams deprecated in Spark 3.5+, removed in Spark 4.0</code></li>
+</ul>
+</details>
+
+<details>
+<summary>🔄 State & Fault Tolerance</summary>
+<ul>
+<li>State Store<code># MapWithState (Structured Streaming)
+from pyspark.sql.functions import *
+state_df = df.withWatermark("timestamp", "10 minutes") \
+    .groupByKey(lambda x: x.user_id) \
+    .mapGroupsWithState(...)</code></li>
+<li>Checkpointing<code># ALWAYS required for fault tolerance
+.option("checkpointLocation", "/path/to/checkpoint")
+
+# Exactly-once semantics
+spark.conf.set("spark.sql.streaming.statefulOperator.checkCorrectness.enabled", "true")</code></li>
+<li>Multiple Streams<code># Fanout
+query1 = stream1.writeStream.start()
+query2 = stream1.alias("s1").join(stream2).writeStream.start()</code></li>
+</ul>
+</details>
+
+<details>
+<summary>📈 Streaming Production Configs</summary>
+<ul>
+<li>Micro-batch<code>spark.conf.set("spark.sql.streaming.pollingDelay", "0")
+spark.conf.set("spark.sql.streaming.minBatchesToRetain", "100")
+spark.conf.set("spark.sql.adaptive.enabled", "true")</code></li>
+<li>Memory<code>spark.conf.set("spark.sql.streaming.stateStore.minDeltasForFullState", "5")
+spark.conf.set("spark.sql.streaming.statefulOperator.useSharedMemory", "false")</code></li>
+<li>Kafka<code>spark.conf.set("spark.sql.streaming.metricsEnabled", "true")
+.option("maxOffsetsPerTrigger", 1000)
+.option("minOffsetsPerTrigger", 500)</code></li>
+</ul>
+</details>
+
+
+<details>
 <summary>⚡ Spark SQL & Optimization</summary>
 <ul>
 <ol>Register Table<code>df.createOrReplaceTempView("my_table")
