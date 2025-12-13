@@ -1,0 +1,44 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Getting Started with Python Cheatsheets",
+      "date": "2025-12-13",
+      "category": "Python",
+      "excerpt": "Learn how to use Python cheatsheets effectively for faster development and better code practices.",
+      "content": "<h2>Why Use Python Cheatsheets?</h2><p>Python is a versatile and powerful language that's used across data science, web development, and automation. Using cheatsheets can significantly speed up your development process and help you remember essential syntax and functions.</p><h3>Key Benefits</h3><ul><li>Quick reference for common operations</li><li>Save time during development</li><li>Learn best practices</li><li>Improve coding efficiency</li></ul><h3>Tips for Using Cheatsheets</h3><p>1. Keep them organized by topic<br>2. Print and pin them near your workspace<br>3. Practice coding while referencing them<br>4. Create your own custom cheatsheets<br>5. Update them as you learn new techniques</p>"
+    },
+    {
+      "id": 2,
+      "title": "SQL Best Practices for Database Management",
+      "date": "2025-12-10",
+      "category": "Databases",
+      "excerpt": "Master SQL queries and database optimization techniques with our comprehensive guide.",
+      "content": "<h2>SQL Database Fundamentals</h2><p>SQL is the standard language for managing relational databases. Whether you're working with MySQL, PostgreSQL, or other databases, understanding SQL best practices is crucial.</p><h3>Important SQL Concepts</h3><ul><li>SELECT statements and joins</li><li>Indexes for performance</li><li>Query optimization</li><li>Transaction management</li><li>Data normalization</li></ul><h3>Performance Tips</h3><p>- Always use indexes on frequently queried columns<br>- Avoid SELECT *<br>- Use EXPLAIN to analyze queries<br>- Keep transactions short<br>- Normalize your database schema</p>"
+    },
+    {
+      "id": 3,
+      "title": "JavaScript ES6+ Features You Should Know",
+      "date": "2025-12-05",
+      "category": "JavaScript",
+      "excerpt": "Discover advanced JavaScript patterns and ES6+ features to write cleaner and more efficient code.",
+      "content": "<h2>Modern JavaScript Features</h2><p>JavaScript has evolved significantly with ES6 and beyond. These modern features make code more readable and maintainable.</p><h3>Essential ES6+ Features</h3><ul><li>Arrow functions for concise syntax</li><li>Destructuring for cleaner code</li><li>Template literals for string interpolation</li><li>Async/await for handling promises</li><li>Classes for object-oriented programming</li></ul><h3>Best Practices</h3><p>- Use const by default, let when needed<br>- Prefer arrow functions for callbacks<br>- Use destructuring to access properties<br>- Leverage modern array methods (map, filter, reduce)<br>- Use async/await over .then() chains</p>"
+    },
+    {
+      "id": 4,
+      "title": "Understanding HTML5 Semantic Elements",
+      "date": "2025-11-28",
+      "category": "HTML",
+      "excerpt": "Improve your HTML structure with semantic elements for better accessibility and SEO.",
+      "content": "<h2>Semantic HTML5 Elements</h2><p>Semantic HTML provides meaning to your web content, making it easier for browsers and search engines to understand.</p><h3>Important Semantic Elements</h3><ul><li>&lt;header&gt; - Introductory content</li><li>&lt;nav&gt; - Navigation links</li><li>&lt;main&gt; - Main content</li><li>&lt;article&gt; - Self-contained content</li><li>&lt;section&gt; - Thematic grouping</li><li>&lt;footer&gt; - Footer content</li></ul><h3>Why Semantics Matter</h3><p>- Improves accessibility for screen readers<br>- Better SEO rankings<br>- Cleaner code that's easier to maintain<br>- Helps other developers understand your structure<br>- Provides default styling benefits</p>"
+    },
+    {
+      "id": 5,
+      "title": "Pandas & NumPy: Essential Data Manipulation Tools",
+      "date": "2025-11-20",
+      "category": "Frameworks",
+      "excerpt": "Master Pandas and NumPy libraries for efficient data manipulation and analysis in Python.",
+      "content": "<h2>Data Manipulation with Pandas & NumPy</h2><p>Pandas and NumPy are fundamental libraries for data science in Python. They provide efficient tools for data manipulation, analysis, and computation.</p><h3>NumPy Basics</h3><ul><li>Arrays and multidimensional operations</li><li>Mathematical functions</li><li>Linear algebra operations</li><li>Random number generation</li></ul><h3>Pandas Power</h3><ul><li>DataFrames for tabular data</li><li>Data cleaning and transformation</li><li>Time series analysis</li><li>File I/O operations</li></ul><h3>Common Tasks</h3><p>- Loading data from CSV/Excel<br>- Filtering and sorting data<br>- Grouping and aggregation<br>- Merging datasets<br>- Handling missing values</p>"
+    }
+  ]
+}
