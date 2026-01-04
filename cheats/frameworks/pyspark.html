@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>PySpark Complete Cheatsheet 2025</title></head>
-<body>
-<h1>⚡ PySpark Complete Cheatsheet 2025</h1>
 
-<details open>
-<summary>🚀 PySpark - Setup & Initialization</summary>
-<ul>
-<ol>Basic SparkSession<code>from pyspark.sql import SparkSession
+<head>
+    <meta charset="UTF-8">
+    <title>PySpark Complete Cheatsheet 2025</title>
+</head>
+
+<body>
+    <h1>⚡ PySpark Complete Cheatsheet 2025</h1>
+
+    <details open>
+        <summary>🚀 PySpark - Setup & Initialization</summary>
+        <ul>
+            <ol>Basic SparkSession<code>from pyspark.sql import SparkSession
 spark = SparkSession.builder \
     .appName("MyApp") \
     .config("spark.sql.adaptive.enabled", "true") \
     .config("spark.sql.adaptive.coalescePartitions.enabled", "true") \
     .getOrCreate()</code></ol>
-<ol>Full Config<code>spark = SparkSession.builder \
+            <ol>Full Config<code>spark = SparkSession.builder \
     .appName("PySparkApp") \
     .master("local[*]") \
     .config("spark.executor.memory", "4g") \
@@ -25,18 +30,18 @@ spark = SparkSession.builder \
     .config("spark.sql.adaptive.coalescePartitions.enabled", "true") \
     .config("spark.sql.execution.arrow.pyspark.enabled", "true") \
     .getOrCreate()</code></ol>
-<ol>Stop Spark<code>spark.stop()</code></ol>
-</ul>
-</details>
+            <ol>Stop Spark<code>spark.stop()</code></ol>
+        </ul>
+    </details>
 
-<details>
-<summary>📖 Core Imports & DataTypes</summary>
-<ul>
-<ol>Imports<code>from pyspark.sql import SparkSession
+    <details>
+        <summary>📖 Core Imports & DataTypes</summary>
+        <ul>
+            <ol>Imports<code>from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from pyspark.sql.functions import *
 from pyspark.sql import DataFrame</code></ol>
-<ol>DataTypes<code># Primitives
+            <ol>DataTypes<code># Primitives
 IntegerType(), LongType(), FloatType(), DoubleType()
 StringType(), BooleanType(), TimestampType(), DateType()
 
@@ -50,13 +55,13 @@ StructType(fields=[
         StructField("zip", StringType())
     ]))
 ])</code></ol>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>📁 Reading & Writing Data</summary>
-<ul>
-<ol>CSV<code>df = spark.read \
+    <details>
+        <summary>📁 Reading & Writing Data</summary>
+        <ul>
+            <ol>CSV<code>df = spark.read \
     .option("header", "true") \
     .option("inferSchema", "true") \
     .option("delimiter", ",") \
@@ -66,18 +71,18 @@ df.write \
     .mode("overwrite") \
     .option("header", "true") \
     .csv("output.csv")</code></ol>
-<ol>Parquet (Fastest)<code>df = spark.read.parquet("data.parquet")
+            <ol>Parquet (Fastest)<code>df = spark.read.parquet("data.parquet")
 df.write.mode("overwrite").parquet("output.parquet")</code></ol>
-<ol>JSON<code>df = spark.read.option("multiline", "true").json("data.json")
+            <ol>JSON<code>df = spark.read.option("multiline", "true").json("data.json")
 df.write.mode("overwrite").json("output.json")</code></ol>
-<ol>JDBC (Database)<code>df = spark.read \
+            <ol>JDBC (Database)<code>df = spark.read \
     .format("jdbc") \
     .option("url", "jdbc:postgresql://host/db") \
     .option("dbtable", "table") \
     .option("user", "user") \
     .option("password", "pass") \
     .load()</code></ol>
-<ol>All Formats<code># Read
+            <ol>All Formats<code># Read
 spark.read.format("avro").load("data.avro")
 spark.read.format("orc").load("data.orc")
 spark.read.text("data.txt")
@@ -86,13 +91,13 @@ spark.read.table("hive_table")
 # Write
 df.write.format("delta").mode("overwrite").save("delta_table")
 df.write.format("iceberg").mode("overwrite").save("iceberg_table")</code></ol>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>🔍 DataFrame Operations</summary>
-<ul>
-<ol>Inspect<code>df.printSchema()
+    <details>
+        <summary>🔍 DataFrame Operations</summary>
+        <ul>
+            <ol>Inspect<code>df.printSchema()
 df.show(20, truncate=False)
 df.describe().show()
 df.columns
@@ -100,90 +105,338 @@ df.dtypes
 df.count()
 df.cache()
 df.explain()</code></ol>
-<ol>Select/Columns<code>df.select("name", "age")
+            <ol>Select/Columns<code>df.select("name", "age")
 df.select(col("name"), col("age"))
 df.select("*").filter(col("age") > 25)
 df.drop("column1", "column2")
 df.withColumnRenamed("old", "new")</code></ol>
-<ol>Filter/Where<code>df.filter(col("age") > 25)
+            <ol>Filter/Where<code>df.filter(col("age") > 25)
 df.filter((col("age") > 25) & (col("city") == "NYC"))
 df.where("age > 25 AND city = 'NYC'")
 df.filter(df.age > 25)</code></ol>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>✨ SQL Functions (500+)</summary>
-<ul>
-<ol>Math<code>round(col("price"), 2)
+    <details>
+        <summary>🎯 Spark Declarative Functions (4.0.1+)</summary>
+        <ul>
+            <ol>Column Transformations<code># Add/Modify columns
+df.withColumn("new_col", col("salary") * 1.1)
+df.withColumn("bonus", when(col("salary") > 50000, col("salary") * 0.2).otherwise(0))
+df.withColumns(bonus=col("salary")*0.2, tax=col("salary")*0.1)
+
+# Rename columns
+df.withColumnRenamed("old_name", "new_name")
+df.withColumnsRenamed({"old1": "new1", "old2": "new2"})
+
+# Drop columns
+df.drop("col1", "col2")
+df.drop(col("col1"))</code></ol>
+            <ol>Transform & Map<code># Apply function to each row
+df.transform(lambda df: df.filter(col("age") > 25))
+
+# Column-level transformation
+df.select(df.columns[0], (col(df.columns[1]) * 2).alias("doubled"))
+
+# Element-wise operations
+df.select([round(col(c), 2) if df.schema[c].dataType == DoubleType() else col(c) for c in df.columns])</code></ol>
+            <ol>Null Handling (Declarative)<code>df.fillna(0)  # Fill all nulls with 0
+df.fillna({"age": 18, "city": "Unknown"})
+df.dropna()  # Drop rows with any null
+df.dropna(subset=["age", "name"])  # Drop nulls in specific columns
+df.coalesce(col("col1"), col("col2"))  # First non-null</code></ol>
+            <ol>Type Casting<code>df.select(col("age").cast("int"))
+df.select(col("salary").cast(DoubleType()))
+df.select(col("date_str").cast("timestamp"))
+
+# Cast multiple columns
+df.select(col(c).cast("string") for c in df.columns)</code></ol>
+            <ol>Conditional Logic<code>from pyspark.sql.functions import when, otherwise, case, iff
+df.select(
+    col("name"),
+    when(col("salary") > 100000, "high")
+    .when(col("salary") > 50000, "medium")
+    .otherwise("low")
+    .alias("salary_tier")
+)
+
+# Case/Switch
+df.select(
+    case()
+    .when(col("status") == "A", 1)
+    .when(col("status") == "B", 2)
+    .otherwise(0)
+    .alias("status_code")
+)
+
+# Ternary (iff)
+df.select(iff(col("active") == True, "yes", "no"))</code></ol>
+            <ol>Complex Expressions<code>df.select(
+    col("name"),
+    (col("salary") + col("bonus")).alias("total_comp"),
+    ((col("salary") - col("target")) / col("target")).alias("performance")
+)
+
+# Nested conditions
+df.select(col("*"), 
+    when((col("age") > 30) & (col("salary") > 50000), "senior")
+    .when((col("age") > 21) & (col("salary") > 30000), "mid")
+    .otherwise("junior")
+    .alias("level")
+)</code></ol>
+            <ol>Array/Struct Operations<code># Array functions
+df.select(array_contains(col("skills"), "Python"))
+df.select(size(col("skills")))
+df.select(explode(col("skills")))  # Expand arrays
+df.select(concat_ws(", ", col("skills")))
+
+# Struct access
+df.select(col("address.city"), col("address.zip"))
+df.select(col("person.*"))
+
+# Creating structs
+df.select(struct(col("name"), col("age")).alias("person_info"))</code></ol>
+            <ol>Sorting & Ranking<code>df.sort(col("salary").desc(), col("name").asc())
+df.orderBy(desc("salary"))
+
+# With null handling
+df.sort(col("salary").desc_nulls_last())
+df.sort(col("bonus").asc_nulls_first())
+
+# Ranking functions
+df.select(col("*"), rank().over(Window.orderBy(desc("salary"))).alias("rank"))</code></ol>
+            <ol>Distinct & Deduplication<code>df.distinct()
+df.dropDuplicates()
+df.dropDuplicates(["name", "email"])  # By specific columns
+df.select("department").distinct()</code></ol>
+            <ol>Aggregation (Declarative)<code>df.agg(
+    count("*").alias("total_count"),
+    sum("salary").alias("total_salary"),
+    avg("salary").alias("avg_salary"),
+    stddev("salary").alias("salary_stddev"),
+    first("department").alias("first_dept")
+)
+
+# Multiple aggregations per column
+df.agg(
+    max("salary").alias("max_salary"),
+    min("salary").alias("min_salary"),
+    approx_percentile("salary", [0.25, 0.5, 0.75])
+)</code></ol>
+            <ol>Repartition & Distribution<code>df.repartition(10)  # Into 10 partitions
+df.repartition(col("department"))  # By column
+df.repartition(5, col("year"))  # 5 partitions by year
+df.coalesce(4)  # Reduce to 4 partitions
+df.repartitionByRange(col("salary"))</code></ol>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🔗 Spark ML Pipelines (Declarative)</summary>
+        <ul>
+            <ol>Basic Pipeline Setup<code>from pyspark.ml import Pipeline
+from pyspark.ml.feature import VectorAssembler, StandardScaler, StringIndexer
+from pyspark.ml.classification import LogisticRegression
+
+# Simple pipeline
+assembler = VectorAssembler(inputCols=["age", "salary"], outputCol="features")
+scaler = StandardScaler(inputCol="features", outputCol="scaled_features")
+pipeline = Pipeline(stages=[assembler, scaler])
+
+# Fit and transform
+model = pipeline.fit(df)
+transformed_df = model.transform(df)</code></ol>
+            <ol>Feature Engineering Pipeline<code>from pyspark.ml.feature import StringIndexer, OneHotEncoder, VectorAssembler
+
+# Multi-stage pipeline
+indexer = StringIndexer(inputCol="category", outputCol="category_idx")
+encoder = OneHotEncoder(inputCols=["category_idx"], outputCols=["category_encoded"])
+assembler = VectorAssembler(inputCols=["age", "category_encoded"], outputCol="features")
+
+pipeline = Pipeline(stages=[indexer, encoder, assembler])
+model = pipeline.fit(df)
+features_df = model.transform(df)</code></ol>
+            <ol>ML Pipeline with Model<code>from pyspark.ml.classification import LogisticRegression
+
+# Build complete ML pipeline
+indexer = StringIndexer(inputCol="label_str", outputCol="label")
+assembler = VectorAssembler(inputCols=["age", "income"], outputCol="features")
+lr = LogisticRegression(maxIter=100, regParam=0.01)
+
+pipeline = Pipeline(stages=[indexer, assembler, lr])
+model = pipeline.fit(train_df)
+predictions = model.transform(test_df)</code></ol>
+            <ol>Pipeline Stages<code># Common transformers
+StringIndexer(inputCol="col", outputCol="col_idx")
+OneHotEncoder(inputCols=[...], outputCols=[...])
+Bucketizer(splits=[...], inputCol="age", outputCol="age_bucket")
+StandardScaler(inputCol="features", outputCol="scaled")
+MinMaxScaler(inputCol="features", outputCol="normalized")
+Normalizer(inputCol="features", outputCol="normalized")
+
+# Common estimators
+LogisticRegression(), RandomForestClassifier(), GBTClassifier()
+LinearRegression(), RandomForestRegressor(), GBTRegressor()
+KMeans(), Bisecting KMeans, GMM (Gaussian Mixture)</code></ol>
+            <ol>Advanced Pipeline Configuration<code># Pipeline with params
+from pyspark.ml.tuning import ParamGridBuilder, CrossValidator
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+
+lr = LogisticRegression()
+pipeline = Pipeline(stages=[assembler, lr])
+
+# Hyperparameter tuning
+paramGrid = ParamGridBuilder() \
+    .addGrid(lr.regParam, [0.01, 0.1, 1.0]) \
+    .addGrid(lr.maxIter, [50, 100, 200]) \
+    .build()
+
+evaluator = BinaryClassificationEvaluator(metricName="areaUnderROC")
+crossval = CrossValidator(estimator=pipeline, estimatorParamMaps=paramGrid, 
+                          evaluator=evaluator, numFolds=5)
+cv_model = crossval.fit(train_df)</code></ol>
+            <ol>Pipeline Persistence<code># Save pipeline
+pipeline.write().overwrite().save("path/to/pipeline")
+model.write().overwrite().save("path/to/model")
+
+# Load pipeline
+from pyspark.ml import PipelineModel
+loaded_model = PipelineModel.load("path/to/model")
+predictions = loaded_model.transform(df)
+
+# Get pipeline stages
+for stage in model.stages:
+    print(stage.uid, stage.explainParam("*"))</code></ol>
+            <ol>Pipeline Optimization<code># Cache intermediate results
+from pyspark.ml.feature import PCA
+
+vectorizer = VectorAssembler(inputCols=features, outputCol="vec")
+pca = PCA(k=10, inputCol="vec", outputCol="pca_features")
+pipeline = Pipeline(stages=[vectorizer, pca])
+
+# Parallelize preprocessing
+model = pipeline.fit(df.coalesce(4))
+results = model.transform(df.repartition(8))</code></ol>
+            <ol>Custom Pipeline Components<code># Define custom transformer
+from pyspark.ml import Transformer
+from pyspark.ml.util import DefaultParamsReadable, DefaultParamsWritable
+
+class CustomTransformer(Transformer, DefaultParamsReadable, DefaultParamsWritable):
+    def _transform(self, dataset):
+        return dataset.withColumn("new_col", dataset.age * 2)
+
+# Use in pipeline
+custom = CustomTransformer()
+pipeline = Pipeline(stages=[custom, assembler, lr])</code></ol>
+            <ol>Feature Selection in Pipeline<code>from pyspark.ml.feature import ChiSqSelector, VarianceThreshold
+
+# Chi-square selector
+selector = ChiSqSelector(numTopFeatures=10, 
+                         featuresCol="features", 
+                         labelCol="label")
+
+# Variance threshold
+variance_selector = VarianceThreshold(inputCol="features", outputCol="selected_features")
+
+# In pipeline
+pipeline = Pipeline(stages=[assembler, selector, classifier])</code></ol>
+            <ol>Pipeline Examples (End-to-End)<code># Text classification pipeline
+from pyspark.ml.feature import Tokenizer, HashingTF, IDF
+
+tokenizer = Tokenizer(inputCol="text", outputCol="words")
+hashingTF = HashingTF(inputCol="words", outputCol="tf", numFeatures=1000)
+idf = IDF(inputCol="tf", outputCol="features")
+lr = LogisticRegression(maxIter=100)
+
+pipeline = Pipeline(stages=[tokenizer, hashingTF, idf, lr])
+model = pipeline.fit(training_data)
+results = model.transform(test_data)
+
+# Regression pipeline
+from pyspark.ml.regression import GBTRegressor
+
+assembler = VectorAssembler(inputCols=["age", "income", "score"], outputCol="features")
+scaler = StandardScaler(inputCol="features", outputCol="scaled")
+gbt = GBTRegressor(maxIter=100, maxDepth=5)
+
+pipeline = Pipeline(stages=[assembler, scaler, gbt])
+model = pipeline.fit(df)
+predictions = model.transform(df)</code></ol>
+        </ul>
+    </details>
+
+    <details>
+        <summary>✨ SQL Functions (500+)</summary>
+        <ul>
+            <ol>Math<code>round(col("price"), 2)
 ceil(col("price")), floor(col("price"))
 abs(col("value")), sqrt(col("value"))
 rand(), randn()</code></ol>
-<ol>String<code>upper(col("name")), lower(col("name"))
+            <ol>String<code>upper(col("name")), lower(col("name"))
 length(col("name")), substring(col("name"), 1, 3)
 concat(col("first"), lit("_"), col("last"))
 regexp_replace(col("email"), "@", "_")</code></ol>
-<ol>Date/Time<code>current_date(), current_timestamp()
+            <ol>Date/Time<code>current_date(), current_timestamp()
 to_date(col("date_str"), "yyyy-MM-dd")
 date_format(col("date"), "yyyy-MM-dd")
 datediff(col("end"), col("start"))
 months_between(col("date1"), col("date2"))</code></ol>
-<ol>Aggregate<code>count("*"), count("col")
+            <ol>Aggregate<code>count("*"), count("col")
 sum("sales"), avg("price"), min("value"), max("value")
 stddev("price"), variance("price")
 collect_list("name"), collect_set("name")</code></ol>
-<ol>Window<code>from pyspark.sql.window import Window
+            <ol>Window<code>from pyspark.sql.window import Window
 windowSpec = Window.partitionBy("dept").orderBy("salary")
 rank().over(windowSpec)
 row_number().over(windowSpec)
 lag("salary", 1).over(windowSpec)</code></ol>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>⚙️ GroupBy & Aggregations</summary>
-<ul>
-<ol>Basic<code>df.groupBy("department").count()
+    <details>
+        <summary>⚙️ GroupBy & Aggregations</summary>
+        <ul>
+            <ol>Basic<code>df.groupBy("department").count()
 df.groupBy("department").agg(sum("salary").alias("total_salary"))</code></ol>
-<ol>Multiple<code>df.groupBy("dept", "year") \
+            <ol>Multiple<code>df.groupBy("dept", "year") \
     .agg(
         sum("sales").alias("total_sales"),
         avg("profit").alias("avg_profit"),
         count("*").alias("record_count")
     )</code></ol>
-<ol>Pivot<code>df.groupBy("year").pivot("department").sum("sales").show()</code></ol>
-<ol>Cube/Rollup<code>df.groupBy("dept").cube("year").sum("sales")
+            <ol>Pivot<code>df.groupBy("year").pivot("department").sum("sales").show()</code></ol>
+            <ol>Cube/Rollup<code>df.groupBy("dept").cube("year").sum("sales")
 df.groupBy("dept").rollup("year").sum("sales")</code></ol>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>🔗 Joins (All Types)</summary>
-<ul>
-<ol>Basic<code>df1.join(df2, "id", "inner")
+    <details>
+        <summary>🔗 Joins (All Types)</summary>
+        <ul>
+            <ol>Basic<code>df1.join(df2, "id", "inner")
 df1.join(df2, df1.id == df2.id, "inner")
 df1.join(df2, col("df1.id") == col("df2.id"), "left")</code></ol>
-<ol>All Types<code># inner, left, right, outer, left_anti, left_semi, cross
+            <ol>All Types<code># inner, left, right, outer, left_anti, left_semi, cross
 df1.join(df2, "id", "left_outer")
 df1.join(df2, "id", "right_outer")
 df1.join(df2, "id", "full_outer")</code></ol>
-<ol>Broadcast Join (Small tables)<code>from pyspark.sql.functions import broadcast
+            <ol>Broadcast Join (Small tables)<code>from pyspark.sql.functions import broadcast
 df1.join(broadcast(df2), "id")</code></ol>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>📊 UDFs & Performance</summary>
-<ul>
-<ol>Pandas UDF (Vectorized)<code>from pyspark.sql.functions import pandas_udf
+    <details>
+        <summary>📊 UDFs & Performance</summary>
+        <ul>
+            <ol>Pandas UDF (Vectorized)<code>from pyspark.sql.functions import pandas_udf
 @pandas_udf("double")
 def pandas_plus_one(v: pd.Series) -> pd.Series:
     return v + 1
 df.withColumn("new_col", pandas_plus_one(df.col))</code></ol>
-<ol>Regular UDF<code>from pyspark.sql.functions import udf
+            <ol>Regular UDF<code>from pyspark.sql.functions import udf
 double_udf = udf(lambda x: x * 2, DoubleType())
 df.withColumn("doubled", double_udf(df.value))</code></ol>
-<ol>Configs (Performance)<code># Memory & Partitioning
+            <ol>Configs (Performance)<code># Memory & Partitioning
 spark.conf.set("spark.sql.adaptive.enabled", "true")
 spark.conf.set("spark.sql.shuffle.partitions", "200")
 spark.conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
@@ -191,15 +444,15 @@ spark.conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
 # Arrow Optimization
 spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
 spark.conf.set("spark.sql.execution.arrow.maxRecordsPerBatch", "10000")</code></ol>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>🗄️ Delta Lake (ACID Tables)</summary>
-<ul>
-<ol>Basic<code>df.write.format("delta").mode("overwrite").save("delta_table")
+    <details>
+        <summary>🗄️ Delta Lake (ACID Tables)</summary>
+        <ul>
+            <ol>Basic<code>df.write.format("delta").mode("overwrite").save("delta_table")
 spark.read.format("delta").load("delta_table")</code></ol>
-<ol>Operations<code># Time Travel
+            <ol>Operations<code># Time Travel
 spark.read.format("delta").option("versionAsOf", 5).load("table")
 
 # Merge (UPSERT)
@@ -209,13 +462,13 @@ delta_table.alias("target") \
     .whenMatchedUpdateAll() \
     .whenNotMatchedInsertAll() \
     .execute()</code></ol>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>🌊 Structured Streaming (Modern)</summary>
-<ul>
-<li>Basic Stream<code>from pyspark.sql import SparkSession
+    <details>
+        <summary>🌊 Structured Streaming (Modern)</summary>
+        <ul>
+            <li>Basic Stream<code>from pyspark.sql import SparkSession
 spark = SparkSession.builder.appName("Streaming").getOrCreate()
 
 # Read stream
@@ -236,11 +489,11 @@ query = processed.writeStream \
     .start()
 
 query.awaitTermination()</code></li>
-<li>Output Modes<code># append (default) - new rows only
+            <li>Output Modes<code># append (default) - new rows only
 # complete - all results
 # update - changed rows only
 query = df.writeStream.outputMode("complete").start()</code></li>
-<li>Triggers<code># ProcessingTime
+            <li>Triggers<code># ProcessingTime
 .trigger(processingTime="10 seconds")
 .trigger(processingTime='1 minute')
 
@@ -249,10 +502,10 @@ query = df.writeStream.outputMode("complete").start()</code></li>
 
 # Continuous (experimental)
 .trigger(continuous="1 second")</code></li>
-<li>Watermark (Late Data)<code>df.withWatermark("event_time", "10 minutes") \
+            <li>Watermark (Late Data)<code>df.withWatermark("event_time", "10 minutes") \
     .groupBy(window("event_time", "10 minutes")) \
     .count()</code></li>
-<li>Windows<code># Tumbling (fixed)
+            <li>Windows<code># Tumbling (fixed)
 .groupBy(window(col("timestamp"), "10 minutes"))
 
 # Sliding
@@ -260,23 +513,23 @@ query = df.writeStream.outputMode("complete").start()</code></li>
 
 # Session
 .groupBy(session_window("timestamp", "10 minutes"))</code></li>
-<li>Kafka Sink<code>df.writeStream \
+            <li>Kafka Sink<code>df.writeStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "localhost:9092") \
     .option("topic", "output-topic") \
     .start()</code></li>
-<li>File Sink<code>df.writeStream \
+            <li>File Sink<code>df.writeStream \
     .format("parquet") \
     .option("path", "/path/to/output") \
     .option("checkpointLocation", "/path/checkpoint") \
     .start()</code></li>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>📡 Sources & Sinks</summary>
-<ul>
-<li>Sources<code># Files
+    <details>
+        <summary>📡 Sources & Sinks</summary>
+        <ul>
+            <li>Sources<code># Files
 spark.readStream.format("csv").load("input/")
 spark.readStream.text("input/")
 spark.readStream.parquet("input/")
@@ -290,7 +543,7 @@ spark.readStream.parquet("input/")
 
 # Rate (testing)
 .format("rate").option("rowsPerSecond", 10)</code></li>
-<li>Sinks<code># Console (debug)
+            <li>Sinks<code># Console (debug)
 .format("console")
 
 # Memory (testing)
@@ -307,13 +560,13 @@ spark.readStream.parquet("input/")
 
 # Delta
 .format("delta").option("checkpointLocation", "/checkpoint")</code></li>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>⚡ Legacy DStreams (Deprecated)</summary>
-<ul>
-<li>Basic<code>from pyspark.streaming import StreamingContext
+    <details>
+        <summary>⚡ Legacy DStreams (Deprecated)</summary>
+        <ul>
+            <li>Basic<code>from pyspark.streaming import StreamingContext
 ssc = StreamingContext(spark.sparkContext, 2)  # 2s batches
 
 # Socket stream
@@ -324,51 +577,51 @@ wordCounts = words.map(lambda word: (word, 1)).reduceByKey(lambda a, b: a + b)
 wordCounts.pprint()
 ssc.start()
 ssc.awaitTermination()</code></li>
-<li>Warning<code># ⚠️ LEGACY - Use Structured Streaming instead
+            <li>Warning<code># ⚠️ LEGACY - Use Structured Streaming instead
 # DStreams deprecated in Spark 3.5+, removed in Spark 4.0</code></li>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>🔄 State & Fault Tolerance</summary>
-<ul>
-<li>State Store<code># MapWithState (Structured Streaming)
+    <details>
+        <summary>🔄 State & Fault Tolerance</summary>
+        <ul>
+            <li>State Store<code># MapWithState (Structured Streaming)
 from pyspark.sql.functions import *
 state_df = df.withWatermark("timestamp", "10 minutes") \
     .groupByKey(lambda x: x.user_id) \
     .mapGroupsWithState(...)</code></li>
-<li>Checkpointing<code># ALWAYS required for fault tolerance
+            <li>Checkpointing<code># ALWAYS required for fault tolerance
 .option("checkpointLocation", "/path/to/checkpoint")
 
 # Exactly-once semantics
 spark.conf.set("spark.sql.streaming.statefulOperator.checkCorrectness.enabled", "true")</code></li>
-<li>Multiple Streams<code># Fanout
+            <li>Multiple Streams<code># Fanout
 query1 = stream1.writeStream.start()
 query2 = stream1.alias("s1").join(stream2).writeStream.start()</code></li>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>📈 Streaming Production Configs</summary>
-<ul>
-<li>Micro-batch<code>spark.conf.set("spark.sql.streaming.pollingDelay", "0")
+    <details>
+        <summary>📈 Streaming Production Configs</summary>
+        <ul>
+            <li>Micro-batch<code>spark.conf.set("spark.sql.streaming.pollingDelay", "0")
 spark.conf.set("spark.sql.streaming.minBatchesToRetain", "100")
 spark.conf.set("spark.sql.adaptive.enabled", "true")</code></li>
-<li>Memory<code>spark.conf.set("spark.sql.streaming.stateStore.minDeltasForFullState", "5")
+            <li>Memory<code>spark.conf.set("spark.sql.streaming.stateStore.minDeltasForFullState", "5")
 spark.conf.set("spark.sql.streaming.statefulOperator.useSharedMemory", "false")</code></li>
-<li>Kafka<code>spark.conf.set("spark.sql.streaming.metricsEnabled", "true")
+            <li>Kafka<code>spark.conf.set("spark.sql.streaming.metricsEnabled", "true")
 .option("maxOffsetsPerTrigger", 1000)
 .option("minOffsetsPerTrigger", 500)</code></li>
-</ul>
-</details>
+        </ul>
+    </details>
 
 
-<details>
-<summary>⚡ Spark SQL & Optimization</summary>
-<ul>
-<ol>Register Table<code>df.createOrReplaceTempView("my_table")
+    <details>
+        <summary>⚡ Spark SQL & Optimization</summary>
+        <ul>
+            <ol>Register Table<code>df.createOrReplaceTempView("my_table")
 spark.sql("SELECT * FROM my_table WHERE age > 25").show()</code></ol>
-<ol>Advanced SQL<code># Window Functions
+            <ol>Advanced SQL<code># Window Functions
 spark.sql("""
     SELECT 
         dept, 
@@ -376,25 +629,81 @@ spark.sql("""
         rank() OVER (PARTITION BY dept ORDER BY salary DESC) as salary_rank
     FROM employees
 """).show()</code></ol>
-<ol>Cache/Persist<code>df.cache()  # MEMORY_ONLY
+            <ol>Cache/Persist<code>df.cache()  # MEMORY_ONLY
 df.persist(StorageLevel.MEMORY_AND_DISK)
 df.unpersist()</code></ol>
-</ul>
-</details>
+        </ul>
+    </details>
 
-<details>
-<summary>🔧 All Spark Configs (Production)</summary>
-<table border="1" style="border-collapse:collapse;">
-<tr><th>Config</th><th>Type</th><th>Default</th><th>Purpose</th></tr>
-<tr><td>spark.sql.adaptive.enabled</td><td>boolean</td><td>false</td><td>Adaptive Query Execution</td></tr>
-<tr><td>spark.sql.shuffle.partitions</td><td>int</td><td>200</td><td>Shuffle partitions</td></tr>
-<tr><td>spark.executor.memory</td><td>string</td><td>1g</td><td>Executor memory</td></tr>
-<tr><td>spark.executor.cores</td><td>int</td><td>1</td><td>Executor cores</td></tr>
-<tr><td>spark.sql.execution.arrow.pyspark.enabled</td><td>boolean</td><td>false</td><td>Arrow optimization</td></tr>
-<tr><td>spark.serializer</td><td>string</td><td>JavaSerializer</td><td>KryoSerializer (faster)</td></tr>
-<tr><td>spark.sql.adaptive.coalescePartitions.enabled</td><td>boolean</td><td>true</td><td>Auto coalesce</td></tr>
-</table>
-</details>
+    <details>
+        <summary>🔧 All Spark Configs (Production)</summary>
+        <table border="1" style="border-collapse:collapse;">
+            <tr>
+                <th>Config</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>spark.sql.adaptive.enabled</td>
+                <td>boolean</td>
+                <td>false</td>
+                <td>Adaptive Query Execution</td>
+            </tr>
+            <tr>
+                <td>spark.sql.shuffle.partitions</td>
+                <td>int</td>
+                <td>200</td>
+                <td>Shuffle partitions</td>
+            </tr>
+            <tr>
+                <td>spark.executor.memory</td>
+                <td>string</td>
+                <td>1g</td>
+                <td>Executor memory</td>
+            </tr>
+            <tr>
+                <td>spark.executor.cores</td>
+                <td>int</td>
+                <td>1</td>
+                <td>Executor cores</td>
+            </tr>
+            <tr>
+                <td>spark.sql.execution.arrow.pyspark.enabled</td>
+                <td>boolean</td>
+                <td>false</td>
+                <td>Arrow optimization</td>
+            </tr>
+            <tr>
+                <td>spark.serializer</td>
+                <td>string</td>
+                <td>JavaSerializer</td>
+                <td>KryoSerializer (faster)</td>
+            </tr>
+            <tr>
+                <td>spark.sql.adaptive.coalescePartitions.enabled</td>
+                <td>boolean</td>
+                <td>true</td>
+                <td>Auto coalesce</td>
+            </tr>
+        </table>
+    </details>
 
+    <!-- References Section -->
+    <section id="references">
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://spark.apache.org/docs/latest/api/python/" target="_blank">PySpark Documentation</a>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Setup Section -->
+    <section id="setup">
+        <h2>Setup & Verification</h2>
+        <p>Install via pip:</p>
+        <pre><code>pip install pyspark</code></pre>
+    </section>
 </body>
+
 </html>

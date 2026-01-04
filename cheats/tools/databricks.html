@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Databricks DLT Pipeline Cheatsheet 2025</title></head>
-<body>
-<h1>🔧 Databricks DLT Pipeline Complete Cheatsheet 2025</h1>
 
-<details open>
-<summary>🚀 DLT Basics & Setup</summary>
-<ul>
-<li>Notebook Syntax<pre><code># Command
+<head>
+    <meta charset="UTF-8">
+    <title>Databricks DLT Pipeline Cheatsheet 2025</title>
+</head>
+
+<body>
+    <h1>🔧 Databricks DLT Pipeline Complete Cheatsheet 2025</h1>
+
+    <details open>
+        <summary>🚀 DLT Basics & Setup</summary>
+        <ul>
+            <li>Notebook Syntax
+                <pre><code># Command
 import dlt
 
 @dlt.table
@@ -24,8 +30,10 @@ def silver_customers():
 def gold_customers():
     return dlt.read_stream("silver_customers_stream") \
         .groupBy("region") \
-        .agg({"customer_id": "count"})</code></pre></li>
-<li>Pipeline Config JSON<pre><code>{
+        .agg({"customer_id": "count"})</code></pre>
+            </li>
+            <li>Pipeline Config JSON
+                <pre><code>{
   "name": "customer_pipeline",
   "configuration": {
     "pipelines.autoOptimize.managed": "true",
@@ -36,8 +44,10 @@ def gold_customers():
   }],
   "libraries": [{"notebook": {"path": "/Repos/user/pipeline_notebook"}}],
   "target": "customer_dlt_catalog"
-}</code></pre></li>
-<li>Create Pipeline UI<pre><code>POST /api/2.1/unity-catalog/pipelines
+}</code></pre>
+            </li>
+            <li>Create Pipeline UI
+                <pre><code>POST /api/2.1/unity-catalog/pipelines
 {
   "name": "customer_pipeline",
   "storage": "/delta/pipelines/customer_pipeline",
@@ -45,83 +55,107 @@ def gold_customers():
     "pipelines.enableServerlessCompute": "true"
   },
   "target": "main"
-}</code></pre></li>
-</ul>
-</details>
+}</code></pre>
+            </li>
+        </ul>
+    </details>
 
-<details>
-<summary>📋 All DLT Decorators & Options</summary>
-<ul>
-<li>@dlt.table<pre><code>@dlt.table(
+    <details>
+        <summary>📋 All DLT Decorators & Options</summary>
+        <ul>
+            <li>@dlt.table
+                <pre><code>@dlt.table(
     comment="Gold customer metrics",
     table_properties={"quality": "bronze"},
     partition_cols=["region"],
     spark_conf={"spark.sql.shuffle.partitions": "100"}
 )
 def gold_metrics():
-    return dlt.read("silver_metrics")</code></pre></li>
-<li>@dlt.view<pre><code>@dlt.view(
+    return dlt.read("silver_metrics")</code></pre>
+            </li>
+            <li>@dlt.view
+                <pre><code>@dlt.view(
     temporary=True,  # Ephemeral view
     spark_conf={"spark.sql.adaptive.enabled": "true"}
 )
 def temp_view():
-    return dlt.read("gold_metrics").filter("active = true")</code></pre></li>
-<li>@dlt.material_view<pre><code>@dlt.material_view(
+    return dlt.read("gold_metrics").filter("active = true")</code></pre>
+            </li>
+            <li>@dlt.material_view
+                <pre><code>@dlt.material_view(
     comment="Materialized expensive computation"
 )
 def expensive_view():
-    return spark.sql("complex CTE query")</code></pre></li>
-<li>Streaming<pre><code>@dlt.table_streaming_live(
+    return spark.sql("complex CTE query")</code></pre>
+            </li>
+            <li>Streaming
+                <pre><code>@dlt.table_streaming_live(
     name="silver_stream_live",
     partition_cols=["date"]
 )
 @dlt.streaming_live_table_mode("TRIGGER_AVAILABLE")
 def silver_stream():
-    return dlt.read_stream("raw_kafka")</code></pre></li>
-</ul>
-</details>
+    return dlt.read_stream("raw_kafka")</code></pre>
+            </li>
+        </ul>
+    </details>
 
-<details>
-<summary>🧪 Expectations (Data Quality)</summary>
-<ul>
-<li>Basic<pre><code>@dlt.expect("valid_country", "country IN ('US', 'CA', 'UK')")
+    <details>
+        <summary>🧪 Expectations (Data Quality)</summary>
+        <ul>
+            <li>Basic
+                <pre><code>@dlt.expect("valid_country", "country IN ('US', 'CA', 'UK')")
 @dlt.expect_or_drop("valid_age", "age > 0 AND age < 150")
 @dlt.expect_or_fail("unique_id", "customer_id IS NOT NULL")
 def silver_customers():
-    return dlt.read("raw_customers")</code></pre></li>
-<li>Custom<pre><code>@dlt.expect("custom_quality", "F(correct_email(email))")
+    return dlt.read("raw_customers")</code></pre>
+            </li>
+            <li>Custom
+                <pre><code>@dlt.expect("custom_quality", "F(correct_email(email))")
 def gold_customers():
     return dlt.read("silver_customers")
 
 @dlt.expect_all({
     "valid_count": "count > 0",
     "avg_age_30_60": "avg_age BETWEEN 30 AND 60"
-})</code></pre></li>
-<li>Actions<pre><code># expect_all_or_drop(), expect_all_or_fail()
+})</code></pre>
+            </li>
+            <li>Actions
+                <pre><code># expect_all_or_drop(), expect_all_or_fail()
 # Drop/Fail entire dataset if expectations fail
 @dlt.expect_all_or_drop({
     "not_empty": "size > 0",
     "valid_schema": "is_valid_schema()"
-})</code></pre></li>
-<li>Quality Metrics<pre><code># Auto-generated in Unity Catalog
+})</code></pre>
+            </li>
+            <li>Quality Metrics
+                <pre><code># Auto-generated in Unity Catalog
 SELECT * FROM system.access.audit
 WHERE object_name = 'silver_customers'
-# Columns: dropped_records, passed_records, expectation_failures</code></pre></li>
-</ul>
-</details>
+# Columns: dropped_records, passed_records, expectation_failures</code></pre>
+            </li>
+        </ul>
+    </details>
 
-<details>
-<summary>⚙️ Pipeline Modes & Updates</summary>
-<ul>
-<li>Full Refresh<pre><code># UI: Pipeline Settings → Full Refresh
+    <details>
+        <summary>⚙️ Pipeline Modes & Updates</summary>
+        <ul>
+            <li>Full Refresh
+                <pre><code># UI: Pipeline Settings → Full Refresh
 # CLI: databricks pipelines update --full-refresh-enabled true
-# Drops ALL tables → Rebuilds everything</code></pre></li>
-<li>Incremental<pre><code># Default mode - only processes new data
-# Trigger: Manual, Continuous, Scheduled</code></pre></li>
-<li>Development Mode<pre><code># databricks pipelines update --development true
+# Drops ALL tables → Rebuilds everything</code></pre>
+            </li>
+            <li>Incremental
+                <pre><code># Default mode - only processes new data
+# Trigger: Manual, Continuous, Scheduled</code></pre>
+            </li>
+            <li>Development Mode
+                <pre><code># databricks pipelines update --development true
 # Faster iterations, no production impact
-# Auto-restart on notebook changes</code></pre></li>
-<li>Triggers<pre><code># Manual: UI button or API
+# Auto-restart on notebook changes</code></pre>
+            </li>
+            <li>Triggers
+                <pre><code># Manual: UI button or API
 POST /api/2.1/unity-catalog/pipelines/{pipeline_id}/start
 
 # Scheduled
@@ -130,14 +164,16 @@ PUT /api/2.1/unity-catalog/pipelines/{pipeline_id}
 
 # Continuous (streaming)
 PUT /api/2.1/unity-catalog/pipelines/{pipeline_id}
-{"continuous": {"enable_supported": true}}</code></pre></li>
-</ul>
-</details>
+{"continuous": {"enable_supported": true}}</code></pre>
+            </li>
+        </ul>
+    </details>
 
-<details>
-<summary>📊 Monitoring & APIs</summary>
-<ul>
-<li>Pipeline Status<pre><code># List pipelines
+    <details>
+        <summary>📊 Monitoring & APIs</summary>
+        <ul>
+            <li>Pipeline Status
+                <pre><code># List pipelines
 GET /api/2.1/unity-catalog/pipelines
 
 # Get pipeline
@@ -146,61 +182,115 @@ GET /api/2.1/unity-catalog/pipelines/{pipeline_id}
 # Updates
 PUT /api/2.1/unity-catalog/pipelines/{pipeline_id}
 POST /api/2.1/unity-catalog/pipelines/{pipeline_id}/start
-POST /api/2.1/unity-catalog/pipelines/{pipeline_id}/cancel</code></pre></li>
-<li>Metrics<pre><code># System tables
+POST /api/2.1/unity-catalog/pipelines/{pipeline_id}/cancel</code></pre>
+            </li>
+            <li>Metrics
+                <pre><code># System tables
 SELECT * FROM system.billing.usage
 WHERE product = 'Delta Live Tables'
 
 SELECT * FROM system.access.audit
-WHERE service_name = 'deltaLiveTablesPipelines'</code></pre></li>
-<li>CLI<pre><code># Install: pip install databricks-dlt
+WHERE service_name = 'deltaLiveTablesPipelines'</code></pre>
+            </li>
+            <li>CLI
+                <pre><code># Install: pip install databricks-dlt
 databricks dlt list
 databricks dlt update --pipeline-id 123 --production true
-databricks dlt start --pipeline-id 123</code></pre></li>
-</ul>
-</details>
+databricks dlt start --pipeline-id 123</code></pre>
+            </li>
+        </ul>
+    </details>
 
-<details>
-<summary>🔧 All Configuration Options</summary>
-<table border="1" style="border-collapse:collapse;">
-<tr><th>Config</th><th>Type</th><th>Default</th><th>Description</th></tr>
-<tr><td>pipelines.autoOptimize.managed</td><td>boolean</td><td>true</td><td>Auto optimize ZORDER</td></tr>
-<tr><td>pipelines.autoOptimize.zOrderCols</td><td>string</td><td>""</td><td>ZORDER columns</td></tr>
-<tr><td>pipelines.enableServerlessCompute</td><td>boolean</td><td>false</td><td>Serverless clusters</td></tr>
-<tr><td>dlt.pipeline.quality.gold</td><td>string</td><td>"verified"</td><td>Gold quality level</td></tr>
-<tr><td>dlt.data_quality.fanout_repair.enabled</td><td>boolean</td><td>false</td><td>Repair downstream</td></tr>
-<tr><td>pipelines.trigger.interval</td><td>string</td><td>"once"</td><td>Schedule interval</td></tr>
-<tr><td>spark.sql.streaming.minBatchesToRetain</td><td>int</td><td>100</td><td>Streaming retention</td></tr>
-</table>
-</details>
+    <details>
+        <summary>🔧 All Configuration Options</summary>
+        <table border="1" style="border-collapse:collapse;">
+            <tr>
+                <th>Config</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>pipelines.autoOptimize.managed</td>
+                <td>boolean</td>
+                <td>true</td>
+                <td>Auto optimize ZORDER</td>
+            </tr>
+            <tr>
+                <td>pipelines.autoOptimize.zOrderCols</td>
+                <td>string</td>
+                <td>""</td>
+                <td>ZORDER columns</td>
+            </tr>
+            <tr>
+                <td>pipelines.enableServerlessCompute</td>
+                <td>boolean</td>
+                <td>false</td>
+                <td>Serverless clusters</td>
+            </tr>
+            <tr>
+                <td>dlt.pipeline.quality.gold</td>
+                <td>string</td>
+                <td>"verified"</td>
+                <td>Gold quality level</td>
+            </tr>
+            <tr>
+                <td>dlt.data_quality.fanout_repair.enabled</td>
+                <td>boolean</td>
+                <td>false</td>
+                <td>Repair downstream</td>
+            </tr>
+            <tr>
+                <td>pipelines.trigger.interval</td>
+                <td>string</td>
+                <td>"once"</td>
+                <td>Schedule interval</td>
+            </tr>
+            <tr>
+                <td>spark.sql.streaming.minBatchesToRetain</td>
+                <td>int</td>
+                <td>100</td>
+                <td>Streaming retention</td>
+            </tr>
+        </table>
+    </details>
 
-<details>
-<summary>🌐 Unity Catalog Integration</summary>
-<ul>
-<li>Target Catalog<pre><code># Pipeline config
+    <details>
+        <summary>🌐 Unity Catalog Integration</summary>
+        <ul>
+            <li>Target Catalog
+                <pre><code># Pipeline config
 "target": "customer_catalog"
 
 # Tables auto-created in
 customer_catalog.default.raw_customers
-customer_catalog.default.silver_customers</code></pre></li>
-<li>Governance<pre><code># Column-level lineage automatic
+customer_catalog.default.silver_customers</code></pre>
+            </li>
+            <li>Governance
+                <pre><code># Column-level lineage automatic
 # Table quality metrics
 # Tag propagation
-# Sharing-ready tables</code></pre></li>
-<li>Permissions<pre><code>GRANT USE CATALOG ON CATALOG customer_catalog TO `analysts`
-GRANT SELECT ON TABLE customer_catalog.default.gold_metrics TO `viewers`</code></pre></li>
-</ul>
-</details>
+# Sharing-ready tables</code></pre>
+            </li>
+            <li>Permissions
+                <pre><code>GRANT USE CATALOG ON CATALOG customer_catalog TO `analysts`
+GRANT SELECT ON TABLE customer_catalog.default.gold_metrics TO `viewers`</code></pre>
+            </li>
+        </ul>
+    </details>
 
-<details>
-<summary>🚀 Advanced Patterns</summary>
-<ul>
-<li>Dynamic Tables (2025)<pre><code>@dlt.dynamic_table(
+    <details>
+        <summary>🚀 Advanced Patterns</summary>
+        <ul>
+            <li>Dynamic Tables (2025)
+                <pre><code>@dlt.dynamic_table(
     spark_conf={"spark.databricks.delta.optimizeWrite.enabled": "true"}
 )
 def dynamic_metrics():
-    return dlt.read_dynamic("silver_metrics")</code></pre></li>
-<li>Multi-hop Streaming<pre><code>@dlt.table_streaming_live("bronze_stream")
+    return dlt.read_dynamic("silver_metrics")</code></pre>
+            </li>
+            <li>Multi-hop Streaming
+                <pre><code>@dlt.table_streaming_live("bronze_stream")
 def bronze_stream():
     return dlt.read_stream("kafka_source")
 
@@ -210,27 +300,54 @@ def silver_stream():
 
 @dlt.table("gold_metrics")
 def gold_metrics():
-    return dlt.read_stream("silver_stream").groupBy("region").count()</code></pre></li>
-<li>Repair & Backfill<pre><code># UI: Pipeline → Repairs → Create Repair
+    return dlt.read_stream("silver_stream").groupBy("region").count()</code></pre>
+            </li>
+            <li>Repair & Backfill
+                <pre><code># UI: Pipeline → Repairs → Create Repair
 # From timestamp X to Y
-# Repairs propagate downstream automatically</code></pre></li>
-</ul>
-</details>
+# Repairs propagate downstream automatically</code></pre>
+            </li>
+        </ul>
+    </details>
 
-<details>
-<summary>🔗 Reference Links & CLI</summary>
-<ul>
-<li>Official Docs<pre><code>https://docs.databricks.com/en/delta-live-tables/index.html</code></pre></li>
-<li>API Reference<pre><code>https://docs.databricks.com/en/dev-tools/api/latest/unity-catalog/pipelines.html</code></pre></li>
-<li>CLI<pre><code>pip install databricks-dlt
-databricks dlt --version</code></pre></li>
-<li>System Tables<pre><code>system.billing.usage (cost)
+    <details>
+        <summary>🔗 Reference Links & CLI</summary>
+        <ul>
+            <li>Official Docs
+                <pre><code>https://docs.databricks.com/en/delta-live-tables/index.html</code></pre>
+            </li>
+            <li>API Reference
+                <pre><code>https://docs.databricks.com/en/dev-tools/api/latest/unity-catalog/pipelines.html</code></pre>
+            </li>
+            <li>CLI
+                <pre><code>pip install databricks-dlt
+databricks dlt --version</code></pre>
+            </li>
+            <li>System Tables
+                <pre><code>system.billing.usage (cost)
 system.access.audit (quality metrics)
-system.compute.clusters (cluster usage)</code></pre></li>
-<li>Git Integration<pre><code># Repos → DLT pipeline → CI/CD
-GitHub Actions / GitLab CI templates available</code></pre></li>
-</ul>
-</details>
+system.compute.clusters (cluster usage)</code></pre>
+            </li>
+            <li>Git Integration
+                <pre><code># Repos → DLT pipeline → CI/CD
+GitHub Actions / GitLab CI templates available</code></pre>
+            </li>
+        </ul>
+    </details>
 
+    <!-- References Section -->
+    <section id="references">
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://docs.databricks.com/" target="_blank">Databricks Documentation</a></li>
+        </ul>
+    </section>
+
+    <!-- Setup Section -->
+    <section id="setup">
+        <h2>Setup & Verification</h2>
+        <p>Databricks is a cloud platform. Access it via your company's workspace URL.</p>
+    </section>
 </body>
+
 </html>

@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Drift DB Complete Cheatsheet 2025</title></head>
-<body>
-<h1>🗄️ Drift Database (Flutter) Complete Cheatsheet 2025</h1>
 
-<details open>
-<summary>🚀 Setup & pubspec.yaml</summary>
-<ul>
-<li>Dependencies<pre><code>dependencies:
+<head>
+  <meta charset="UTF-8">
+  <title>Drift DB Complete Cheatsheet 2025</title>
+</head>
+
+<body>
+  <h1>🗄️ Drift Database (Flutter) Complete Cheatsheet 2025</h1>
+
+  <details open>
+    <summary>🚀 Setup & pubspec.yaml</summary>
+    <ul>
+      <li>Dependencies
+        <pre><code>dependencies:
   drift: ^2.20.0
   sqlite3_flutter_libs: ^0.5.24
   path_provider: ^2.1.5
@@ -15,22 +21,26 @@
 
 dev_dependencies:
   drift_dev: ^2.20.0
-  build_runner: ^2.4.15</code></pre></li>
-<li>Generate Code<pre><code># One-time setup
+  build_runner: ^2.4.15</code></pre>
+      </li>
+      <li>Generate Code
+        <pre><code># One-time setup
 flutter pub get
 
 # Generate .g.dart files
 flutter packages pub run build_runner build
 
 # Watch mode (development)
-flutter packages pub run build_runner watch</code></pre></li>
-</ul>
-</details>
+flutter packages pub run build_runner watch</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📋 Tables & Schema</summary>
-<ul>
-<li>Users Table<pre><code>import 'package:drift/drift.dart';
+  <details>
+    <summary>📋 Tables & Schema</summary>
+    <ul>
+      <li>Users Table
+        <pre><code>import 'package:drift/drift.dart';
 
 class Users extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -39,21 +49,25 @@ class Users extends Table {
   IntColumn get age => integer().nullable()();
   BoolColumn get isActive => boolean().withDefault(const Constant(true))();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
-}</code></pre></li>
-<li>Posts Table<pre><code>class Posts extends Table {
+}</code></pre>
+      </li>
+      <li>Posts Table
+        <pre><code>class Posts extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get userId => integer().references(Users, #id)();
   TextColumn get title => text().withLength(min: 1, max: 200)();
   TextColumn get content => text()();
   IntColumn get likes => integer().withDefault(const Constant(0))();
-}</code></pre></li>
-</ul>
-</details>
+}</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🗃️ Database Class</summary>
-<ul>
-<li>AppDatabase<pre><code>part of 'database.dart';
+  <details>
+    <summary>🗃️ Database Class</summary>
+    <ul>
+      <li>AppDatabase
+        <pre><code>part of 'database.dart';
 
 @DriftDatabase(tables: [Users, Posts])
 class AppDatabase extends _$AppDatabase {
@@ -75,8 +89,10 @@ class AppDatabase extends _$AppDatabase {
               post: row.readTable(posts),
             ))
           .get();
-}</code></pre></li>
-<li>Database Helper<pre><code>class DatabaseHelper {
+}</code></pre>
+      </li>
+      <li>Database Helper
+        <pre><code>class DatabaseHelper {
   static Database? _database;
   
   static Future<Database> get database async {
@@ -91,14 +107,16 @@ class AppDatabase extends _$AppDatabase {
     final file = File(p.join(dbFolder.path, 'app.db'));
     return $floorAppDatabase.databaseBuilder(file.path).build();
   }
-}</code></pre></li>
-</ul>
-</details>
+}</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>➕ CRUD Operations</summary>
-<ul>
-<li>Create<pre><code>// Insert single
+  <details>
+    <summary>➕ CRUD Operations</summary>
+    <ul>
+      <li>Create
+        <pre><code>// Insert single
 final userId = await db.into(db.users).insert(UsersCompanion(
   name: Value('John Doe'),
   email: Value('john@example.com'),
@@ -117,8 +135,10 @@ await db.batch((batch) {
 await db.into(db.users).insertOnConflictUpdate(UsersCompanion(
   id: Value(1),
   name: Value('Updated Name'),
-));</code></pre></li>
-<li>Read<pre><code>// Get all
+));</code></pre>
+      </li>
+      <li>Read
+        <pre><code>// Get all
 List<User> users = await db.select(db.users).get();
 
 // Get by ID
@@ -131,35 +151,43 @@ Stream<List<User>> userStream = db.select(db.users).watch();
 List<User> activeUsers = await (db.select(db.users)
   ..where((u) => u.isActive.equals(true))
   ..orderBy([(u) => OrderingTerm(expression: u.createdAt, mode: OrderingMode.desc)])
-).get();</code></pre></li>
-<li>Update<pre><code>// Update single
+).get();</code></pre>
+      </li>
+      <li>Update
+        <pre><code>// Update single
 await (db.update(db.users)..where((u) => u.id.equals(1))).write(
   UsersCompanion(name: Value('New Name'), age: Value(31)),
 );
 
 // Update multiple
-await db.update(db.users).replace(User(id: 1, name: 'Updated', email: 'new@email.com', isActive: true, createdAt: DateTime.now(), age: 32));</code></pre></li>
-<li>Delete<pre><code>// Delete single
+await db.update(db.users).replace(User(id: 1, name: 'Updated', email: 'new@email.com', isActive: true, createdAt: DateTime.now(), age: 32));</code></pre>
+      </li>
+      <li>Delete
+        <pre><code>// Delete single
 await (db.delete(db.users)..where((u) => u.id.equals(1))).go();
 
 // Delete multiple
 await (db.delete(db.users)..where((u) => u.isActive.equals(false))).go();
 
 // Delete all
-await db.delete(db.users).go();</code></pre></li>
-</ul>
-</details>
+await db.delete(db.users).go();</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🔗 Relations & Joins</summary>
-<ul>
-<li>UserWithPosts Class<pre><code>class UserWithPosts {
+  <details>
+    <summary>🔗 Relations & Joins</summary>
+    <ul>
+      <li>UserWithPosts Class
+        <pre><code>class UserWithPosts {
   final User user;
   final Post post;
   
   UserWithPosts({required this.user, required this.post});
-}</code></pre></li>
-<li>Complex Query<pre><code>Stream<List<UserWithPosts>> getActiveUsersWithPosts() {
+}</code></pre>
+      </li>
+      <li>Complex Query
+        <pre><code>Stream<List<UserWithPosts>> getActiveUsersWithPosts() {
   final query = db.select(db.users).join([
     leftOuterJoin(db.posts, db.posts.userId.equalsExp(db.users.id)),
   ])
@@ -174,37 +202,45 @@ await db.delete(db.users).go();</code></pre></li>
       post: row.readTableOrNull(db.posts),
     );
   }).toList());
-}</code></pre></li>
-</ul>
-</details>
+}</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>⚙️ Advanced Queries</summary>
-<ul>
-<li>Pagination<pre><code>Future<List<User>> getUsersPaginated(int page, int limit) async {
+  <details>
+    <summary>⚙️ Advanced Queries</summary>
+    <ul>
+      <li>Pagination
+        <pre><code>Future<List<User>> getUsersPaginated(int page, int limit) async {
   final offset = (page - 1) * limit;
   return await (db.select(db.users)
     ..limit(limit, offset: offset)
     ..orderBy([(u) => OrderingTerm(expression: u.createdAt)])
   ).get();
-}</code></pre></li>
-<li>Transactions<pre><code>await db.transaction(() async {
+}</code></pre>
+      </li>
+      <li>Transactions
+        <pre><code>await db.transaction(() async {
   await db.into(db.users).insert(userCompanion);
   await db.into(db.posts).insert(postCompanion);
-});</code></pre></li>
-<li>Custom SQL<pre><code>Future<List<User>> searchUsers(String query) {
+});</code></pre>
+      </li>
+      <li>Custom SQL
+        <pre><code>Future<List<User>> searchUsers(String query) {
   return db.customSelect(
     'SELECT * FROM users WHERE name LIKE ? OR email LIKE ?',
     variables: [Value('%$query%'), Value('%$query%')],
   ).map(db.users.$Companion).get();
-}</code></pre></li>
-</ul>
-</details>
+}</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📱 Flutter Integration</summary>
-<ul>
-<li>Provider + StreamBuilder<pre><code>class DatabaseProvider with ChangeNotifier {
+  <details>
+    <summary>📱 Flutter Integration</summary>
+    <ul>
+      <li>Provider + StreamBuilder
+        <pre><code>class DatabaseProvider with ChangeNotifier {
   final AppDatabase db;
   Stream<List<User>>? _usersStream;
   
@@ -230,14 +266,16 @@ StreamBuilder<List<User>>(
       itemBuilder: (context, index) => ListTile(title: Text(users[index].name)),
     );
   },
-)</code></pre></li>
-</ul>
-</details>
+)</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🔧 Migration & Schema</summary>
-<ul>
-<li>Schema Updates<pre><code>@override
+  <details>
+    <summary>🔧 Migration & Schema</summary>
+    <ul>
+      <li>Schema Updates
+        <pre><code>@override
 MigrationStrategy get migration => MigrationStrategy(
   onCreate: (Migrator m) async {
     await m.createAll();
@@ -252,9 +290,25 @@ MigrationStrategy get migration => MigrationStrategy(
       await _customInitialization(details.executor);
     }
   },
-);</code></pre></li>
-</ul>
-</details>
+);</code></pre>
+      </li>
+    </ul>
+  </details>
 
+  <!-- References Section -->
+  <section id="references">
+    <h2>References</h2>
+    <ul>
+      <li><a href="https://drift.simonbinder.eu/docs/" target="_blank">Drift Documentation</a></li>
+    </ul>
+  </section>
+
+  <!-- Setup Section -->
+  <section id="setup">
+    <h2>Setup & Verification</h2>
+    <p>Add to your Flutter project:</p>
+    <pre><code>flutter pub add drift drift_flutter dev:build_runner dev:drift_dev</code></pre>
+  </section>
 </body>
+
 </html>

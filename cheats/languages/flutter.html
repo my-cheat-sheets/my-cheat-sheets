@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Flutter Complete Cheatsheet 2025</title></head>
-<body>
-<h1>🪶 Flutter Complete Cheatsheet 2025</h1>
 
-<details open>
-<summary>🚀 Flutter Setup & Project</summary>
-<ul>
-<li>Basic App<pre><code>import 'package:flutter/material.dart';
+<head>
+  <meta charset="UTF-8">
+  <title>Flutter Complete Cheatsheet 2025</title>
+</head>
+
+<body>
+  <h1>🪶 Flutter Complete Cheatsheet 2025</h1>
+
+  <details open>
+    <summary>🚀 Flutter Setup & Project</summary>
+    <ul>
+      <li>Basic App
+        <pre><code>import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,22 +36,28 @@ class MyHomePage extends StatelessWidget {
       body: Center(child: Text('Hello World!')),
     );
   }
-}</code></pre></li>
-<li>Create Project<pre><code>flutter create my_app
+}</code></pre>
+      </li>
+      <li>Create Project
+        <pre><code>flutter create my_app
 cd my_app
-flutter run</code></pre></li>
-<li>Hot Reload<pre><code># Save = Hot Reload (state preserved)
+flutter run</code></pre>
+      </li>
+      <li>Hot Reload
+        <pre><code># Save = Hot Reload (state preserved)
 # Ctrl+S or Cmd+S
 
 # Hot Restart (state reset)
-# Ctrl+Shift+F5 or Cmd+Shift+F5</code></pre></li>
-</ul>
-</details>
+# Ctrl+Shift+F5 or Cmd+Shift+F5</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📱 Core Widgets</summary>
-<ul>
-<li>Layout<pre><code>Column(children: [Text('1'), Text('2')])
+  <details>
+    <summary>📱 Core Widgets</summary>
+    <ul>
+      <li>Layout
+        <pre><code>Column(children: [Text('1'), Text('2')])
 Row(children: [Icon(Icons.star), Text('Star')])
 Container(
   width: 100, height: 100,
@@ -53,8 +65,10 @@ Container(
   child: Text('Box'),
 )
 Expanded(child: Text('Fills space'))
-Flexible(child: Text('Flexible'))</code></pre></li>
-<li>Lists<pre><code>ListView.builder(
+Flexible(child: Text('Flexible'))</code></pre>
+      </li>
+      <li>Lists
+        <pre><code>ListView.builder(
   itemCount: items.length,
   itemBuilder: (context, index) => ListTile(
     title: Text(items[index]),
@@ -63,28 +77,34 @@ Flexible(child: Text('Flexible'))</code></pre></li>
 GridView.count(
   crossAxisCount: 2,
   children: items.map((item) => Card(child: Text(item))).toList(),
-)</code></pre></li>
-<li>Navigation<pre><code>Navigator.push(
+)</code></pre>
+      </li>
+      <li>Navigation
+        <pre><code>Navigator.push(
   context,
   MaterialPageRoute(builder: (context) => SecondScreen()),
 );
 
-Navigator.pop(context); // Go back</code></pre></li>
-</ul>
-</details>
+Navigator.pop(context); // Go back</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🎨 Styling & Themes</summary>
-<ul>
-<li>Theme<pre><code>MaterialApp(
+  <details>
+    <summary>🎨 Styling & Themes</summary>
+    <ul>
+      <li>Theme
+        <pre><code>MaterialApp(
   theme: ThemeData(
     primarySwatch: Colors.indigo,
     textTheme: TextTheme(
       headlineMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
     ),
   ),
-)</code></pre></li>
-<li>Custom Button<pre><code>ElevatedButton(
+)</code></pre>
+      </li>
+      <li>Custom Button
+        <pre><code>ElevatedButton(
   style: ElevatedButton.styleFrom(
     backgroundColor: Colors.orange,
     foregroundColor: Colors.white,
@@ -93,8 +113,10 @@ Navigator.pop(context); // Go back</code></pre></li>
   ),
   onPressed: () {},
   child: Text('Custom Button'),
-)</code></pre></li>
-<li>Box Decoration<pre><code>Container(
+)</code></pre>
+      </li>
+      <li>Box Decoration
+        <pre><code>Container(
   decoration: BoxDecoration(
     gradient: LinearGradient(colors: [Colors.blue, Colors.purple]),
     borderRadius: BorderRadius.circular(12),
@@ -102,14 +124,16 @@ Navigator.pop(context); // Go back</code></pre></li>
       BoxShadow(blurRadius: 8, color: Colors.black26),
     ],
   ),
-)</code></pre></li>
-</ul>
-</details>
+)</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📱 State Management</summary>
-<ul>
-<li>setState (Simple)<pre><code>class Counter extends StatefulWidget {
+  <details>
+    <summary>📱 State Management</summary>
+    <ul>
+      <li>setState (Simple)
+        <pre><code>class Counter extends StatefulWidget {
   @override
   _CounterState createState() => _CounterState();
 }
@@ -128,8 +152,10 @@ class _CounterState extends State<Counter> {
       child: Text('Count: $_count'),
     );
   }
-}</code></pre></li>
-<li>Provider (Recommended)<pre><code>// pubspec.yaml
+}</code></pre>
+      </li>
+      <li>Provider (Recommended)
+        <pre><code>// pubspec.yaml
 dependencies:
   provider: ^6.1.2
 
@@ -147,14 +173,16 @@ Consumer<Counter>(
   builder: (context, counter, child) {
     return Text('Count: ${counter.count}');
   },
-)</code></pre></li>
-</ul>
-</details>
+)</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🔥 Hot UI Components</summary>
-<ul>
-<li>Custom Card<pre><code>Card(
+  <details>
+    <summary>🔥 Hot UI Components</summary>
+    <ul>
+      <li>Custom Card
+        <pre><code>Card(
   elevation: 8,
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
   child: Container(
@@ -171,8 +199,10 @@ Consumer<Counter>(
       ],
     ),
   ),
-)</code></pre></li>
-<li>Animated Container<pre><code>AnimatedContainer(
+)</code></pre>
+      </li>
+      <li>Animated Container
+        <pre><code>AnimatedContainer(
   duration: Duration(milliseconds: 300),
   width: _isExpanded ? 200 : 100,
   height: _isExpanded ? 200 : 100,
@@ -180,14 +210,16 @@ Consumer<Counter>(
   child: GestureDetector(
     onTap: () => setState(() => _isExpanded = !_isExpanded),
   ),
-)</code></pre></li>
-</ul>
-</details>
+)</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📦 Packages & Tools</summary>
-<ul>
-<li>Popular Packages<pre><code># pubspec.yaml
+  <details>
+    <summary>📦 Packages & Tools</summary>
+    <ul>
+      <li>Popular Packages
+        <pre><code># pubspec.yaml
 dependencies:
   http: ^1.2.1          # HTTP requests
   dio: ^5.7.0           # Advanced HTTP
@@ -196,21 +228,25 @@ dependencies:
   cached_network_image: ^3.4.1  # Image caching
   flutter_spinkit: ^5.2.1  # Loading animations
   lottie: ^3.1.2        # Animations
-  shared_preferences: ^2.3.2  # Local storage</code></pre></li>
-<li>CLI Commands<pre><code>flutter pub get          # Install packages
+  shared_preferences: ^2.3.2  # Local storage</code></pre>
+      </li>
+      <li>CLI Commands
+        <pre><code>flutter pub get          # Install packages
 flutter pub deps         # Dependency tree
 flutter analyze          # Lint check
 flutter format .         # Format all files
 flutter test             # Run tests
 flutter build apk        # Build APK
-flutter build ios        # Build iOS</code></pre></li>
-</ul>
-</details>
+flutter build ios        # Build iOS</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📱 Responsive & Platform</summary>
-<ul>
-<li>MediaQuery<pre><code>LayoutBuilder(
+  <details>
+    <summary>📱 Responsive & Platform</summary>
+    <ul>
+      <li>MediaQuery
+        <pre><code>LayoutBuilder(
   builder: (context, constraints) {
     if (constraints.maxWidth > 600) {
       return DesktopLayout();
@@ -220,21 +256,25 @@ flutter build ios        # Build iOS</code></pre></li>
 )
 
 MediaQuery.of(context).size.width  // Screen width
-MediaQuery.of(context).platformBrightness  // Light/Dark</code></pre></li>
-<li>Platform Check<pre><code>import 'dart:io';
+MediaQuery.of(context).platformBrightness  // Light/Dark</code></pre>
+      </li>
+      <li>Platform Check
+        <pre><code>import 'dart:io';
 
 if (Platform.isAndroid) {
   // Android specific
 } else if (Platform.isIOS) {
   // iOS specific
-}</code></pre></li>
-</ul>
-</details>
+}</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🚀 Advanced Patterns</summary>
-<ul>
-<li>FutureBuilder<pre><code>FutureBuilder<String>(
+  <details>
+    <summary>🚀 Advanced Patterns</summary>
+    <ul>
+      <li>FutureBuilder
+        <pre><code>FutureBuilder<String>(
   future: fetchUserData(),
   builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -245,15 +285,34 @@ if (Platform.isAndroid) {
     }
     return Text('User: ${snapshot.data}');
   },
-)</code></pre></li>
-<li>StreamBuilder<pre><code>StreamBuilder<int>(
+)</code></pre>
+      </li>
+      <li>StreamBuilder
+        <pre><code>StreamBuilder<int>(
   stream: counterStream,
   builder: (context, snapshot) {
     return Text('Count: ${snapshot.data ?? 0}');
   },
-)</code></pre></li>
-</ul>
-</details>
+)</code></pre>
+      </li>
+    </ul>
+  </details>
 
+  <!-- References Section -->
+  <section id="references">
+    <h2>References</h2>
+    <ul>
+      <li><a href="https://flutter.dev/docs" target="_blank">Flutter Documentation</a></li>
+      <li><a href="https://pub.dev/" target="_blank">Pub.dev (Packages)</a></li>
+    </ul>
+  </section>
+
+  <!-- Setup Section -->
+  <section id="setup">
+    <h2>Setup & Verification</h2>
+    <p>Run the doctor command to check your environment:</p>
+    <pre><code>flutter doctor</code></pre>
+  </section>
 </body>
+
 </html>

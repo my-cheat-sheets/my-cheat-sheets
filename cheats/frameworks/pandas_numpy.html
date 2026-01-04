@@ -2,19 +2,22 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>pandas & NumPy Complete Cheatsheet 2025</title>
+      <meta charset="UTF-8">
+      <title>pandas & NumPy Complete Cheatsheet 2025</title>
 </head>
 
 <body>
 
-  <h1>pandas & NumPy Complete Cheatsheet 2025</h1>
+      <h1>pandas & NumPy Complete Cheatsheet 2025</h1>
 
-  <details open>
-    <summary>NumPy - Complete Array Mastery</summary>
-    <ul>
-      <ol>Import<pre><code>import numpy as np</code></pre></ol>
-      <ol>Create (20+ ways)<pre><code>a = np.array([1,2,3])
+      <details open>
+            <summary>NumPy - Complete Array Mastery</summary>
+            <ul>
+                  <ol>Import
+                        <pre><code>import numpy as np</code></pre>
+                  </ol>
+                  <ol>Create (20+ ways)
+                        <pre><code>a = np.array([1,2,3])
 np.zeros((2,3))
 np.ones((2,3))
 np.full((2,3),7)
@@ -25,204 +28,302 @@ np.random.rand(3,3)
 np.random.randn(3,3)
 np.random.randint(0,10,5)
 np.eye(3)
-np.identity(3)</code></pre></ol>
-      <ol>Properties<pre><code>a.shape, a.dtype, a.ndim, a.size, a.itemsize</code></pre></ol>
-      <ol>Operations<pre><code>a * 2, a + b, a - b, a / b
+np.identity(3)</code></pre>
+                  </ol>
+                  <ol>Properties
+                        <pre><code>a.shape, a.dtype, a.ndim, a.size, a.itemsize</code></pre>
+                  </ol>
+                  <ol>Operations
+                        <pre><code>a * 2, a + b, a - b, a / b
 a @ b, np.dot(a,b)
-np.cross(a,b), np.outer(a,b)</code></pre></ol>
-      <ol>Indexing<pre><code>a[0], a[1:3], a[::-1]
+np.cross(a,b), np.outer(a,b)</code></pre>
+                  </ol>
+                  <ol>Indexing
+                        <pre><code>a[0], a[1:3], a[::-1]
 a[a>2], a[(a>1)&(a<4)]
 np.where(a>2,1,0)
-m[0,:], m[:,1], m[0,1]</code></pre></ol>
-      <ol>Reshape<pre><code>a.reshape(2,2), a.ravel()
+m[0,:], m[:,1], m[0,1]</code></pre>
+                  </ol>
+                  <ol>Reshape
+                        <pre><code>a.reshape(2,2), a.ravel()
 np.transpose(m), m.T
 np.concatenate([a,b],axis=0)
 np.vstack([a,b]), np.hstack([a,b])
-np.split(a,2), np.tile(a,2)</code></pre></ol>
-      <ol>Math/Stats<pre><code>np.sin(a), np.cos(a), np.exp(a)
+np.split(a,2), np.tile(a,2)</code></pre>
+                  </ol>
+                  <ol>Math/Stats
+                        <pre><code>np.sin(a), np.cos(a), np.exp(a)
 np.log(a), np.sqrt(a)
 np.sum(a,axis=0), np.mean(a), np.median(a)
 np.std(a), np.var(a), np.min(a), np.max(a)
 np.argmax(a), np.percentile(a,50)
-np.corrcoef(a,b), np.cov(a,b)</code></pre></ol>
-      <ol>Sort/Search<pre><code>np.sort(a), np.argsort(a)
+np.corrcoef(a,b), np.cov(a,b)</code></pre>
+                  </ol>
+                  <ol>Sort/Search
+                        <pre><code>np.sort(a), np.argsort(a)
 np.partition(a,2), np.unique(a,return_counts=True)
-np.searchsorted(a,5)</code></pre></ol>
-    </ul>
-  </details>
+np.searchsorted(a,5)</code></pre>
+                  </ol>
+            </ul>
+      </details>
 
-  <details>
-    <summary>pandas - Basic Creation & I/O</summary>
-    <ul>
-      <ol>Import/Create<pre><code>import pandas as pd
+      <details>
+            <summary>pandas - Basic Creation & I/O</summary>
+            <ul>
+                  <ol>Import/Create
+                        <pre><code>import pandas as pd
 df = pd.DataFrame({'A':[1,2],'B':[3,4]})
 s = pd.Series([1,2,3])
-df = pd.DataFrame(np.random.rand(5,3),columns=['A','B','C'])</code></pre></ol>
-      <ol>Read All Formats<pre><code>pd.read_csv('data.csv',nrows=1000,low_memory=False)
+df = pd.DataFrame(np.random.rand(5,3),columns=['A','B','C'])</code></pre>
+                  </ol>
+                  <ol>Read All Formats
+                        <pre><code>pd.read_csv('data.csv',nrows=1000,low_memory=False)
 pd.read_excel('data.xlsx',sheet_name='Sheet1')
 pd.read_json('data.json')
 pd.read_parquet('data.parquet')
 pd.read_feather('data.feather')
-pd.read_pickle('data.pkl')</code></pre></ol>
-      <ol>Write<pre><code>df.to_csv('out.csv',index=False)
+pd.read_pickle('data.pkl')</code></pre>
+                  </ol>
+                  <ol>Write
+                        <pre><code>df.to_csv('out.csv',index=False)
 df.to_parquet('out.parquet',compression='gzip')
-df.to_excel('out.xlsx',index=False)</code></pre></ol>
-      <ol>Inspect<pre><code>df.head(3), df.tail(3)
+df.to_excel('out.xlsx',index=False)</code></pre>
+                  </ol>
+                  <ol>Inspect
+                        <pre><code>df.head(3), df.tail(3)
 df.shape, df.info(memory_usage='deep')
 df.describe(percentiles=[.1,.5,.9])
-df.isnull().sum(), df.memory_usage(deep=True)</code></pre></ol>
-    </ul>
-  </details>
+df.isnull().sum(), df.memory_usage(deep=True)</code></pre>
+                  </ol>
+            </ul>
+      </details>
 
-  <details>
-    <summary>pandas - Selection & Cleaning</summary>
-    <ul>
-      <ol>Select Safe<pre><code>df['A'], df[['A','B']]
+      <details>
+            <summary>pandas - Selection & Cleaning</summary>
+            <ul>
+                  <ol>Select Safe
+                        <pre><code>df['A'], df[['A','B']]
 df.loc[0], df.iloc[0]
 df.loc[0:2,'A':'B'], df.iloc[0:2,0:2]
 df.query('A>1 & B<4')
-df.sample(5), df.nlargest(3,'A')</code></pre></ol>
-      <ol>Cleaning<pre><code>df.fillna(0), df.fillna(method='ffill')
+df.sample(5), df.nlargest(3,'A')</code></pre>
+                  </ol>
+                  <ol>Cleaning
+                        <pre><code>df.fillna(0), df.fillna(method='ffill')
 df.dropna(thresh=2), df.replace([1,2],np.nan)
 df.drop_duplicates(subset=['id'])
 pd.to_datetime(df.date,errors='coerce')
-df.drop('col',axis=1)</code></pre></ol>
-      <ol>Dtypes<pre><code>df.astype({'id':'string[pyarrow]','price':'float64[pyarrow]'})
+df.drop('col',axis=1)</code></pre>
+                  </ol>
+                  <ol>Dtypes
+                        <pre><code>df.astype({'id':'string[pyarrow]','price':'float64[pyarrow]'})
 df['cat'] = df['cat'].astype('category')
-pd.to_numeric(df.col,errors='coerce')</code></pre></ol>
-    </ul>
-  </details>
+pd.to_numeric(df.col,errors='coerce')</code></pre>
+                  </ol>
+            </ul>
+      </details>
 
-  <details>
-    <summary>pandas - GroupBy & Aggregation</summary>
-    <ul>
-      <ol>Basic GroupBy<pre><code>df.groupby('cat').size()
+      <details>
+            <summary>pandas - GroupBy & Aggregation</summary>
+            <ul>
+                  <ol>Basic GroupBy
+                        <pre><code>df.groupby('cat').size()
 df.groupby('cat')['sales'].sum()
-df.groupby('cat').agg({'sales':'sum','profit':'mean'})</code></pre></ol>
-      <ol>Multiple<pre><code>df.groupby(['cat','region']).agg({'sales':['sum','mean'],'profit':'max'})
-df.groupby('cat').agg(sales_sum=('sales','sum'),sales_mean=('sales','mean'))</code></pre></ol>
-      <ol>Transform/Filter<pre><code>df['rank'] = df.groupby('cat')['sales'].rank()
+df.groupby('cat').agg({'sales':'sum','profit':'mean'})</code></pre>
+                  </ol>
+                  <ol>Multiple
+                        <pre><code>df.groupby(['cat','region']).agg({'sales':['sum','mean'],'profit':'max'})
+df.groupby('cat').agg(sales_sum=('sales','sum'),sales_mean=('sales','mean'))</code></pre>
+                  </ol>
+                  <ol>Transform/Filter
+                        <pre><code>df['rank'] = df.groupby('cat')['sales'].rank()
 df['zscore'] = df.groupby('cat')['sales'].transform(lambda x:(x-x.mean())/x.std())
-df.groupby('cat').filter(lambda x: x['sales'].sum()>100)</code></pre></ol>
-    </ul>
-  </details>
+df.groupby('cat').filter(lambda x: x['sales'].sum()>100)</code></pre>
+                  </ol>
+            </ul>
+      </details>
 
-  <details>
-    <summary>pandas - Merge Join Pivot</summary>
-    <ul>
-      <ol>Merge Safe<pre><code>pd.merge(df1,df2,on='id',how='left',validate='1:m')
-pd.merge(df1,df2,left_on='a',right_on='b',suffixes=('_left','_right'))</code></pre></ol>
-      <ol>Join Concat<pre><code>df1.set_index('id').join(df2.set_index('id'),how='left')
+      <details>
+            <summary>pandas - Merge Join Pivot</summary>
+            <ul>
+                  <ol>Merge Safe
+                        <pre><code>pd.merge(df1,df2,on='id',how='left',validate='1:m')
+pd.merge(df1,df2,left_on='a',right_on='b',suffixes=('_left','_right'))</code></pre>
+                  </ol>
+                  <ol>Join Concat
+                        <pre><code>df1.set_index('id').join(df2.set_index('id'),how='left')
 pd.concat([df1,df2],ignore_index=True,axis=0)
-pd.concat({'left':df1,'right':df2},axis=1)</code></pre></ol>
-      <ol>Pivot<pre><code>df.pivot_table(values='sales',index='date',columns='product',aggfunc='sum',fill_value=0)
-df.pivot(index='id',columns='cat',values='val')</code></pre></ol>
-      <ol>Melt<pre><code>pd.melt(df,id_vars=['id'],value_vars=['A','B'])</code></pre></ol>
-    </ul>
-  </details>
+pd.concat({'left':df1,'right':df2},axis=1)</code></pre>
+                  </ol>
+                  <ol>Pivot
+                        <pre><code>df.pivot_table(values='sales',index='date',columns='product',aggfunc='sum',fill_value=0)
+df.pivot(index='id',columns='cat',values='val')</code></pre>
+                  </ol>
+                  <ol>Melt
+                        <pre><code>pd.melt(df,id_vars=['id'],value_vars=['A','B'])</code></pre>
+                  </ol>
+            </ul>
+      </details>
 
-  <details>
-    <summary>pandas - Strings Dates Apply</summary>
-    <ul>
-      <ol>Strings<pre><code>df.name.str.lower().str.strip()
+      <details>
+            <summary>pandas - Strings Dates Apply</summary>
+            <ul>
+                  <ol>Strings
+                        <pre><code>df.name.str.lower().str.strip()
 df.name.str.contains('A',regex=True)
 df.name.str.replace('old','new')
 df.name.str.extract(r'(\d+)')
-df.name.str.split('_',expand=True)</code></pre></ol>
-      <ol>Dates<pre><code>df.dt = pd.to_datetime(df.date)
+df.name.str.split('_',expand=True)</code></pre>
+                  </ol>
+                  <ol>Dates
+                        <pre><code>df.dt = pd.to_datetime(df.date)
 df.dt.dt.year, df.dt.dt.month
-df.set_index('dt').resample('M').sum()</code></pre></ol>
-      <ol>Avoid apply!<pre><code># BAD: df['new'] = df.col.apply(func)
+df.set_index('dt').resample('M').sum()</code></pre>
+                  </ol>
+                  <ol>Avoid apply!
+                        <pre><code># BAD: df['new'] = df.col.apply(func)
 # GOOD:
 df['cat'] = pd.cut(df.col,bins=5)
 df['bonus'] = np.where(df.sales>1000,100,0)
-df['rank'] = df.groupby('cat')['sales'].rank()</code></pre></ol>
-    </ul>
-  </details>
+df['rank'] = df.groupby('cat')['sales'].rank()</code></pre>
+                  </ol>
+            </ul>
+      </details>
 
-  <details>
-    <summary>pandas - Pro Performance</summary>
-    <ul>
-      <ol>MultiIndex<pre><code>arrays = [['A','A','B','B'],[1,2,1,2]]
+      <details>
+            <summary>pandas - Pro Performance</summary>
+            <ul>
+                  <ol>MultiIndex
+                        <pre><code>arrays = [['A','A','B','B'],[1,2,1,2]]
 idx = pd.MultiIndex.from_arrays(arrays)
 df = pd.DataFrame(np.random.randn(4,3),index=idx)
-df.loc['A'], df.xs('A',level=0)</code></pre></ol>
-      <ol>SQL<pre><code>from sqlalchemy import create_engine
+df.loc['A'], df.xs('A',level=0)</code></pre>
+                  </ol>
+                  <ol>SQL
+                        <pre><code>from sqlalchemy import create_engine
 engine = create_engine('sqlite:///db.db')
 df.to_sql('table',engine,if_exists='replace')
-pd.read_sql('SELECT * FROM table WHERE sales>100',engine)</code></pre></ol>
-      <ol>Memory<pre><code>df.info(memory_usage='deep')
+pd.read_sql('SELECT * FROM table WHERE sales>100',engine)</code></pre>
+                  </ol>
+                  <ol>Memory
+                        <pre><code>df.info(memory_usage='deep')
 df.select_dtypes(include=['object']).nunique()
-df['str'] = df['str'].astype('string[pyarrow]')</code></pre></ol>
-    </ul>
-  </details>
+df['str'] = df['str'].astype('string[pyarrow]')</code></pre>
+                  </ol>
+            </ul>
+      </details>
 
-  <details>
-    <summary>Edge Cases Pitfalls - MUST KNOW</summary>
-    <ul>
-      <ol>SettingWithCopyWarning<pre><code># WRONG
+      <details>
+            <summary>Edge Cases Pitfalls - MUST KNOW</summary>
+            <ul>
+                  <ol>SettingWithCopyWarning
+                        <pre><code># WRONG
 subset = df[df.x>0]; subset['y']=1
 # CORRECT
-df.loc[df.x>0,'y']=1</code></pre></ol>
-      <ol>Chained Assignment<pre><code># BAD
+df.loc[df.x>0,'y']=1</code></pre>
+                  </ol>
+                  <ol>Chained Assignment
+                        <pre><code># BAD
 df1 = df[df.x>0]; df2=df1[df1.y>0]
 # GOOD
-result = df[(df.x>0)&(df.y>0)]</code></pre></ol>
-      <ol>Index Alignment<pre><code># NaNs from misaligned
-df1.add(df2,fill_value=0)</code></pre></ol>
-      <ol>Memory Traps<pre><code># Check before scaling
-df.memory_usage(deep=True).sum() / 1024**2  # MB</code></pre></ol>
-      <ol>Merge Explosion<pre><code>pd.merge(...,validate='one_to_one')</code></pre></ol>
-    </ul>
-  </details>
+result = df[(df.x>0)&(df.y>0)]</code></pre>
+                  </ol>
+                  <ol>Index Alignment
+                        <pre><code># NaNs from misaligned
+df1.add(df2,fill_value=0)</code></pre>
+                  </ol>
+                  <ol>Memory Traps
+                        <pre><code># Check before scaling
+df.memory_usage(deep=True).sum() / 1024**2  # MB</code></pre>
+                  </ol>
+                  <ol>Merge Explosion
+                        <pre><code>pd.merge(...,validate='one_to_one')</code></pre>
+                  </ol>
+            </ul>
+      </details>
 
-  <details>
-    <summary>Pandas 3.0 Future Features</summary>
-    <ul>
-      <ol>Copy-on-Write default (2-5x faster)</ol>
-      <ol>PyArrow dtypes native everywhere</ol>
-      <ol>Third-party engines (Polars,DuckDB)</ol>
-      <ol>Consistent boolean indexing</ol>
-      <ol>Enhanced Styler API</ol>
-    </ul>
-  </details>
+      <details>
+            <summary>Pandas 3.0 Future Features</summary>
+            <ul>
+                  <ol>Copy-on-Write default (2-5x faster)</ol>
+                  <ol>PyArrow dtypes native everywhere</ol>
+                  <ol>Third-party engines (Polars,DuckDB)</ol>
+                  <ol>Consistent boolean indexing</ol>
+                  <ol>Enhanced Styler API</ol>
+            </ul>
+      </details>
 
-  <details>
-    <summary>Performance Benchmarks</summary>
-    <table border="1" style="border-collapse:collapse;">
-      <tr>
-        <th>Fast</th>
-        <th>Slow</th>
-        <th>Gain</th>
-      </tr>
-      <tr>
-        <td><pre><code>df.col*2</code></pre></td>
-        <td><pre><code>df.col.apply(lambda x:x*2)</code></pre></td>
-        <td>100x</td>
-      </tr>
-      <tr>
-        <td><pre><code>string[pyarrow]</code></pre></td>
-        <td><pre><code>object dtype</code></pre></td>
-        <td>70%</td>
-      </tr>
-      <tr>
-        <td><pre><code>groupby.agg</code></pre></td>
-        <td><pre><code>groupby.apply</code></pre></td>
-        <td>10x</td>
-      </tr>
-      <tr>
-        <td><pre><code>parquet</code></pre></td>
-        <td><pre><code>csv</code></pre></td>
-        <td>5x</td>
-      </tr>
-      <tr>
-        <td><pre><code>query()</code></pre></td>
-        <td><pre><code>boolean indexing</code></pre></td>
-        <td>2x</td>
-      </tr>
-    </table>
-  </details>
+      <details>
+            <summary>Performance Benchmarks</summary>
+            <table border="1" style="border-collapse:collapse;">
+                  <tr>
+                        <th>Fast</th>
+                        <th>Slow</th>
+                        <th>Gain</th>
+                  </tr>
+                  <tr>
+                        <td>
+                              <pre><code>df.col*2</code></pre>
+                        </td>
+                        <td>
+                              <pre><code>df.col.apply(lambda x:x*2)</code></pre>
+                        </td>
+                        <td>100x</td>
+                  </tr>
+                  <tr>
+                        <td>
+                              <pre><code>string[pyarrow]</code></pre>
+                        </td>
+                        <td>
+                              <pre><code>object dtype</code></pre>
+                        </td>
+                        <td>70%</td>
+                  </tr>
+                  <tr>
+                        <td>
+                              <pre><code>groupby.agg</code></pre>
+                        </td>
+                        <td>
+                              <pre><code>groupby.apply</code></pre>
+                        </td>
+                        <td>10x</td>
+                  </tr>
+                  <tr>
+                        <td>
+                              <pre><code>parquet</code></pre>
+                        </td>
+                        <td>
+                              <pre><code>csv</code></pre>
+                        </td>
+                        <td>5x</td>
+                  </tr>
+                  <tr>
+                        <td>
+                              <pre><code>query()</code></pre>
+                        </td>
+                        <td>
+                              <pre><code>boolean indexing</code></pre>
+                        </td>
+                        <td>2x</td>
+                  </tr>
+            </table>
+      </details>
 
+      <!-- References Section -->
+      <section id="references">
+            <h2>References</h2>
+            <ul>
+                  <li><a href="https://pandas.pydata.org/docs/" target="_blank">Pandas Documentation</a></li>
+                  <li><a href="https://numpy.org/doc/" target="_blank">NumPy Documentation</a></li>
+            </ul>
+      </section>
+
+      <!-- Setup Section -->
+      <section id="setup">
+            <h2>Setup & Verification</h2>
+            <p>Install via pip:</p>
+            <pre><code>pip install pandas numpy</code></pre>
+      </section>
 </body>
 
 </html>

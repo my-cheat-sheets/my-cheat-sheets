@@ -1,40 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>JavaScript Complete Cheatsheet 2025</title></head>
-<body>
-<h1>⚡ JavaScript Complete Cheatsheet 2025</h1>
 
-<details open>
-<summary>🚀 ES6+ Basics & Syntax</summary>
-<ul>
-<li>Variables & Const<pre><code>const name = 'John';
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript Complete Cheatsheet 2025</title>
+</head>
+
+<body>
+  <h1>⚡ JavaScript Complete Cheatsheet 2025</h1>
+
+  <details open>
+    <summary>🚀 ES6+ Basics & Syntax</summary>
+    <ul>
+      <li>Variables & Const
+        <pre><code>const name = 'John';
 let age = 30;
 var oldWay = 'avoid';
 
 const person = { name: 'Jane', age: 25 };
-const numbers = [1, 2, 3, 4, 5];</code></pre></li>
-<li>Arrow Functions<pre><code>const add = (a, b) => a + b;
+const numbers = [1, 2, 3, 4, 5];</code></pre>
+      </li>
+      <li>Arrow Functions
+        <pre><code>const add = (a, b) => a + b;
 const multiply = (a, b) => ({ result: a * b });
 const greet = name => `Hello ${name}`;
-const log = () => console.log('No args');</code></pre></li>
-<li>Template Literals<pre><code>const name = 'Alice';
+const log = () => console.log('No args');</code></pre>
+      </li>
+      <li>Template Literals
+        <pre><code>const name = 'Alice';
 const age = 28;
 const message = `Hello ${name}!
 You are ${age >= 18 ? 'adult' : 'minor'}`;
 
 const items = ['apple', 'banana'];
-const list = `Items: ${items.join(', ')}`;</code></pre></li>
-<li>Destructuring<pre><code>const { name, age } = { name: 'Bob', age: 35 };
+const list = `Items: ${items.join(', ')}`;</code></pre>
+      </li>
+      <li>Destructuring
+        <pre><code>const { name, age } = { name: 'Bob', age: 35 };
 const [first, second] = [1, 2, 3];
 const [x, , z] = [1, 2, 3]; // Skip middle
-const { x: x1, y: y1 } = { x: 10, y: 20 };</code></pre></li>
-</ul>
-</details>
+const { x: x1, y: y1 } = { x: 10, y: 20 };</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📦 Arrays - Modern Methods</summary>
-<ul>
-<li>Map, Filter, Reduce<pre><code>const numbers = [1, 2, 3, 4, 5];
+  <details>
+    <summary>📦 Arrays - Modern Methods</summary>
+    <ul>
+      <li>Map, Filter, Reduce
+        <pre><code>const numbers = [1, 2, 3, 4, 5];
 
 // Map - Transform
 const doubled = numbers.map(n => n * 2); // [2, 4, 6, 8, 10]
@@ -44,8 +58,10 @@ const evens = numbers.filter(n => n % 2 === 0); // [2, 4]
 
 // Reduce - Aggregate
 const sum = numbers.reduce((acc, n) => acc + n, 0); // 15
-const max = numbers.reduce((max, n) => Math.max(max, n), -Infinity);</code></pre></li>
-<li>Find, Some, Every<pre><code>const users = [{ id: 1, active: true }, { id: 2, active: false }];
+const max = numbers.reduce((max, n) => Math.max(max, n), -Infinity);</code></pre>
+      </li>
+      <li>Find, Some, Every
+        <pre><code>const users = [{ id: 1, active: true }, { id: 2, active: false }];
 
 // Find first match
 const activeUser = users.find(u => u.active); // { id: 1, active: true }
@@ -54,8 +70,10 @@ const activeUser = users.find(u => u.active); // { id: 1, active: true }
 const hasActive = users.some(u => u.active); // true
 
 // Check all
-const allActive = users.every(u => u.active); // false</code></pre></li>
-<li>Array Methods 2025<pre><code>const arr = [1, 2, 2, 3, 4];
+const allActive = users.every(u => u.active); // false</code></pre>
+      </li>
+      <li>Array Methods 2025
+        <pre><code>const arr = [1, 2, 2, 3, 4];
 
 // Unique
 const unique = [...new Set(arr)]; // [1, 2, 3, 4]
@@ -65,14 +83,16 @@ const nested = [[1, 2], [3, 4]];
 const flat = nested.flat(); // [1, 2, 3, 4]
 
 // FlatMap
-const result = nested.flatMap(x => x.map(n => n * 2)); // [2, 4, 6, 8]</code></pre></li>
-</ul>
-</details>
+const result = nested.flatMap(x => x.map(n => n * 2)); // [2, 4, 6, 8]</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🎯 Objects & JSON</summary>
-<ul>
-<li>Object Methods<pre><code>const user = { name: 'John', age: 30, city: 'NYC' };
+  <details>
+    <summary>🎯 Objects & JSON</summary>
+    <ul>
+      <li>Object Methods
+        <pre><code>const user = { name: 'John', age: 30, city: 'NYC' };
 
 // Keys, Values, Entries
 Object.keys(user);    // ['name', 'age', 'city']
@@ -84,28 +104,34 @@ const target = { ...user, country: 'USA' };
 
 // Clone
 const clone = { ...user };
-const deepClone = structuredClone(user);</code></pre></li>
-<li>Optional Chaining & Nullish<pre><code>const user = { profile: { name: 'John' } };
+const deepClone = structuredClone(user);</code></pre>
+      </li>
+      <li>Optional Chaining & Nullish
+        <pre><code>const user = { profile: { name: 'John' } };
 
 // Safe navigation
 const name = user?.profile?.name || 'Guest';
 
 // Nullish coalescing (better than ||)
 const value = user.setting ?? 'default'; // Only null/undefined
-const falsy = 0 ?? 'default'; // 0 (not falsy!)</code></pre></li>
-</ul>
-</details>
+const falsy = 0 ?? 'default'; // 0 (not falsy!)</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🔄 Async/Await & Promises</summary>
-<ul>
-<li>Promises<pre><code>const fetchUser = id => 
+  <details>
+    <summary>🔄 Async/Await & Promises</summary>
+    <ul>
+      <li>Promises
+        <pre><code>const fetchUser = id => 
   Promise.resolve({ id, name: `User ${id}` });
 
 fetchUser(1)
   .then(user => console.log(user.name))
-  .catch(err => console.error(err));</code></pre></li>
-<li>Async/Await<pre><code>async function getUsers() {
+  .catch(err => console.error(err));</code></pre>
+      </li>
+      <li>Async/Await
+        <pre><code>async function getUsers() {
   try {
     const response = await fetch('/api/users');
     const users = await response.json();
@@ -117,8 +143,10 @@ fetchUser(1)
 }
 
 // Usage
-const users = await getUsers();</code></pre></li>
-<li>Parallel & Race<pre><code>// All promises complete
+const users = await getUsers();</code></pre>
+      </li>
+      <li>Parallel & Race
+        <pre><code>// All promises complete
 const results = await Promise.all([
   fetchUser(1), fetchUser(2), fetchUser(3)
 ]);
@@ -127,14 +155,16 @@ const results = await Promise.all([
 const fastest = await Promise.any([promise1, promise2]);
 
 // First to fail
-const firstError = await Promise.any([promise1, promise2]);</code></pre></li>
-</ul>
-</details>
+const firstError = await Promise.any([promise1, promise2]);</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🏗️ Modules & Imports</summary>
-<ul>
-<li>ES Modules<pre><code>// Export
+  <details>
+    <summary>🏗️ Modules & Imports</summary>
+    <ul>
+      <li>ES Modules
+        <pre><code>// Export
 export const PI = 3.14;
 export function add(a, b) { return a + b; }
 export default class Circle { ... }
@@ -142,18 +172,22 @@ export default class Circle { ... }
 // Import
 import Circle, { PI, add } from './math.js';
 import * as MathUtils from './math.js';
-import { add as sum } from './math.js';</code></pre></li>
-<li>Dynamic Import<pre><code>button.onclick = async () => {
+import { add as sum } from './math.js';</code></pre>
+      </li>
+      <li>Dynamic Import
+        <pre><code>button.onclick = async () => {
   const { Chart } = await import('./chart.js');
   new Chart(canvas, config);
-};</code></pre></li>
-</ul>
-</details>
+};</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🌊 Modern APIs (2025)</summary>
-<ul>
-<li>Fetch API<pre><code>const response = await fetch('/api/users', {
+  <details>
+    <summary>🌊 Modern APIs (2025)</summary>
+    <ul>
+      <li>Fetch API
+        <pre><code>const response = await fetch('/api/users', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ name: 'John' })
@@ -162,8 +196,10 @@ import { add as sum } from './math.js';</code></pre></li>
 if (response.ok) {
   const data = await response.json();
   console.log(data);
-}</code></pre></li>
-<li>LocalStorage API<pre><code>// Set
+}</code></pre>
+      </li>
+      <li>LocalStorage API
+        <pre><code>// Set
 localStorage.setItem('theme', 'dark');
 localStorage.theme = 'dark'; // Shorthand
 
@@ -172,8 +208,10 @@ const theme = localStorage.getItem('theme') ?? 'light';
 
 // Remove
 localStorage.removeItem('theme');
-localStorage.clear();</code></pre></li>
-<li>Intersection Observer<pre><code>const observer = new IntersectionObserver((entries) => {
+localStorage.clear();</code></pre>
+      </li>
+      <li>Intersection Observer
+        <pre><code>const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.style.opacity = '1';
@@ -183,14 +221,16 @@ localStorage.clear();</code></pre></li>
 
 document.querySelectorAll('.fade-in').forEach(el => {
   observer.observe(el);
-});</code></pre></li>
-</ul>
-</details>
+});</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>⚙️ DOM Manipulation</summary>
-<ul>
-<li>Query & Create<pre><code>// Select
+  <details>
+    <summary>⚙️ DOM Manipulation</summary>
+    <ul>
+      <li>Query & Create
+        <pre><code>// Select
 document.querySelector('.item');
 document.querySelectorAll('.item');
 
@@ -202,8 +242,10 @@ div.innerHTML = '<strong>Bold</strong>';
 
 // Append
 document.body.appendChild(div);
-document.querySelector('.container').append(div);</code></pre></li>
-<li>Events<pre><code>button.addEventListener('click', (e) => {
+document.querySelector('.container').append(div);</code></pre>
+      </li>
+      <li>Events
+        <pre><code>button.addEventListener('click', (e) => {
   e.preventDefault();
   console.log('Clicked!');
 });
@@ -218,14 +260,16 @@ document.addEventListener('click', (e) => {
   if (e.target.matches('.delete')) {
     e.target.closest('.item').remove();
   }
-});</code></pre></li>
-</ul>
-</details>
+});</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🎯 Patterns & Utilities</summary>
-<ul>
-<li>Debounce<pre><code>function debounce(fn, delay) {
+  <details>
+    <summary>🎯 Patterns & Utilities</summary>
+    <ul>
+      <li>Debounce
+        <pre><code>function debounce(fn, delay) {
   let timeout;
   return (...args) => {
     clearTimeout(timeout);
@@ -237,8 +281,10 @@ const search = debounce((query) => {
   console.log('Searching:', query);
 }, 300);
 
-input.addEventListener('input', (e) => search(e.target.value));</code></pre></li>
-<li>Throttle<pre><code>function throttle(fn, limit) {
+input.addEventListener('input', (e) => search(e.target.value));</code></pre>
+      </li>
+      <li>Throttle
+        <pre><code>function throttle(fn, limit) {
   let inThrottle;
   return (...args) => {
     if (!inThrottle) {
@@ -247,38 +293,78 @@ input.addEventListener('input', (e) => search(e.target.value));</code></pre></li
       setTimeout(() => inThrottle = false, limit);
     }
   };
-}</code></pre></li>
-<li>Once<pre><code>function once(fn) {
+}</code></pre>
+      </li>
+      <li>Once
+        <pre><code>function once(fn) {
   let called = false;
   return (...args) => {
     if (called) return;
     called = true;
     return fn(...args);
   };
-}</code></pre></li>
-</ul>
-</details>
+}</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🔥 Top 10 One-Liners</summary>
-<ul>
-<li>Swap Variables<pre><code>[a, b] = [b, a];</code></pre></li>
-<li>Sum Array<pre><code>const sum = arr.reduce((a, b) => a + b, 0);</code></pre></li>
-<li>Deep Clone<pre><code>const clone = JSON.parse(JSON.stringify(obj));</code></pre></li>
-<li>Random ID<pre><code>const id = Math.random().toString(36).slice(2);</code></pre></li>
-<li>Chunk Array<pre><code>const chunks = arr.reduce((acc, _, i) => 
-  !(i % size) ? acc.push(arr.slice(i, i + size)) && acc : acc, []);</code></pre></li>
-<li>Current Year<pre><code>const year = new Date().getFullYear();</code></pre></li>
-<li>Check Type<pre><code>const isObject = obj => obj && typeof obj === 'object' && !Array.isArray(obj);</code></pre></li>
-<li>Flatten Array<pre><code>const flat = arr.flat(Infinity);</code></pre></li>
-<li>Group By<pre><code>const grouped = arr.reduce((acc, item) => {
+  <details>
+    <summary>🔥 Top 10 One-Liners</summary>
+    <ul>
+      <li>Swap Variables
+        <pre><code>[a, b] = [b, a];</code></pre>
+      </li>
+      <li>Sum Array
+        <pre><code>const sum = arr.reduce((a, b) => a + b, 0);</code></pre>
+      </li>
+      <li>Deep Clone
+        <pre><code>const clone = JSON.parse(JSON.stringify(obj));</code></pre>
+      </li>
+      <li>Random ID
+        <pre><code>const id = Math.random().toString(36).slice(2);</code></pre>
+      </li>
+      <li>Chunk Array
+        <pre><code>const chunks = arr.reduce((acc, _, i) => 
+  !(i % size) ? acc.push(arr.slice(i, i + size)) && acc : acc, []);</code></pre>
+      </li>
+      <li>Current Year
+        <pre><code>const year = new Date().getFullYear();</code></pre>
+      </li>
+      <li>Check Type
+        <pre><code>const isObject = obj => obj && typeof obj === 'object' && !Array.isArray(obj);</code></pre>
+      </li>
+      <li>Flatten Array
+        <pre><code>const flat = arr.flat(Infinity);</code></pre>
+      </li>
+      <li>Group By
+        <pre><code>const grouped = arr.reduce((acc, item) => {
   acc[item.category] = acc[item.category] ?? [];
   acc[item.category].push(item);
   return acc;
-}, {});</code></pre></li>
-<li>Wait Async<pre><code>const wait = ms => new Promise(r => setTimeout(r, ms));</code></pre></li>
-</ul>
-</details>
+}, {});</code></pre>
+      </li>
+      <li>Wait Async
+        <pre><code>const wait = ms => new Promise(r => setTimeout(r, ms));</code></pre>
+      </li>
+    </ul>
+  </details>
 
+  <!-- References Section -->
+  <section id="references">
+    <h2>References</h2>
+    <ul>
+      <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">MDN Web Docs -
+          JavaScript</a></li>
+      <li><a href="https://javascript.info/" target="_blank">The Modern JavaScript Tutorial</a></li>
+    </ul>
+  </section>
+
+  <!-- Setup Section -->
+  <section id="setup">
+    <h2>Setup & Verification</h2>
+    <p>JavaScript runs in the browser, but you can also run it with Node.js:</p>
+    <pre><code>node --version</code></pre>
+  </section>
 </body>
+
 </html>

@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Terraform Complete Cheatsheet 2025</title>
+</head>
+
+<body>
+  <h1>🏗️ Terraform Complete Cheatsheet 2025</h1>
+
+  <details open>
+    <summary>🚀 Terraform Basics & Setup</summary>
+    <ul>
+      <ol>Installation & Version<code>terraform version
+terraform -upgrade
+
+# macOS (Homebrew)
+brew install terraform
+
+# Windows (Chocolatey)
+choco install terraform
+
+# Linux
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install terraform</code></ol>
+      <ol>Initialize & Configure<code>terraform init                    # Initialize working directory
+terraform init -upgrade         # Upgrade provider plugins
+terraform init -backend=false   # Skip backend init
+terraform validate              # Validate syntax
+terraform fmt                   # Format .tf files
+terraform fmt -recursive        # Format all files recursively</code></ol>
+      <ol>Basic Workflow<code>terraform plan                   # Show planned changes
+terraform plan -out=tfplan      # Save plan to file
+terraform apply                 # Apply changes
+terraform apply tfplan          # Apply saved plan
+terraform destroy               # Destroy infrastructure
+terraform destroy -auto-approve # Destroy without confirmation</code></ol>
+      <ol>Debug & Inspection<code>terraform console               # Interactive console
+terraform state list            # List resources in state
+terraform state show resource   # Show resource details
+terraform output                # Show outputs
+terraform refresh               # Refresh state
+terraform graph                 # Show resource graph</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>📦 Provider Configuration</summary>
+    <ul>
+      <ol>Basic Provider<code>terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+provider "aws" {
+  region = "us-east-1"
+}</code></ol>
+      <ol>Multiple Providers<code>provider "aws" {
+  alias  = "us-east"
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "eu-west"
+  region = "eu-west-1"
+}
+
+# Use alias
+resource "aws_instance" "example" {
+  provider = aws.eu-west
+  # ...
+}</code></ol>
+      <ol>Provider Version Constraints<code"># Exact version
+          version = "5.0.0"
+
+          # Compatible with
+          version = "~> 5.0" # >= 5.0.0, < 6.0.0 version=">= 5.0" #>= 5.0.0
+            version = "<= 5.0" # <=5.0.0 version=">= 4.0, < 5.0" # Range # Multiple constraints
+              version=">= 4.5.0, < 5.0.0" </code>
+      </ol>
+      <ol>Common Providers<code># AWS
+provider "aws" { region = "us-east-1" }
+
+# Azure
+provider "azurerm" { features {} }
+
+# Google Cloud
+provider "google" { project = "my-project" }
+
+# Kubernetes
+provider "kubernetes" { config_path = "~/.kube/config" }
+
+# Helm
+provider "helm" { kubernetes = kubernetes_client_config }
+
+# Docker
+provider "docker" { host = "unix:///var/run/docker.sock" }</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>☁️ AWS & Databricks Integration</summary>
+    <ul>
+      <ol>AWS Provider Setup<code>terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    databricks = {
+      source  = "databricks/databricks"
+      version = "~> 1.0"
+    }
+  }
+}
+
+provider "aws" {
+  region = var.aws_region
+}
+
+provider "databricks" {
+  host       = databricks_mws_workspaces.example.deployment_name
+  username   = var.databricks_user
+  password   = var.databricks_password
+}</code></ol>
+      <ol>AWS S3 Bucket (Primary Storage)<code">resource "aws_s3_bucket" "data_lake" {
+          bucket = "my-databricks-data-lake-${data.aws_caller_identity.current.account_id}"
+
+          tags = {
+          Environment = var.environment
+          Owner = "data-engineering"
+          }
+          }
+
+          # Enable versioning
+          resource "aws_s3_bucket_versioning" "data_lake" {
+          bucket = aws_s3_bucket.data_lake.id
+          versioning_configuration {
+          status = "Enabled"
+          }
+          }
+
+          # Block public access
+          resource "aws_s3_bucket_public_access_block" "data_lake" {
+          bucket = aws_s3_bucket.data_lake.id
+          block_public_acls = true
+          block_public_policy = true
+          ignore_public_acls = true
+          restrict_public_buckets = true
+          }</code></ol>
+      <ol>Databricks Workspace & Cluster<code">resource "databricks_workspace" "example" {
+          workspace_name = "prod-analytics"
+          aws_region = var.aws_region
+          credentials_id = databricks_mws_credentials.example.credentials_id
+          storage_configuration_id = databricks_mws_storage_configuration.example.storage_configuration_id
+          network_id = databricks_mws_networks.example.network_id
+          }
+
+          resource "databricks_cluster" "analytical" {
+          cluster_name = "analytical-cluster"
+          spark_version = "13.3.x-scala2.12"
+          node_type_id = "i3.xlarge"
+          num_workers = 2
+          autotermination_minutes = 30
+
+          aws_attributes {
+          availability = "SPOT"
+          zone_id = "us-east-1a"
+          ebs_volume_type = "GENERAL_PURPOSE"
+          ebs_volume_size = 100
+          }
+          }</code></ol>
+      <ol>Databricks UC with AWS S3<code">resource "databricks_catalog" "data_engineering" {
+          name = "data_engineering"
+          comment = "Production data lake"
+          storage_root = "s3://${aws_s3_bucket.data_lake.bucket}/catalogs/"
+          owner = var.data_team_group
+          }
+
+          resource "databricks_schema" "raw_data" {
+          catalog_name = databricks_catalog.data_engineering.name
+          schema_name = "raw"
+          comment = "Raw data ingestion layer"
+          owner = var.data_team_group
+          }
+
+          resource "databricks_table" "events" {
+          catalog_name = databricks_catalog.data_engineering.name
+          schema_name = databricks_schema.raw_data.schema_name
+          name = "events"
+          table_type = "EXTERNAL"
+          data_source_format = "DELTA"
+          storage_location = "s3://${aws_s3_bucket.data_lake.bucket}/events/"
+          }</code></ol>
+      <ol>IAM Role for Databricks<code">resource "aws_iam_role" "databricks_role" {
+          name = "databricks-workspace-role"
+
+          assume_role_policy = jsonencode({
+          Version = "2012-10-17"
+          Statement = [
+          {
+          Effect = "Allow"
+          Principal = {
+          Service = "ec2.amazonaws.com"
+          }
+          Action = "sts:AssumeRole"
+          }
+          ]
+          })
+          }
+
+          resource "aws_iam_policy" "databricks_s3_access" {
+          name = "databricks-s3-access"
+
+          policy = jsonencode({
+          Version = "2012-10-17"
+          Statement = [
+          {
+          Effect = "Allow"
+          Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket"
+          ]
+          Resource = [
+          aws_s3_bucket.data_lake.arn,
+          "${aws_s3_bucket.data_lake.arn}/*"
+          ]
+          }
+          ]
+          })
+          }
+
+          resource "aws_iam_role_policy_attachment" "databricks_s3" {
+          role = aws_iam_role.databricks_role.name
+          policy_arn = aws_iam_policy.databricks_s3_access.arn
+          }</code></ol>
+      <ol>Databricks Job (ETL Pipeline)<code">resource "databricks_job" "etl_pipeline" {
+          name = "daily-etl-job"
+
+          spark_python_task {
+          python_file = "dbfs:/jobs/etl/process_data.py"
+          parameters = [
+          "s3://${aws_s3_bucket.data_lake.bucket}/raw/",
+          "s3://${aws_s3_bucket.data_lake.bucket}/processed/"
+          ]
+          }
+
+          new_cluster {
+          spark_version = "13.3.x-scala2.12"
+          node_type_id = "i3.xlarge"
+          num_workers = 2
+
+          aws_attributes {
+          availability = "SPOT"
+          }
+          }
+
+          schedule {
+          quartz_cron_expression = "0 0 * * * ?"
+          timezone_id = "UTC"
+          }
+
+          timeout_seconds = 3600
+          }</code></ol>
+      <ol>Databricks SQL Warehouse (BI/Analytics)<code">resource "databricks_sql_warehouse" "analytics" {
+          name = "prod-analytics-warehouse"
+          cluster_size = "Large"
+          max_num_clusters = 1
+          auto_stop_mins = 15
+          warehouse_type = "CLASSIC"
+          enable_photon = true
+
+          tags = {
+          Environment = "production"
+          Team = "analytics"
+          }
+          }
+
+          resource "databricks_sql_endpoint" "power_bi" {
+          name = "power-bi-endpoint"
+          warehouse_id = databricks_sql_warehouse.analytics.id
+          }</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>🔧 Resources & Data Sources</summary>
+    <ul>
+      <ol>Basic Resource<code>resource "aws_instance" "web" {
+  ami           = "ami-0c55b159cbfafe1f0"
+  instance_type = "t2.micro"
+  tags = {
+    Name = "my-instance"
+  }
+}
+
+# Access resource attributes
+output "instance_ip" {
+  value = aws_instance.web.public_ip
+}</code></ol>
+      <ol>Data Sources<code>data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"]
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+}
+
+# Use data source
+resource "aws_instance" "web" {
+  ami = data.aws_ami.ubuntu.id
+}</code></ol>
+      <ol>Resource Meta-Arguments<code>resource "aws_instance" "web" {
+  # Explicit dependencies
+  depends_on = [aws_security_group.web]
+
+  # For each (multiple instances)
+  for_each = {
+    web = "t2.micro"
+    db  = "t2.small"
+  }
+  instance_type = each.value
+
+  # Conditional creation
+  count = var.create_instance ? 1 : 0
+
+  # Lifecycle rules
+  lifecycle {
+    create_before_destroy = true
+    prevent_destroy       = false
+    ignore_changes        = [tags["Date"]]
+  }
+
+  # Provisioners (last resort)
+  provisioner "remote-exec" {
+    inline = ["echo hello"]
+  }
+}</code></ol>
+      <ol>Resource Targeting<code>terraform plan -target=aws_instance.web
+terraform apply -target=aws_instance.web
+terraform apply -target=module.networking
+terraform destroy -target=aws_security_group.web
+
+# Multiple targets
+terraform plan -target=resource1 -target=resource2</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>📝 Variables & Outputs</summary>
+    <ul>
+      <ol>Input Variables<code>variable "instance_type" {
+  description = "Type of instance to create"
+  type        = string
+  default     = "t2.micro"
+}
+
+variable "environment" {
+  type = string
+  validation {
+    condition     = contains(["dev", "prod"], var.environment)
+    error_message = "Environment must be dev or prod."
+  }
+}
+
+variable "tags" {
+  type = map(string)
+  default = {
+    Environment = "production"
+    Owner       = "terraform"
+  }
+}
+
+# Use variable
+instance_type = var.instance_type</code></ol>
+      <ol>Variable Types<code"># Primitives
+          type = string
+          type = number
+          type = bool
+
+          # Collections
+          type = list(string)
+          type = set(string)
+          type = map(string)
+          type = tuple([string, number, bool])
+
+          # Complex
+          type = object({
+          name = string
+          age = number
+          })
+
+          type = list(object({
+          name = string
+          port = number
+          }))</code></ol>
+      <ol>Output Values<code>output "instance_ip" {
+  description = "Public IP of the instance"
+  value       = aws_instance.web.public_ip
+}
+
+output "instance_id" {
+  value       = aws_instance.web.id
+  sensitive   = false
+  depends_on  = []
+}
+
+# Export for module
+output "server_config" {
+  value = {
+    id    = aws_instance.web.id
+    ip    = aws_instance.web.public_ip
+    dns   = aws_instance.web.public_dns
+  }
+}</code></ol>
+      <ol>Variable Files & CLI<code"># terraform.tfvars (auto-loaded)
+          instance_type = "t2.small"
+          environment = "staging"
+
+          # Custom .tfvars file
+          terraform apply -var-file="production.tfvars"
+
+          # CLI override
+          terraform apply -var="instance_type=t3.medium"
+          terraform apply -var="tags={Name=web,Env=prod}"
+
+          # Environment variables
+          export TF_VAR_instance_type="t2.small"
+          terraform apply</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>🔗 State Management</summary>
+    <ul>
+      <ol>Local State<code"># Default backend (local state)
+          terraform {
+          backend "local" {
+          path = "terraform.tfstate"
+          }
+          }
+
+          # Manual state operations
+          terraform state list
+          terraform state show aws_instance.web
+          terraform state mv aws_instance.old aws_instance.new
+          terraform state rm aws_instance.web</code></ol>
+      <ol>Remote State (S3)<code>terraform {
+  backend "s3" {
+    bucket         = "my-terraform-state"
+    key            = "prod/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "terraform-locks"
+  }
+}
+
+# Configure backend
+terraform init -backend-config="bucket=my-bucket"
+terraform init -reconfigure  # Change backend
+
+# Migrate state
+terraform state pull > terraform.tfstate
+terraform state push terraform.tfstate</code></ol>
+      <ol>State Locking (DynamoDB)<code">terraform {
+          backend "s3" {
+          bucket = "my-terraform-state"
+          key = "prod/terraform.tfstate"
+          region = "us-east-1"
+          dynamodb_table = "terraform-locks"
+          }
+          }
+
+          # Create DynamoDB table for locks
+          resource "aws_dynamodb_table" "terraform_locks" {
+          name = "terraform-locks"
+          billing_mode = "PAY_PER_REQUEST"
+          hash_key = "LockID"
+
+          attribute {
+          name = "LockID"
+          type = "S"
+          }
+          }</code></ol>
+      <ol>State Inspection & Management<code>terraform state list
+terraform state show module.vpc.aws_vpc.main
+terraform state pull                    # Download state
+terraform state push state.json         # Upload state
+terraform state rm aws_instance.web     # Remove from state
+terraform state mv old.resource new.resource
+
+# Backup & recovery
+terraform state pull > backup.json
+terraform state push backup.json</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>📦 Modules</summary>
+    <ul>
+      <ol>Module Structure<code"># Directory structure
+          modules/
+          vpc/
+          main.tf
+          variables.tf
+          outputs.tf
+          compute/
+          main.tf
+          variables.tf
+          outputs.tf
+
+          # Root module
+          main.tf
+          variables.tf
+          outputs.tf</code></ol>
+      <ol>Create & Use Modules<code"># Create module (vpc/main.tf)
+          resource "aws_vpc" "main" {
+          cidr_block = var.cidr_block
+          enable_dns_hostnames = true
+          }
+
+          # Create module (vpc/variables.tf)
+          variable "cidr_block" {
+          type = string
+          }
+
+          # Create module (vpc/outputs.tf)
+          output "vpc_id" {
+          value = aws_vpc.main.id
+          }
+
+          # Use module (main.tf)
+          module "vpc" {
+          source = "./modules/vpc"
+          cidr_block = "10.0.0.0/16"
+          }
+
+          output "vpc_id" {
+          value = module.vpc.vpc_id
+          }</code></ol>
+      <ol>Module Sources<code"># Local path
+          source = "./modules/vpc"
+          source = "../modules/vpc"
+
+          # Terraform Registry
+          source = "terraform-aws-modules/vpc/aws"
+          version = "~> 3.0"
+
+          # GitHub
+          source = "github.com/terraform-aws-modules/terraform-aws-vpc"
+          source = "git::https://github.com/example/terraform.git"
+
+          # HTTP
+          source = "https://example.com/modules/vpc.zip"
+
+          # S3
+          source = "s3::https://s3.amazonaws.com/my-bucket/vpc.zip"</code></ol>
+      <ol>Module Composition<code"># Module with submodules
+          main.tf
+          modules/
+          networking/
+          main.tf
+          modules/
+          vpc/
+          subnets/
+          nat/
+
+          # Use nested module
+          module "networking" {
+          source = "./modules/networking"
+
+          vpc_cidr = "10.0.0.0/16"
+          }</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>🎯 Loops & Conditionals</summary>
+    <ul>
+      <ol>For Each Loop<code"># For each with map
+          resource "aws_instance" "servers" {
+          for_each = var.servers
+          instance_type = each.value.type
+          ami = each.value.ami
+
+          tags = {
+          Name = each.key
+          }
+          }
+
+          # Variable
+          variable "servers" {
+          type = map(object({
+          type = string
+          ami = string
+          }))
+          default = {
+          web = { type = "t2.micro", ami = "ami-123" }
+          db = { type = "t2.small", ami = "ami-456" }
+          }
+          }
+
+          # Access outputs
+          output "server_ids" {
+          value = { for k, v in aws_instance.servers : k => v.id }
+          }</code></ol>
+      <ol>Count Loop<code"># Simple count
+          resource "aws_instance" "servers" {
+          count = var.server_count
+          instance_type = "t2.micro"
+
+          tags = {
+          Name = "server-${count.index + 1}"
+          }
+          }
+
+          variable "server_count" {
+          type = number
+          default = 3
+          }
+
+          # Access by index
+          output "first_server_id" {
+          value = aws_instance.servers[0].id
+          }</code></ol>
+      <ol>Conditionals<code"># Ternary operator
+          instance_type = var.environment == "prod" ? "t3.large" : "t2.micro"
+
+          # Conditional resource creation
+          resource "aws_instance" "web" {
+          count = var.create_instance ? 1 : 0
+          instance_type = "t2.micro"
+          }
+
+          # Conditional in outputs
+          output "instance_ip" {
+          value = var.create_instance ? aws_instance.web[0].public_ip : null
+          }
+
+          # If-else with splat
+          ami = var.use_custom_ami ? var.custom_ami : data.aws_ami.default[0].id</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>🔐 Sensitive Data & Secrets</summary>
+    <ul>
+      <ol>Sensitive Variables<code"># Mark as sensitive
+          variable "db_password" {
+          type = string
+          sensitive = true
+          }
+
+          # Sensitive output
+          output "db_password" {
+          value = aws_db_instance.main.password
+          sensitive = true
+          }
+
+          # Mask in logs
+          terraform output -raw db_password</code></ol>
+      <ol>AWS Secrets Manager<code"># Store secret
+          resource "aws_secretsmanager_secret" "db_password" {
+          name = "prod/db/password"
+          }
+
+          resource "aws_secretsmanager_secret_version" "db_password" {
+          secret_id = aws_secretsmanager_secret.db_password.id
+          secret_string = var.db_password
+          }
+
+          # Retrieve secret
+          data "aws_secretsmanager_secret_version" "db_password" {
+          secret_id = aws_secretsmanager_secret.db_password.id
+          }
+
+          # Use in resource
+          resource "aws_db_instance" "main" {
+          password = jsondecode(data.aws_secretsmanager_secret_version.db_password.secret_string)["password"]
+          }</code></ol>
+      <ol>Vault Integration<code"># Read from Vault
+          data "vault_generic_secret" "db_credentials" {
+          path = "secret/database"
+          }
+
+          resource "aws_db_instance" "main" {
+          username = data.vault_generic_secret.db_credentials.data["username"]
+          password = data.vault_generic_secret.db_credentials.data["password"]
+          }</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>🚀 Functions & Interpolation</summary>
+    <ul>
+      <ol>String Functions<code"># String concatenation
+          name = "${var.environment}-${var.app_name}"
+
+          # Functions
+          upper(var.name)
+          lower(var.name)
+          length(var.name)
+          startswith(var.name, "prod")
+          replace(var.name, "old", "new")
+          split(",", var.list_string)
+          join("-", var.list)</code></ol>
+      <ol>Collection Functions<code"># List operations
+          concat(var.list1, var.list2)
+          merge(var.map1, var.map2)
+          distinct(var.list)
+          sort(var.list)
+          reverse(var.list)
+          contains(var.list, "item")
+          index(var.list, "item")
+          keys(var.map)
+          values(var.map)
+
+          # List comprehension
+          [for item in var.items : upper(item.name)]
+          { for k, v in var.map : v.id => v.name }
+
+          # Splat syntax
+          aws_instance.servers[*].public_ip</code></ol>
+      <ol>Math Functions<code"># Math operations
+          max(1, 2, 3)
+          min(1, 2, 3)
+          ceil(4.3)
+          floor(4.9)
+          abs(-5)
+
+          # Range
+          range(3) # [0, 1, 2]
+          range(2, 5) # [2, 3, 4]
+          range(0, 10, 2) # [0, 2, 4, 6, 8]</code></ol>
+      <ol>Type Functions<code"># Type conversion
+          tostring(123)
+          tonumber("456")
+          tobool("true")
+          tolist([1, 2, 3])
+          tomap({a = 1, b = 2})
+          toset([1, 2, 2, 3]) # [1, 2, 3]
+
+          # Type checking
+          type(var.value) # Returns type
+          try(expression, default)</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>🔄 Provisioners & Local-exec</summary>
+    <ul>
+      <ol>Remote-exec<code"># Execute commands on remote resource
+          resource "aws_instance" "web" {
+          provisioner "remote-exec" {
+          inline = [
+          "sudo apt-get update",
+          "sudo apt-get install -y nginx",
+          "sudo systemctl start nginx"
+          ]
+
+          connection {
+          type = "ssh"
+          user = "ec2-user"
+          private_key = file("~/.ssh/id_rsa")
+          host = self.public_ip
+          }
+          }
+          }</code></ol>
+      <ol>File Provisioner<code"># Upload files to resource
+          resource "aws_instance" "web" {
+          provisioner "file" {
+          source = "local/path/app.conf"
+          destination = "/tmp/app.conf"
+
+          connection {
+          type = "ssh"
+          user = "ec2-user"
+          private_key = file("~/.ssh/id_rsa")
+          host = self.public_ip
+          }
+          }
+          }</code></ol>
+      <ol>Local-exec<code"># Execute on local machine
+          resource "aws_instance" "web" {
+          provisioner "local-exec" {
+          command = "echo ${self.public_ip} > instance_ip.txt"
+          }
+
+          provisioner "local-exec" {
+          command = "python deploy.py"
+          on_failure = continue
+          }
+          }</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>🧪 Testing & Validation</summary>
+    <ul>
+      <ol>Validation<code">terraform validate # Syntax validation
+          terraform fmt -check -recursive # Check formatting
+          terraform plan -out=tfplan # Show plan
+
+          # Custom validation
+          variable "environment" {
+          type = string
+
+          validation {
+          condition = contains(["dev", "staging", "prod"], var.environment)
+          error_message = "Environment must be dev, staging, or prod."
+          }
+          }</code></ol>
+      <ol>Terraform Test<code"># Create test file (tests/example_test.tf)
+          run "example_test" {
+          command = plan
+
+          variables {
+          environment = "dev"
+          }
+
+          assert {
+          condition = aws_instance.web.instance_type == "t2.micro"
+          error_message = "Instance type should be t2.micro"
+          }
+          }
+
+          # Run tests
+          terraform test</code></ol>
+      <ol>Debugging<code">export TF_LOG=DEBUG
+          export TF_LOG_PATH=terraform.log
+          terraform plan
+
+          # Trace level
+          export TF_LOG=TRACE
+
+          # Disable log
+          unset TF_LOG
+          unset TF_LOG_PATH</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>📊 Advanced Patterns</summary>
+    <ul>
+      <ol>Dynamic Blocks<code"># Generate multiple blocks
+          resource "aws_security_group" "web" {
+          dynamic "ingress" {
+          for_each = var.ingress_rules
+          content {
+          from_port = ingress.value.from_port
+          to_port = ingress.value.to_port
+          protocol = ingress.value.protocol
+          cidr_blocks = ingress.value.cidr_blocks
+          }
+          }
+          }
+
+          variable "ingress_rules" {
+          type = list(object({
+          from_port = number
+          to_port = number
+          protocol = string
+          cidr_blocks = list(string)
+          }))
+          }</code></ol>
+      <ol>Terraform Workspaces<code">terraform workspace list
+          terraform workspace new production
+          terraform workspace select production
+          terraform workspace delete staging
+
+          # Use workspace in configuration
+          tags = {
+          Environment = terraform.workspace
+          }
+
+          # Map workspace to variable
+          var.instance_count = terraform.workspace == "prod" ? 5 : 1</code></ol>
+      <ol>Null Resource & Triggers<code"># Run provisioner on condition change
+          resource "null_resource" "cluster" {
+          triggers = {
+          cluster_instance_ids = join(",", aws_instance.cluster[*].id)
+          }
+
+          provisioner "local-exec" {
+          command = "aws elasticache create-cache-cluster ..."
+          }
+          }
+
+          # Always run
+          resource "null_resource" "always" {
+          provisioner "local-exec" {
+          command = "date >> timestamps.txt"
+          }
+
+          triggers = {
+          deployment_id = aws_instance.web.id
+          }
+          }</code></ol>
+      <ol>Data Type Transformations<code"># Complex transformation
+          locals {
+          server_config = {
+          for name, config in var.servers : name => {
+          instance_type = config.type
+          ami = data.aws_ami.selected.id
+          tags = {
+          Name = name
+          Env = var.environment
+          }
+          }
+          }
+          }
+
+          # Use transformed data
+          resource "aws_instance" "servers" {
+          for_each = local.server_config
+          instance_type = each.value.instance_type
+          ami = each.value.ami
+          tags = each.value.tags
+          }</code></ol>
+    </ul>
+  </details>
+
+  <details>
+    <summary>🛠️ Workflow & Best Practices</summary>
+    <ul>
+      <ol>Standard Directory Structure<code">.
+          ├── main.tf # Main configuration
+          ├── variables.tf # Input variables
+          ├── outputs.tf # Output values
+          ├── terraform.tfvars # Variable values
+          ├── terraform.tf # Terraform block & backend
+          ├── locals.tf # Local values
+          ├── .gitignore # Git ignore
+          ├── .terraform.lock.hcl # Dependency lock file
+          ├── modules/
+          │ ├── vpc/
+          │ │ ├── main.tf
+          │ │ ├── variables.tf
+          │ │ └── outputs.tf
+          │ └── compute/
+          └── environments/
+          ├── dev/
+          │ ├── terraform.tfvars
+          │ └── main.tf
+          └── prod/
+          ├── terraform.tfvars
+          └── main.tf</code></ol>
+      <ol>CI/CD Pipeline<code"># GitHub Actions example
+          name: Terraform
+          on: [push, pull_request]
+
+          jobs:
+          terraform:
+          runs-on: ubuntu-latest
+          steps:
+          - uses: actions/checkout@v3
+          - uses: hashicorp/setup-terraform@v2
+
+          - run: terraform init
+          - run: terraform plan -out=tfplan
+          - run: terraform apply tfplan</code></ol>
+      <ol>Common Commands<code">terraform init # Initialize
+          terraform validate # Validate syntax
+          terraform fmt # Format code
+          terraform plan # Show changes
+          terraform apply # Apply changes
+          terraform destroy # Destroy resources
+          terraform taint resource # Mark for recreation
+          terraform untaint resource # Unmark
+          terraform import type.name id # Import existing resource
+          terraform refresh # Sync state</code></ol>
+    </ul>
+  </details>
+
+  <!-- References Section -->
+  <section id="references">
+    <h2>References</h2>
+    <ul>
+      <li><a href="https://developer.hashicorp.com/terraform/docs" target="_blank">Terraform Documentation</a></li>
+    </ul>
+  </section>
+
+  <!-- Setup Section -->
+  <section id="setup">
+    <h2>Setup & Verification</h2>
+    <p>Check if Terraform is installed:</p>
+    <pre><code>terraform --version</code></pre>
+  </section>
+</body>
+
+</html>

@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>DuckDB Complete Cheatsheet 2025</title></head>
-<body>
-<h1>🦆 DuckDB Complete Cheatsheet 2025</h1>
 
-<details open>
-<summary>🚀 Install & Connect</summary>
-<ul>
-<li>Python Install & Connect<pre><code>pip install duckdb
+<head>
+  <meta charset="UTF-8">
+  <title>DuckDB Complete Cheatsheet 2025</title>
+</head>
+
+<body>
+  <h1>🦆 DuckDB Complete Cheatsheet 2025</h1>
+
+  <details open>
+    <summary>🚀 Install & Connect</summary>
+    <ul>
+      <li>Python Install & Connect
+        <pre><code>pip install duckdb
 
 import duckdb
 
@@ -15,22 +21,26 @@ import duckdb
 con = duckdb.connect()
 
 # File-based database
-con = duckdb.connect("mydb.duckdb")</code></pre></li>
-<li>CLI & SQL Shell<pre><code># Install via package manager (Linux/macOS)
+con = duckdb.connect("mydb.duckdb")</code></pre>
+      </li>
+      <li>CLI & SQL Shell
+        <pre><code># Install via package manager (Linux/macOS)
 brew install duckdb        # macOS
 sudo apt install duckdb    # Debian/Ubuntu
 
 # Start interactive shell
 duckdb
 .open mydb.duckdb
-SELECT 1 + 1;</code></pre></li>
-</ul>
-</details>
+SELECT 1 + 1;</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📁 Tables & Basic SQL</summary>
-<ul>
-<li>Create & Insert<pre><code>-- Create table
+  <details>
+    <summary>📁 Tables & Basic SQL</summary>
+    <ul>
+      <li>Create & Insert
+        <pre><code>-- Create table
 CREATE TABLE users (
   id      INTEGER,
   name    VARCHAR,
@@ -41,8 +51,10 @@ CREATE TABLE users (
 -- Insert rows
 INSERT INTO users VALUES
   (1, 'Alice', 30, TRUE),
-  (2, 'Bob',   25, FALSE);</code></pre></li>
-<li>Select & Filter<pre><code>SELECT * FROM users;
+  (2, 'Bob',   25, FALSE);</code></pre>
+      </li>
+      <li>Select & Filter
+        <pre><code>SELECT * FROM users;
 
 SELECT name, age
 FROM users
@@ -52,35 +64,41 @@ ORDER BY age DESC;
 SELECT COUNT(*) AS total,
        AVG(age) AS avg_age
 FROM users
-WHERE active = TRUE;</code></pre></li>
-</ul>
-</details>
+WHERE active = TRUE;</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📄 CSV / Parquet / JSON</summary>
-<ul>
-<li>Read Files Directly<pre><code>-- CSV
+  <details>
+    <summary>📄 CSV / Parquet / JSON</summary>
+    <ul>
+      <li>Read Files Directly
+        <pre><code>-- CSV
 SELECT * FROM 'data/users.csv';
 
 -- Parquet
 SELECT * FROM 'data/events.parquet';
 
 -- JSON (auto)
-SELECT * FROM read_json_auto('data/logs.json');</code></pre></li>
-<li>Write Files<pre><code>-- To Parquet
+SELECT * FROM read_json_auto('data/logs.json');</code></pre>
+      </li>
+      <li>Write Files
+        <pre><code>-- To Parquet
 COPY (SELECT * FROM users)
 TO 'out/users.parquet' (FORMAT PARQUET);
 
 -- To CSV
 COPY (SELECT * FROM users)
-TO 'out/users.csv' (HEADER, DELIMITER ',');</code></pre></li>
-</ul>
-</details>
+TO 'out/users.csv' (HEADER, DELIMITER ',');</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🧪 Pandas & Python Integration</summary>
-<ul>
-<li>Query to Pandas<pre><code>import duckdb, pandas as pd
+  <details>
+    <summary>🧪 Pandas & Python Integration</summary>
+    <ul>
+      <li>Query to Pandas
+        <pre><code>import duckdb, pandas as pd
 
 con = duckdb.connect()
 
@@ -90,8 +108,10 @@ df = con.execute("""
   WHERE age &gt; 25
 """).df()
 
-print(df.head())</code></pre></li>
-<li>Pandas DataFrame as Table<pre><code>df = pd.DataFrame({
+print(df.head())</code></pre>
+      </li>
+      <li>Pandas DataFrame as Table
+        <pre><code>df = pd.DataFrame({
   "id": [1, 2],
   "name": ["Alice", "Bob"],
   "age": [30, 25],
@@ -104,22 +124,26 @@ result = con.execute("""
   SELECT name, age
   FROM users_df
   WHERE age &gt;= 25
-""").df()</code></pre></li>
-</ul>
-</details>
+""").df()</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📊 Aggregations & Window Functions</summary>
-<ul>
-<li>Group By<pre><code>SELECT
+  <details>
+    <summary>📊 Aggregations & Window Functions</summary>
+    <ul>
+      <li>Group By
+        <pre><code>SELECT
   country,
   COUNT(*)      AS user_count,
   AVG(age)      AS avg_age,
   SUM(spend)    AS total_spend
 FROM users
 GROUP BY country
-ORDER BY total_spend DESC;</code></pre></li>
-<li>Window Functions<pre><code>SELECT
+ORDER BY total_spend DESC;</code></pre>
+      </li>
+      <li>Window Functions
+        <pre><code>SELECT
   user_id,
   spend,
   SUM(spend) OVER (
@@ -134,14 +158,16 @@ SELECT
   user_id,
   spend,
   ROW_NUMBER() OVER (PARTITION BY country ORDER BY spend DESC) AS rn
-FROM users;</code></pre></li>
-</ul>
-</details>
+FROM users;</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🔗 Joins & CTEs</summary>
-<ul>
-<li>Joins<pre><code>SELECT
+  <details>
+    <summary>🔗 Joins & CTEs</summary>
+    <ul>
+      <li>Joins
+        <pre><code>SELECT
   u.id,
   u.name,
   o.order_id,
@@ -154,8 +180,10 @@ JOIN orders o
 SELECT *
 FROM users u
 LEFT JOIN orders o
-  ON u.id = o.user_id;</code></pre></li>
-<li>CTEs (WITH)<pre><code>WITH big_spenders AS (
+  ON u.id = o.user_id;</code></pre>
+      </li>
+      <li>CTEs (WITH)
+        <pre><code>WITH big_spenders AS (
   SELECT user_id, SUM(amount) AS total
   FROM orders
   GROUP BY user_id
@@ -163,59 +191,73 @@ LEFT JOIN orders o
 )
 SELECT u.name, b.total
 FROM big_spenders b
-JOIN users u ON u.id = b.user_id;</code></pre></li>
-</ul>
-</details>
+JOIN users u ON u.id = b.user_id;</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🌐 HTTP / S3 / Remote Data</summary>
-<ul>
-<li>Enable HTTPFS<pre><code>INSTALL httpfs;
+  <details>
+    <summary>🌐 HTTP / S3 / Remote Data</summary>
+    <ul>
+      <li>Enable HTTPFS
+        <pre><code>INSTALL httpfs;
 LOAD httpfs;
 
 -- HTTP/HTTPS Parquet
 SELECT *
 FROM 'https://example.com/data/events.parquet'
-LIMIT 100;</code></pre></li>
-<li>Query S3 / Cloud Storage<pre><code>SET s3_region = 'us-east-1';
+LIMIT 100;</code></pre>
+      </li>
+      <li>Query S3 / Cloud Storage
+        <pre><code>SET s3_region = 'us-east-1';
 SET s3_access_key_id = 'YOUR_KEY';
 SET s3_secret_access_key = 'YOUR_SECRET';
 
 SELECT *
 FROM 's3://bucket/path/data_*.parquet'
-WHERE event_date &gt;= '2025-01-01';</code></pre></li>
-</ul>
-</details>
+WHERE event_date &gt;= '2025-01-01';</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🧠 Views, Temp Tables & Caching</summary>
-<ul>
-<li>Views<pre><code>CREATE VIEW active_users AS
+  <details>
+    <summary>🧠 Views, Temp Tables & Caching</summary>
+    <ul>
+      <li>Views
+        <pre><code>CREATE VIEW active_users AS
 SELECT *
 FROM users
 WHERE active = TRUE;
 
-SELECT * FROM active_users;</code></pre></li>
-<li>Temporary Tables<pre><code>CREATE TEMP TABLE tmp_users AS
+SELECT * FROM active_users;</code></pre>
+      </li>
+      <li>Temporary Tables
+        <pre><code>CREATE TEMP TABLE tmp_users AS
 SELECT *
 FROM users
 WHERE country = 'US';
 
-SELECT COUNT(*) FROM tmp_users;</code></pre></li>
-<li>Persistent DB File<pre><code>-- Connect once with file
+SELECT COUNT(*) FROM tmp_users;</code></pre>
+      </li>
+      <li>Persistent DB File
+        <pre><code>-- Connect once with file
 con = duckdb.connect("analytics.duckdb")
 
 -- Tables now persisted inside the file
-CREATE TABLE events AS SELECT * FROM 'events.parquet';</code></pre></li>
-</ul>
-</details>
+CREATE TABLE events AS SELECT * FROM 'events.parquet';</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>📐 Types, Casting & Date/Time</summary>
-<ul>
-<li>Common Types<pre><code>INTEGER, BIGINT, DOUBLE, BOOLEAN,
-VARCHAR, DATE, TIMESTAMP, INTERVAL</code></pre></li>
-<li>Casting & Date Functions<pre><code>SELECT
+  <details>
+    <summary>📐 Types, Casting & Date/Time</summary>
+    <ul>
+      <li>Common Types
+        <pre><code>INTEGER, BIGINT, DOUBLE, BOOLEAN,
+VARCHAR, DATE, TIMESTAMP, INTERVAL</code></pre>
+      </li>
+      <li>Casting & Date Functions
+        <pre><code>SELECT
   CAST('2025-01-01' AS DATE)         AS d,
   CAST('2025-01-01 12:00' AS TIMESTAMP) AS ts,
   DATE_TRUNC('month', ts)            AS month,
@@ -224,21 +266,25 @@ VARCHAR, DATE, TIMESTAMP, INTERVAL</code></pre></li>
 SELECT
   strftime(ts, '%Y-%m-%d') AS day_str,
   date_part('year', ts)    AS year,
-  date_part('month', ts)   AS month;</code></pre></li>
-</ul>
-</details>
+  date_part('month', ts)   AS month;</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🧩 Extensions (JSON, Spatial, FTS)</summary>
-<ul>
-<li>JSON Extension<pre><code>INSTALL json;
+  <details>
+    <summary>🧩 Extensions (JSON, Spatial, FTS)</summary>
+    <ul>
+      <li>JSON Extension
+        <pre><code>INSTALL json;
 LOAD json;
 
 SELECT
   json_extract(json_col, '$.user.name')       AS name,
   json_extract_int(json_col, '$.metrics.age') AS age
-FROM logs;</code></pre></li>
-<li>Spatial (GIS)<pre><code>INSTALL spatial;
+FROM logs;</code></pre>
+      </li>
+      <li>Spatial (GIS)
+        <pre><code>INSTALL spatial;
 LOAD spatial;
 
 SELECT
@@ -248,8 +294,10 @@ SELECT
   ) AS distance
 FROM locations
 ORDER BY distance
-LIMIT 10;</code></pre></li>
-<li>Full Text Search (FTS)<pre><code>INSTALL fts;
+LIMIT 10;</code></pre>
+      </li>
+      <li>Full Text Search (FTS)
+        <pre><code>INSTALL fts;
 LOAD fts;
 
 CREATE VIRTUAL TABLE docs USING fts5(content);
@@ -260,41 +308,65 @@ INSERT INTO docs VALUES
 
 SELECT *
 FROM docs
-WHERE docs MATCH 'DuckDB';</code></pre></li>
-</ul>
-</details>
+WHERE docs MATCH 'DuckDB';</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>⚙️ PRAGMAs & Performance</summary>
-<ul>
-<li>Config & Threads<pre><code>PRAGMA threads=4;
+  <details>
+    <summary>⚙️ PRAGMAs & Performance</summary>
+    <ul>
+      <li>Config & Threads
+        <pre><code>PRAGMA threads=4;
 PRAGMA memory_limit='4GB';
 
 -- Show all settings
-PRAGMA show;</code></pre></li>
-<li>Explain & Analyze<pre><code>EXPLAIN SELECT * FROM users WHERE age &gt; 30;
+PRAGMA show;</code></pre>
+      </li>
+      <li>Explain & Analyze
+        <pre><code>EXPLAIN SELECT * FROM users WHERE age &gt; 30;
 
 EXPLAIN ANALYZE
 SELECT country, COUNT(*)
 FROM users
-GROUP BY country;</code></pre></li>
-</ul>
-</details>
+GROUP BY country;</code></pre>
+      </li>
+    </ul>
+  </details>
 
-<details>
-<summary>🔁 DuckDB from CLI (Quick Tasks)</summary>
-<ul>
-<li>Run SQL on a File<pre><code># CSV → Parquet from CLI
+  <details>
+    <summary>🔁 DuckDB from CLI (Quick Tasks)</summary>
+    <ul>
+      <li>Run SQL on a File
+        <pre><code># CSV → Parquet from CLI
 duckdb -c "
   COPY (SELECT * FROM 'data.csv')
   TO 'data.parquet' (FORMAT PARQUET);
-"</code></pre></li>
-<li>Interactive Queries<pre><code>duckdb mydb.duckdb
+"</code></pre>
+      </li>
+      <li>Interactive Queries
+        <pre><code>duckdb mydb.duckdb
 D .schema;
 D .tables;
-SELECT * FROM users LIMIT 10;</code></pre></li>
-</ul>
-</details>
+SELECT * FROM users LIMIT 10;</code></pre>
+      </li>
+    </ul>
+  </details>
 
+  <!-- References Section -->
+  <section id="references">
+    <h2>References</h2>
+    <ul>
+      <li><a href="https://duckdb.org/docs/" target="_blank">DuckDB Documentation</a></li>
+    </ul>
+  </section>
+
+  <!-- Setup Section -->
+  <section id="setup">
+    <h2>Setup & Verification</h2>
+    <p>Install via pip or use the CLI:</p>
+    <pre><code>pip install duckdb</code></pre>
+  </section>
 </body>
+
 </html>
