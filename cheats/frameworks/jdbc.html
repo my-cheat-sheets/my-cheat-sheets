@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JDBC Cheatsheet</title>
+</head>
+
+<body>
+    <h1>JDBC Cheatsheet</h1>
+
+    <section id="basics">
+        <h2>Basics</h2>
+        <ul>
+            <ol><strong>Connection Strings</strong>
+                <pre><code class="language-java">
+// MySQL
+String url = "jdbc:mysql://localhost:3306/db_name";
+
+// PostgreSQL
+String url = "jdbc:postgresql://localhost:5432/db_name";
+
+// Oracle
+String url = "jdbc:oracle:thin:@//localhost:1521/service_name";
+
+// SQL Server
+String url = "jdbc:sqlserver://localhost:1433;databaseName=db_name";
+                </code></pre>
+            </ol>
+            <ol><strong>Loading Driver & Connecting</strong>
+                <pre><code class="language-java">
+// Modern JDBC (4.0+) automatically loads drivers from classpath
+// Old way: Class.forName("com.mysql.cj.jdbc.Driver");
+
+try (Connection conn = DriverManager.getConnection(url, "user", "pass")) {
+    System.out.println("Connected!");
+} catch (SQLException e) {
+    e.printStackTrace();
+}
+                </code></pre>
+            </ol>
+            <ol><strong>Statement vs PreparedStatement</strong>
+                <pre><code class="language-java">
+// Statement (Avoid for user input - SQL Injection risk)
+Statement stmt = conn.createStatement();
+ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+
+// PreparedStatement (Safe, compiled, faster)
+String sql = "SELECT * FROM users WHERE id = ?";
+PreparedStatement pstmt = conn.prepareStatement(sql);
+pstmt.setInt(1, 101);
+ResultSet rs = pstmt.executeQuery();
+                </code></pre>
+            </ol>
+            <ol><strong>Execute Operations</strong>
+                <pre><code class="language-java">
+// Reading data
+ResultSet rs = pstmt.executeQuery();
+
+// Insert/Update/Delete (Returns int count of rows affected)
+int rows = pstmt.executeUpdate();
+
+// DDL (Create/Alter/Drop)
+boolean result = pstmt.execute();
+                </code></pre>
+            </ol>
+        </ul>
+    </section>
+
+    <section id="advanced">
+        <h2>Advanced</h2>
+        <ul>
+            <ol><strong>Processing ResultSet</strong>
+                <pre><code class="language-java">
+while (rs.next()) {
+    int id = rs.getInt("id");
+    String name = rs.getString("name");
+    // Retrieve by index (1-based)
+    // String name = rs.getString(2);
+}
+                </code></pre>
+            </ol>
+            <ol><strong>Transactions</strong>
+                <pre><code class="language-java">
+conn.setAutoCommit(false); // Start transaction
+
+try {
+    pstmt1.executeUpdate();
+    pstmt2.executeUpdate();
+    
+    conn.commit(); // Commit changes
+} catch (SQLException e) {
+    conn.rollback(); // Rollback on error
+} finally {
+    conn.setAutoCommit(true); // Restore default
+}
+                </code></pre>
+            </ol>
+            <ol><strong>Batch Processing</strong>
+                <pre><code class="language-java">
+String sql = "INSERT INTO logs (msg) VALUES (?)";
+PreparedStatement pstmt = conn.prepareStatement(sql);
+
+for (String msg : messages) {
+    pstmt.setString(1, msg);
+    pstmt.addBatch();
+}
+
+int[] updates = pstmt.executeBatch();
+                </code></pre>
+            </ol>
+            <ol><strong>Retrieving Generated Keys</strong>
+                <pre><code class="language-java">
+String sql = "INSERT INTO users (name) VALUES (?)";
+PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+pstmt.setString(1, "Alice");
+pstmt.executeUpdate();
+
+ResultSet rs = pstmt.getGeneratedKeys();
+if (rs.next()) {
+    long id = rs.getLong(1);
+    System.out.println("Inserted ID: " + id);
+}
+                </code></pre>
+            </ol>
+        </ul>
+    </section>
+
+    <section id="references">
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://docs.oracle.com/javase/tutorial/jdbc/basics/index.html" target="_blank">Oracle JDBC
+                    Tutorial</a></li>
+        </ul>
+    </section>
+</body>
+
+</html>

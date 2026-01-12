@@ -20,55 +20,63 @@
   <!-- Header & Navigation -->
   <header class="header">
     <div class="nav-container">
-      <nav class="navbar">
-        <div class="nav-container">
-          <div class="brand"><a href="index.html">My Cheat Sheets</a></div>
-          <div class="menu-toggle" id="mobile-menu">☰</div>
-          <ul class="nav-menu" id="main-nav"> <!-- give an id to nav-menu -->
+      <div class="brand"><a href="index.html">My Cheat Sheets</a></div>
 
-            <li class="dropdown">
-              <a href="#">Databases ▾</a>
-              <ul class="dropdown-menu">
-                <ol><a href="#cheat=drift&category=databases">Drift Database (Flutter)</a></ol>
-                <ol><a href="#cheat=duckdb&category=databases">Duck DB</a></ol>
-                <ol><a href="#cheat=mysql&category=databases">MySQL / SQL</a></ol>
-                <ol><a href="#cheat=mongodb&category=databases">MongoDB</a></ol>
-                <ol><a href="#cheat=postgresql&category=databases">PostgreSQL</a></ol>
-                <ol><a href="#cheat=sqlalchemy&category=databases">SQLAlchemy</a></ol>`
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#">Tools ▾</a>
-              <ul class="dropdown-menu">
-                <ol><a href="#cheat=databricks&category=tools">Databricks</a></ol>
-                <ol><a href="#cheat=terraform&category=tools">Terraform</a></ol>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#">Frameworks / Libs ▾</a>
-              <ul class="dropdown-menu">
-                <ol><a href="#cheat=pandas_numpy&category=frameworks">Pandas & NumPy</a></ol>
-                <ol><a href="#cheat=pyspark&category=frameworks">PySpark</a></ol>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#">Languages ▾</a>
-              <ul class="dropdown-menu">
-                <ol><a href="#cheat=css&category=languages">CSS</a></ol>
-                <ol><a href="#cheat=flutter&category=languages">Flutter</a></ol>
-                <ol><a href="#cheat=html&category=languages">HTML</a></ol>
-                <ol><a href="#cheat=javascript&category=languages">JavaScript</a></ol>
-                <ol><a href="#cheat=python&category=languages">Python</a></ol>
-                <ol><a href="#cheat=sql&category=languages">SQL</a></ol>
-              </ul>
-            </li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="about.html">About</a></li>
-          </ul>
-        </div>
+      <nav class="navbar">
+        <ul class="nav-menu" id="main-nav"> <!-- give an id to nav-menu -->
+
+          <li class="dropdown">
+            <a href="#">Databases ▾</a>
+            <ul class="dropdown-menu">
+              <ol><a href="#cheat=drift&category=databases">Drift Database (Flutter)</a></ol>
+              <ol><a href="#cheat=duckdb&category=databases">Duck DB</a></ol>
+              <ol><a href="#cheat=mysql&category=databases">MySQL / SQL</a></ol>
+              <ol><a href="#cheat=mongodb&category=databases">MongoDB</a></ol>
+              <ol><a href="#cheat=postgresql&category=databases">PostgreSQL</a></ol>
+              <ol><a href="#cheat=sqlalchemy&category=databases">SQLAlchemy</a></ol>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#">Tools ▾</a>
+            <ul class="dropdown-menu">
+              <ol><a href="#cheat=aws_glue&category=tools">AWS Glue</a></ol>
+              <ol><a href="#cheat=azure_adf&category=tools">Azure ADF</a></ol>
+              <ol><a href="#cheat=databricks&category=tools">Databricks</a></ol>
+              <ol><a href="#cheat=linux&category=tools">Linux</a></ol>
+              <ol><a href="#cheat=powershell&category=tools">PowerShell</a></ol>
+              <ol><a href="#cheat=terraform&category=tools">Terraform</a></ol>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#">Frameworks / Libs ▾</a>
+            <ul class="dropdown-menu">
+              <ol><a href="#cheat=jdbc&category=frameworks">JDBC</a></ol>
+              <ol><a href="#cheat=pandas_numpy&category=frameworks">Pandas & NumPy</a></ol>
+              <ol><a href="#cheat=pyspark&category=frameworks">PySpark</a></ol>
+              <ol><a href="#cheat=pyspark_config&category=frameworks">PySpark Config</a></ol>
+              <ol><a href="#cheat=react&category=frameworks">React</a></ol>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#">Languages ▾</a>
+            <ul class="dropdown-menu">
+              <ol><a href="#cheat=css&category=languages">CSS</a></ol>
+              <ol><a href="#cheat=flutter&category=languages">Flutter</a></ol>
+              <ol><a href="#cheat=html&category=languages">HTML</a></ol>
+              <ol><a href="#cheat=javascript&category=languages">JavaScript</a></ol>
+              <ol><a href="#cheat=python&category=languages">Python</a></ol>
+              <ol><a href="#cheat=sql&category=languages">SQL</a></ol>
+            </ul>
+          </li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
       </nav>
 
-      <button id="theme-toggle" class="theme-toggle">🌙</button>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle">🌙</button>
+        <div class="menu-toggle" id="mobile-menu">☰</div>
+      </div>
     </div>
   </header>
 

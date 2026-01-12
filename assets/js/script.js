@@ -11,6 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===== UTILITY FUNCTIONS =====
 
+  function closeMobileMenu() {
+    // Simply check if the menu is showing. If so, close it.
+    // This removes dependency on precise window width (zooming, scrollbars etc).
+    if (navMenu && navMenu.classList.contains('show')) {
+      navMenu.classList.remove('show');
+      // Close any open dropdowns
+      document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
+    }
+  }
+
   // ===== COPY BUTTON LOGIC (Moved to top to fix hoisting) =====
   async function copyToClipboard(text) {
     if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text);
@@ -162,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.addEventListener('hashchange', handleHash);
+  window.addEventListener('hashchange', closeMobileMenu); // Ensure menu closes on navigation
   handleHash();
 
   // ===== THEME MANAGEMENT =====
@@ -191,6 +202,44 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile nav toggle - simplified with safety check
   if (menuToggle && navMenu) {
     menuToggle.onclick = () => navMenu.classList.toggle('show');
+  }
+
+  // Mobile Dropdown Logic
+  const dropdowns = document.querySelectorAll('.dropdown > a');
+  dropdowns.forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+      // Check for mobile breakpoint
+      if (window.innerWidth <= 768) {
+        e.preventDefault(); // Prevent navigation (hash change)
+        const parent = trigger.parentElement;
+
+        // Toggle current
+        parent.classList.toggle('active');
+
+        // Don't close others immediately as it might be annoying, but user requested 'fold' behavior
+        // Assuming they mean the previously opened one should close:
+        document.querySelectorAll('.dropdown.active').forEach(d => {
+          if (d !== parent) d.classList.remove('active');
+        });
+      }
+    });
+  });
+
+  // Auto-close menu using event delegation on the nav-menu itself
+  if (navMenu) {
+    navMenu.addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (!link) return; // Clicked outside a link
+
+      const isDropdownTrigger = link.parentElement.classList.contains('dropdown');
+
+      // If it's a regular link (not a dropdown toggle), close everything
+      if (!isDropdownTrigger) {
+        closeMobileMenu();
+      }
+      // Note: Dropdown toggle logic is handled by the specific listener above.
+      // We don't need to prevent default here for regular links, let them navigate/hash-change.
+    });
   }
 
   // ===== CONTACT FORM HANDLING =====

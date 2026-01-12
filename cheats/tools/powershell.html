@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PowerShell Complete Cheatsheet</title>
+</head>
+
+<body>
+    <h1>🐚 PowerShell Complete Cheatsheet</h1>
+
+    <details open>
+        <summary>🚀 Basic Commands (Cmdlets)</summary>
+        <ul>
+            <li>Navigation
+                <pre><code>Get-Location (pwd)
+Set-Location C:\ (cd)
+Get-ChildItem (ls/dir)</code></pre>
+            </li>
+            <li>Help & Discovery
+                <pre><code>Get-Help Command
+Get-Command *service*
+Get-Member (inspect objects)</code></pre>
+            </li>
+            <li>Files
+                <pre><code>New-Item -Path . -Name "file.txt" -ItemType File
+Copy-Item src dst
+Remove-Item file</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🔗 Pipelines & Objects</summary>
+        <ul>
+            <li>Selecting & Filtering
+                <pre><code>Get-Process | Select-Object Name, Id
+Get-Service | Where-Object Status -eq 'Running'
+Get-Process | Sort-Object CPU -Descending</code></pre>
+            </li>
+            <li>Formatting
+                <pre><code>Get-Service | Format-Table -AutoSize
+Get-Service | Format-List *
+Get-Process | ConvertTo-Json</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>📜 Scripting & Logic</summary>
+        <ul>
+            <li>Variables
+                <pre><code>$name = "PowerShell"
+$process = Get-Process -Name chrome</code></pre>
+            </li>
+            <li>Loops & Flow
+                <pre><code>foreach ($item in $items) { ... }
+$items | ForEach-Object { $_.Name }
+if ($true) { ... } else { ... }</code></pre>
+            </li>
+            <li>Functions
+                <pre><code>function Say-Hello([string]$name) {
+  Write-Host "Hello $name"
+}</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>⚙️ System Administration</summary>
+        <ul>
+            <li>Services & Processes
+                <pre><code>Get-Service | Start-Service
+Stop-Process -Name "notepad"
+Get-EventLog -LogName System -Newest 50</code></pre>
+            </li>
+            <li>Environment
+                <pre><code>$env:PATH
+[Environment]::SetEnvironmentVariable("K","V","User")</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <!-- References Section -->
+    <section id="references">
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://learn.microsoft.com/en-us/powershell/" target="_blank">Official PowerShell Docs</a>
+            </li>
+            <li><a href="https://github.com/PowerShell/PowerShell" target="_blank">PowerShell GitHub</a></li>
+        </ul>
+    </section>
+
+    <!-- Setup Section -->
+    <section id="setup">
+        <h2>Verification</h2>
+        <p>Check PowerShell version:</p>
+        <pre><code>$PSVersionTable.PSVersion</code></pre>
+    </section>
+</body>
+
+</html>

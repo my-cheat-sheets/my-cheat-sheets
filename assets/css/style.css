@@ -5,10 +5,11 @@
   /* Light mode colors */
   --bg-color: #f3f4f6;
   --text-color: #1f2937;
-  --header-bg: rgba(255, 255, 255, 0.7);
+  --header-bg: #ffffff;
+  /* Solid white for less transparency */
   --header-text: #111827;
-  --nav-hover-bg: rgba(0, 0, 0, 0.05);
-  --content-bg: transparent;
+  --nav-hover-bg: #f3f4f6;
+  /* --content-bg: transparent; */
   /* Changed for glass effect */
   --card-bg: rgba(255, 255, 255, 0.65);
   --pre-bg: rgba(255, 255, 255, 0.5);
@@ -31,13 +32,14 @@ body.dark-mode {
   /* Slate 900 */
   --text-color: #e2e8f0;
   /* Slate 200 */
-  --header-bg: rgba(15, 23, 42, 0.7);
+  --header-bg: #070b14;
+  /* Solid dark/slate for dark mode */
   --header-text: #f1f5f9;
   --nav-hover-bg: rgba(255, 255, 255, 0.1);
   --content-bg: transparent;
   --card-bg: rgba(30, 41, 59, 0.6);
   /* Slate 800 glassy */
-  --pre-bg: rgba(15, 23, 42, 0.6);
+  --pre-bg: rgba(36, 49, 80, 0.6);
   --pre-text: #e2e8f0;
   --bullet-color: #38bdf8;
   /* Sky 400 */
@@ -110,9 +112,10 @@ a:hover {
   width: 100%;
   z-index: 1000;
   background: var(--header-bg);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  border-bottom: var(--glass-border);
+  backdrop-filter: none;
+  /* Removed blur for consistency with solid background request */
+  -webkit-backdrop-filter: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   color: var(--header-text);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   height: 60px;
@@ -122,15 +125,26 @@ a:hover {
 }
 
 .nav-container {
-  max-width: 1024px;
-  margin: 0 auto;
+  max-width: 100%;
+  /* Full width */
+  margin: 0;
   padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 60px;
   width: 100%;
+}
 
+.brand {
+  margin-right: auto;
+  /* Pushes nav and controls to the right */
+}
+
+/* Nav Controls Container (Theme + Hamburger) */
+.nav-controls {
+  display: flex;
+  align-items: center;
 }
 
 .brand a {
@@ -145,6 +159,8 @@ a:hover {
   font-size: 1.8rem;
   cursor: pointer;
   color: var(--header-text);
+  margin-left: 15px;
+  /* Spacing from theme toggle */
 }
 
 nav .nav-menu {
@@ -902,9 +918,18 @@ code:hover .copy-btn {
     top: 60px;
     left: 0;
     right: 0;
-    background: var(--header-bg);
+    /* Fix: Opaque background for readability */
+    background: var(--bg-color);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     flex-direction: column;
     display: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding-bottom: 10px;
+  }
+
+  .dark-mode nav .nav-menu {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   }
 
   nav .nav-menu.show {
@@ -916,16 +941,85 @@ code:hover .copy-btn {
   }
 
   nav .nav-menu li a {
-    padding: 15px;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
   }
 
   .dropdown-menu {
     position: static;
     box-shadow: none;
+    background: rgba(0, 0, 0, 0.03);
+    display: none;
+    /* Managed by JS/class now */
+    padding-left: 20px;
+    width: 100%;
+  }
+
+  .dark-mode .dropdown-menu {
+    background: rgba(3, 3, 3, 0.03);
+  }
+
+  /* Show dropdown when active class is present (toggled by JS) */
+  .dropdown.active .dropdown-menu {
+    display: block;
+  }
+
+  /* Fix: Prevent hover from conflicting on mobile if needed, though usually fine */
+  .dropdown:hover .dropdown-menu {
+    display: none;
+    /* Disable hover effect on mobile, rely on click */
+  }
+
+  .dropdown.active:hover .dropdown-menu {
+    display: block;
+    /* Keep visible if active */
   }
 
   .menu-toggle {
     display: block;
+    font-size: 1.8rem;
+  }
+
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Side by side spacing */
+    margin-left: auto;
+    /* Push to right */
+  }
+
+  /* Reset layout for mobile */
+  .brand {
+    margin-right: 0;
+    /* Let flexbox handle spacing */
+    flex-grow: 1;
+    /* Brand takes available space to push controls right if needed, or just auto */
+  }
+
+  .nav-container {
+    padding: 0 15px;
+    justify-content: space-between;
+    /* Ensure brand left, controls right */
+  }
+
+  /* DARK MODE: Solid, opaque background for mobile menu */
+  .dark-mode nav .nav-menu {
+    background: #1e293b;
+    /* Solid slate color, no transparency */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.021);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  }
+
+  /* LIGHT MODE: Solid background */
+  nav .nav-menu {
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .brand a {
+    font-size: 1.3rem;
+    /* Slightly smaller font for mobile title */
   }
 }
 

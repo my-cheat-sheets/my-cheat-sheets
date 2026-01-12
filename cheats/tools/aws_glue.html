@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AWS Glue Cheatsheet</title>
+</head>
+
+<body>
+    <h1>AWS Glue Cheatsheet</h1>
+
+    <section id="basics">
+        <h2>Basics</h2>
+        <ul>
+            <ol><strong>Components</strong>
+                <ul>
+                    <li><strong>Data Catalog</strong>: Metadata repository (Hive Metastore compatible).</li>
+                    <li><strong>Crawler</strong>: Discovers schema and populates catalog.</li>
+                    <li><strong>ETL Job</strong>: Python/Scala script for data processing.</li>
+                </ul>
+            </ol>
+            <ol><strong>Glue Protocol</strong> (DynamicFrame)
+                <p>Extension of Spark DataFrame, self-describing, supports schema inconsistencies.</p>
+            </ol>
+        </ul>
+    </section>
+
+    <section id="scripting">
+        <h2>Glue PySpark Scripting</h2>
+        <ul>
+            <ol><strong>Initialization</strong>
+                <pre><code class="language-python">
+import sys
+from awsglue.transforms import *
+from awsglue.utils import getResolvedOptions
+from pyspark.context import SparkContext
+from awsglue.context import GlueContext
+from awsglue.job import Job
+
+args = getResolvedOptions(sys.argv, ['JOB_NAME'])
+sc = SparkContext()
+glueContext = GlueContext(sc)
+spark = glueContext.spark_session
+job = Job(glueContext)
+job.init(args['JOB_NAME'], args)
+                </code></pre>
+            </ol>
+            <ol><strong>Reading Data</strong>
+                <pre><code class="language-python">
+# From Catalog
+datasource = glueContext.create_dynamic_frame.from_catalog(
+    database = "my_db",
+    table_name = "my_table",
+    transformation_ctx = "datasource"
+)
+                </code></pre>
+            </ol>
+            <ol><strong>Transformations</strong>
+                <pre><code class="language-python">
+# Apply Mapping (Rename/Cast/Drop)
+mapped_dyf = ApplyMapping.apply(
+    frame = datasource,
+    mappings = [("col1", "string", "col1_new", "int")]
+)
+
+# Convert to Spark DataFrame
+df = mapped_dyf.toDF()
+
+# Convert back to DynamicFrame
+dyf = DynamicFrame.fromDF(df, glueContext, "dyf")
+                </code></pre>
+            </ol>
+            <ol><strong>Writing Data</strong>
+                <pre><code class="language-python">
+# To S3 (Parquet)
+glueContext.write_dynamic_frame.from_options(
+    frame = mapped_dyf,
+    connection_type = "s3",
+    connection_options = {"path": "s3://my-bucket/output/"},
+    format = "parquet"
+)
+                </code></pre>
+            </ol>
+        </ul>
+    </section>
+
+    <section id="advanced">
+        <h2>Advanced Features</h2>
+        <ul>
+            <ol><strong>Job Bookmarks</strong>
+                <p>Tracks processed data to prevent re-processing.</p>
+                <pre><code class="language-bash">--job-bookmark-option job-bookmark-enable</code></pre>
+            </ol>
+            <ol><strong>ResolveChoice</strong>
+                <pre><code class="language-python">
+# Handle mixed types (e.g., int in some rows, string in others)
+dyf_resolved = ResolveChoice.apply(frame=dyf, specs=[("col", "cast:int")])
+                </code></pre>
+            </ol>
+            <ol><strong>Relationalize</strong>
+                <p>Flattens nested structures (JSON) into relational form.</p>
+                <pre><code class="language-python">
+dyf_flat = Relationalize.apply(frame=dyf, staging_path="s3://...")
+                </code></pre>
+            </ol>
+        </ul>
+    </section>
+
+    <section id="references">
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming.html" target="_blank">AWS Glue
+                    Developer Guide</a></li>
+            <li><a href="https://docs.aws.amazon.com/glue/latest/dg/aws-glue-api-glue-etl.html" target="_blank">Glue ETL
+                    Library</a></li>
+        </ul>
+    </section>
+</body>
+
+</html>

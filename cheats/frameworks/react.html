@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>React Complete Cheatsheet</title>
+</head>
+
+<body>
+    <h1>⚛️ React Complete Cheatsheet</h1>
+
+    <details open>
+        <summary>🚀 React Basics</summary>
+        <ul>
+            <li>Create Component
+                <pre><code>function Welcome() {
+  return &lt;h1&gt;Hello World&lt;/h1&gt;;
+}</code></pre>
+            </li>
+            <li>Props
+                <pre><code>function User({ name }) {
+  return &lt;p&gt;User: {name}&lt;/p&gt;;
+}</code></pre>
+            </li>
+            <li>Conditional Rendering
+                <pre><code>{isLoggedIn ? &lt;Logout /&gt; : &lt;Login /&gt;}
+{unreadMessages.length > 0 && &lt;h2&gt;You have messages&lt;/h2&gt;}</code></pre>
+            </li>
+            <li>Lists & Keys
+                <pre><code>{items.map(item => (
+  &lt;li key={item.id}&gt;{item.text}&lt;/li&gt;
+))}</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🎣 Essential Hooks</summary>
+        <ul>
+            <li>useState
+                <pre><code>const [count, setCount] = useState(0);
+setCount(prev => prev + 1);</code></pre>
+            </li>
+            <li>useEffect
+                <pre><code>useEffect(() => {
+  // Mount/Update
+  return () => { /* Unmount/Cleanup */ };
+}, [dependency]);</code></pre>
+            </li>
+            <li>useContext
+                <pre><code>const ThemeContext = createContext('light');
+const theme = useContext(ThemeContext);</code></pre>
+            </li>
+            <li>useRef
+                <pre><code>const inputRef = useRef(null);
+inputRef.current.focus();</code></pre>
+            </li>
+            <li>useMemo & useCallback
+                <pre><code>const memoValue = useMemo(() => compute(a, b), [a, b]);
+const memoCallback = useCallback(() => fn(a), [a]);</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>⚡ Advanced Hooks & Patterns</summary>
+        <ul>
+            <li>useReducer
+                <pre><code>const [state, dispatch] = useReducer(reducer, initial);
+dispatch({ type: 'increment' });</code></pre>
+            </li>
+            <li>Custom Hooks
+                <pre><code>function useAuth() {
+  const [user, setUser] = useState(null);
+  // logic...
+  return user;
+}</code></pre>
+            </li>
+            <li>Children Prop
+                <pre><code>function Layout({ children }) {
+  return &lt;div class="container"&gt;{children}&lt;/div&gt;;
+}</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🛣️ React Router (v6+)</summary>
+        <ul>
+            <li>Navigation
+                <pre><code>&lt;Link to="/about"&gt;About&lt;/Link&gt;
+const navigate = useNavigate();
+navigate('/home');</code></pre>
+            </li>
+            <li>Params
+                <pre><code>&lt;Route path="/user/:id" element={&lt;User /&gt;} /&gt;
+const { id } = useParams();</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <!-- References Section -->
+    <section id="references">
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://react.dev" target="_blank">Official React Docs</a></li>
+            <li><a href="https://reactrouter.com" target="_blank">React Router Docs</a></li>
+        </ul>
+    </section>
+
+    <!-- Setup Section -->
+    <section id="setup">
+        <h2>Setup & Verification</h2>
+        <p>Create a new React app:</p>
+        <pre><code>npx create-react-app my-app
+# or
+npm create vite@latest my-app -- --template react</code></pre>
+    </section>
+</body>
+
+</html>

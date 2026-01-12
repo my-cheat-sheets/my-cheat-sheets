@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Linux Complete Cheatsheet</title>
+</head>
+
+<body>
+    <h1>🐧 Linux Complete Cheatsheet</h1>
+
+    <details open>
+        <summary>📂 File & Directory Operations</summary>
+        <ul>
+            <li>Navigation
+                <pre><code>pwd          # Print working directory
+ls -la       # List all files (including hidden)
+cd /path     # Change directory
+pushd .      # Save current directory</code></pre>
+            </li>
+            <li>Management
+                <pre><code>mkdir -p dir # Create directory recursively
+cp -r src dst# Copy recursively
+mv src dst   # Move/Rename
+rm -rf dir   # Remove recursively and force
+touch file   # Create empty file</code></pre>
+            </li>
+            <li>Permissions
+                <pre><code>chmod 755 f  # rwxr-xr-x
+chown user:g f# Change owner and group
+chmod +x file# Make executable</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🔍 Search & Text Processing</summary>
+        <ul>
+            <li>Find & Grep
+                <pre><code>find . -name "*.log"      # Find by name
+grep -ri "pattern" .      # Recursive search
+locate file               # Fast search via db</code></pre>
+            </li>
+            <li>View & Edit
+                <pre><code>cat file        # Show whole file
+head -n 20 f    # First 20 lines
+tail -f f       # Follow file (logs)
+less f          # Interactive viewer
+nano/vim/emacs  # Text editors</code></pre>
+            </li>
+            <li>Processing
+                <pre><code>sed 's/a/b/g' f # Stream editor
+awk '{print $1}'# Text processing
+sort | uniq -c  # Sort and count</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>⚙️ System & Process Management</summary>
+        <ul>
+            <li>Processes
+                <pre><code>ps aux          # All running processes
+top / htop      # Dynamic process list
+kill -9 PID     # Force kill process
+bg / fg         # Background/Foreground
+jobs            # List current jobs</code></pre>
+            </li>
+            <li>Resources
+                <pre><code>df -h           # Disk space usage
+du -sh .        # Directory size summary
+free -m         # Memory usage
+uptime          # System load/time</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🌐 Networking</summary>
+        <ul>
+            <li>Tools
+                <pre><code>ip addr         # Network interfaces
+ping host       # Check connectivity
+curl -I URL     # Fetch headers
+wget URL        # Download file
+netstat -tulpn  # Listening ports</code></pre>
+            </li>
+            <li>Security
+                <pre><code>ssh user@host   # Secure shell
+scp file user@h:path # Secure copy
+ufw status      # Firewall status</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <!-- References Section -->
+    <section id="references">
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://linux.org" target="_blank">Linux.org</a></li>
+            <li><a href="https://tldp.org" target="_blank">The Linux Documentation Project</a></li>
+        </ul>
+    </section>
+
+    <!-- Setup Section -->
+    <section id="setup">
+        <h2>Common Shells</h2>
+        <p>Check current shell:</p>
+        <pre><code>echo $SHELL</code></pre>
+    </section>
+</body>
+
+</html>
