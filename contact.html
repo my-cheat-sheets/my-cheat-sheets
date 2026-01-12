@@ -5,6 +5,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Us - Cheatsheets Hub</title>
+  <meta name="description"
+    content="Contact Cheatsheets Hub for questions, suggestions, or bug reports. We value your feedback.">
+  <link rel="canonical" href="https://my-cheat-sheets.github.io/contact.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://my-cheat-sheets.github.io/contact.html">
+  <meta property="og:title" content="Contact Us - Cheatsheets Hub">
+  <meta property="og:description" content="Get in touch with the Cheatsheets Hub team.">
+
   <link rel="stylesheet" href="assets/css/style.css">
   <script>
     // Apply dark mode immediately to prevent flash
@@ -73,7 +83,8 @@
       <section class="hero-section">
         <h1 class="hero-title">Contact Us</h1>
         <p class="hero-subtitle">Have questions, suggestions, or found an error?</p>
-        <p class="hero-description">We'd love to hear from you! Fill out the form below and we'll get back to you as soon as possible.</p>
+        <p class="hero-description">We'd love to hear from you! Fill out the form below and we'll get back to you as
+          soon as possible.</p>
       </section>
 
       <!-- Contact Form Section -->
@@ -93,20 +104,23 @@
             <input type="hidden" name="subject" value="New Contact Form Submission - Cheatsheets Hub">
             <input type="hidden" name="from_name" value="Cheatsheets Hub Contact Form">
             <input type="hidden" name="redirect" value="false">
-            
+
             <!-- Honeypot for spam protection -->
-            <input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1" autocomplete="off">
-            
+            <input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1"
+              autocomplete="off">
+
             <div class="form-group">
               <label for="name">Name *</label>
-              <input type="text" id="name" name="name" required placeholder="Your full name" minlength="2" maxlength="100">
+              <input type="text" id="name" name="name" required placeholder="Your full name" minlength="2"
+                maxlength="100">
             </div>
-            
+
             <div class="form-group">
               <label for="email">Email *</label>
-              <input type="email" id="email" name="email" required placeholder="your.email@example.com" autocomplete="email">
+              <input type="email" id="email" name="email" required placeholder="your.email@example.com"
+                autocomplete="email">
             </div>
-            
+
             <div class="form-group">
               <label for="category">Category (Optional)</label>
               <select id="category" name="category" class="form-select">
@@ -118,20 +132,21 @@
                 <option value="other">Other</option>
               </select>
             </div>
-            
+
             <div class="form-group">
               <label for="message">Message *</label>
-              <textarea id="message" name="message" rows="6" required placeholder="Your message..." minlength="10" maxlength="2000"></textarea>
+              <textarea id="message" name="message" rows="6" required placeholder="Your message..." minlength="10"
+                maxlength="2000"></textarea>
               <small class="form-hint">Minimum 10 characters required</small>
             </div>
-            
+
             <div class="form-group">
               <button type="submit" class="submit-btn">
                 <span class="btn-text">Send Message</span>
                 <span class="btn-loader" style="display: none;">Sending...</span>
               </button>
             </div>
-            
+
             <div id="form-status" class="form-status"></div>
           </form>
         </div>
@@ -143,14 +158,16 @@
             <div class="instructions-content">
               <h4>Web3Forms Configuration:</h4>
               <ol>
-                <li>Visit <a href="https://web3forms.com" target="_blank" rel="noopener noreferrer">https://web3forms.com</a></li>
+                <li>Visit <a href="https://web3forms.com" target="_blank"
+                    rel="noopener noreferrer">https://web3forms.com</a></li>
                 <li>Enter your email address to receive form submissions</li>
                 <li>Copy your free access key</li>
                 <li>Open <code>contact.html</code> and find line ~90</li>
                 <li>Replace <code>YOUR_WEB3FORMS_ACCESS_KEY</code> with your actual key</li>
                 <li>Save and deploy - the form will work immediately!</li>
               </ol>
-              <p><strong>Note:</strong> Web3Forms is free, secure, and perfect for static sites like GitHub Pages. No backend required!</p>
+              <p><strong>Note:</strong> Web3Forms is free, secure, and perfect for static sites like GitHub Pages. No
+                backend required!</p>
             </div>
           </details>
         </div>
@@ -159,7 +176,9 @@
         <div class="contact-info">
           <div class="info-card">
             <h3>📧 Email</h3>
-            <p><a href="mailto:contactmail.br@gmail.com" style="color: var(--bullet-color); text-decoration: underline; font-weight: 600;">contactmail.br@gmail.com</a></p>
+            <p><a href="mailto:contactmail.br@gmail.com"
+                style="color: var(--bullet-color); text-decoration: underline; font-weight: 600;">contactmail.br@gmail.com</a>
+            </p>
             <p style="margin-top: 10px; font-size: 0.9rem;">Send us an email directly or use the form above</p>
           </div>
           <div class="info-card">
@@ -179,4 +198,3 @@
 </body>
 
 </html>
-

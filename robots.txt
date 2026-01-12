@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://my-cheat-sheets.github.io/sitemap.xml

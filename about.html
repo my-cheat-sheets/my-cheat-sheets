@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- 
     ============================================
@@ -25,13 +26,17 @@
   -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us - MyCheatSheets</title>
+  <title>About Us - Cheatsheets Hub</title>
+  <meta name="description"
+    content="Learn more about Cheatsheets Hub, our mission, and the free developer resources we provide.">
+  <link rel="canonical" href="https://my-cheat-sheets.github.io/about.html">
+
   <style>
     /* ============================================
        GENERIC ABOUT US PAGE - EMBEDDED CSS
        Self-contained, reusable across projects
        ============================================ */
-    
+
     * {
       margin: 0;
       padding: 0;
@@ -408,11 +413,12 @@
     }
   </style>
 </head>
+
 <body>
   <!-- Header -->
   <header class="header">
     <div class="header-container">
-      <a href="/" class="logo">MyCheatSheets</a>
+      <a href="/" class="logo">Cheatsheets Hub</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
     </div>
   </header>
@@ -422,16 +428,16 @@
     <!-- Hero Section -->
     <section class="hero">
       <h1>About Us</h1>
-      <p>Welcome to MyCheatSheets - Your trusted resource hub</p>
+      <p>Welcome to Cheatsheets Hub - Your trusted resource hub</p>
     </section>
 
     <!-- Mission Section -->
     <section class="mission">
       <h2>Our Mission</h2>
       <p>
-        We are dedicated to providing high-quality resources and tools to help you succeed. 
-        Our goal is to make valuable information quick, accessible, and always up-to-date. 
-        Whether you're just starting out or looking to expand your knowledge, we aim to be 
+        We are dedicated to providing high-quality resources and tools to help you succeed.
+        Our goal is to make valuable information quick, accessible, and always up-to-date.
+        Whether you're just starting out or looking to expand your knowledge, we aim to be
         your go-to resource for reliable, well-organized content that empowers your journey.
       </p>
     </section>
@@ -508,7 +514,7 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <p>&copy; 2024 MyCheatSheets. All rights reserved.</p>
+    <p>&copy; 2024 Cheatsheets Hub. All rights reserved.</p>
     <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">
       Made with ❤️ for the community
     </p>
@@ -520,15 +526,15 @@
     // ============================================
 
     // Theme Toggle
-    (function() {
+    (function () {
       const themeToggle = document.getElementById('theme-toggle');
       const savedTheme = localStorage.getItem('theme') || 'light';
-      
+
       if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
         if (themeToggle) themeToggle.textContent = '☀️';
       }
-      
+
       if (themeToggle) {
         themeToggle.addEventListener('click', () => {
           document.body.classList.toggle('dark-mode');
@@ -541,5 +547,5 @@
 
   </script>
 </body>
-</html>
 
+</html>
