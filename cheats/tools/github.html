@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Github Cheatsheet</title>
+</head>
+
+<body>
+    <h1>🐙 Github Cheatsheet</h1>
+
+    <details open>
+        <summary>📦 Git Basics</summary>
+        <ul>
+            <li>Setup & Init
+                <pre><code>git init                # Initialize new repository
+git clone [url]         # Clone existing repository
+git config --global user.name "Name"
+git config --global user.email "email"</code></pre>
+            </li>
+            <li>Staging & Committing
+                <pre><code>git status              # Check file status
+git add [file]          # Stage file
+git add .               # Stage all files
+git commit -m "msg"     # Commit staged files
+git diff                # Show changes</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🌿 Branching & Merging</summary>
+        <ul>
+            <li>Branches
+                <pre><code>git branch              # List branches
+git branch [name]       # Create new branch
+git checkout [name]     # Switch to branch
+git switch -c [name]    # Create & switch (newer)
+git branch -d [name]    # Delete branch</code></pre>
+            </li>
+            <li>Merging
+                <pre><code>git merge [branch]      # Merge into current
+git stash               # Stash changes
+git stash pop           # Restore stashed changes</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🚀 Remote & Sync</summary>
+        <ul>
+            <li>Remote
+                <pre><code>git remote -v           # List remotes
+git remote add origin [url] # Add remote
+git fetch               # Download remote changes</code></pre>
+            </li>
+            <li>Sync
+                <pre><code>git pull origin [main]  # Pull changes
+git push origin [main]  # Push changes
+git push -u origin [branch] # Push & set upstream</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>💻 Github CLI (gh)</summary>
+        <ul>
+            <li>Pull Requests
+                <pre><code>gh pr list              # List PRs
+gh pr create            # Create PR
+gh pr checkout [id]     # Checkout PR branch
+gh pr merge [id]        # Merge PR</code></pre>
+            </li>
+            <li>Issues
+                <pre><code>gh issue list           # List issues
+gh issue create         # Create issue
+gh issue view [id]      # View issue details</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>references</summary>
+        <h2>References</h2>
+        <button><a href="https://git-scm.com/doc" target="_blank">Git Documentation</a></button>
+        <button><a href="https://cli.github.com/manual/" target="_blank">Github CLI Manual</a></button>
+    </details>
+</body>
+
+</html>

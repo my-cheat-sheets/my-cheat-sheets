@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Github Actions Cheatsheet</title>
+</head>
+
+<body>
+    <h1>🎬 Github Actions Cheatsheet</h1>
+
+    <details open>
+        <summary>📄 Workflow Syntax</summary>
+        <ul>
+            <li>Basic Structure (`.github/workflows/main.yml`)
+                <pre><code>name: CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run script
+        run: echo "Hello World"</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>⚡ Triggers (on)</summary>
+        <ul>
+            <li>Events
+                <pre><code>on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    types: [opened, synchronize]
+  schedule:
+    - cron: '0 0 * * *'  # Daily
+  workflow_dispatch:     # Manual trigger</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🔧 Jobs & Steps</summary>
+        <ul>
+            <li>Job Configuration
+                <pre><code>jobs:
+  test:
+    runs-on: ubuntu-latest  # windows-latest, macos-latest
+    needs: build           # Dependency
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        node: [14, 16, 18]</code></pre>
+            </li>
+            <li>Steps
+                <pre><code>steps:
+  - uses: actions/checkout@v3
+  - uses: actions/setup-node@v3
+    with:
+      node-version: '18'
+  - run: npm install
+  - run: npm test
+    env:
+      CI: true</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🔐 Variables & Secrets</summary>
+        <ul>
+            <li>Usage
+                <pre><code>env:
+  GLOBAL_VAR: "value"
+
+jobs:
+  deploy:
+    steps:
+      - run: echo ${{ secrets.API_KEY }}
+      - run: echo ${{ vars.PUBLIC_VAR }}
+      - run: echo ${{ github.sha }}
+    if: github.ref == 'refs/heads/main'</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details open>
+        <summary>references</summary>
+        <h2>References</h2>
+        <button><a href="https://docs.github.com/en/actions" target="_blank">Github Actions Docs</a></button>
+        <button><a href="https://github.com/actions" target="_blank">Official Actions</a></button>
+    </details>
+</body>
+
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Adobe AEP Cheatsheet</title>
+</head>
+
+<body>
+    <h1>🔴 Adobe Experience Cloud Cheatsheet</h1>
+
+    <details open>
+        <summary>📊 XDM System (Experience Data Model)</summary>
+        <ul>
+            <li>Core Concepts
+                <pre><code>Schema: Structure of data (People, Assets)
+Class: Behavioral vs Record data (XDM Individual Profile, XDM ExperienceEvent)
+Field Groups: Reusable clusters of fields (Demographics, Web Details)
+Data Types: Reusable complex types (Person Name, Address)</code></pre>
+            </li>
+            <li>Best Practices
+                <pre><code>- Reuse standard Field Groups before creating custom ones.
+- Use 'IdentityMap' for multi-identity data.
+- Enable 'Profile' toggle ONLY for schemas needed in Real-Time CDP.</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>📥 Data Ingestion</summary>
+        <ul>
+            <li>Methods
+                <pre><code>Batch Ingestion: Uploading CSV/Parquet files via UI or API.
+Streaming Ingestion: Real-time data via HTTP API endpoint.
+Source Connectors: Pre-built integration (S3, Azure Blob, Google Analytics).</code></pre>
+            </li>
+            <li>Datasets
+                <pre><code>- Container for ingested data.
+- Mapped to a specific XDM Schema.
+- Enable 'Profile' to hydrate Unified Profile.</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🔍 Query Service (SQL)</summary>
+        <ul>
+            <li>Common Commands
+                <pre><code>-- Show available tables (datasets)
+SHOW TABLES;
+
+-- Inspect schema
+DESCRIBE table_name;
+
+-- Flatten nested XDM fields
+SELECT education.school_name 
+FROM table_name;
+
+-- Work with Maps (IdentityMap)
+SELECT explode(identityMap['email']) 
+FROM table_name;
+
+-- CTAS (Create Table As Select) - Output to Dataset
+CREATE TABLE new_dataset 
+WITH (FORMAT='PARQUET') 
+AS SELECT * FROM source_dataset;</code></pre>
+            </li>
+            <li>PSQL Command Line
+                <pre><code>\d  # List tables
+\dt # List tables (standard)
+\du # List users/roles</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🎯 Real-Time CDP</summary>
+        <ul>
+            <li>Segmentation
+                <pre><code>Segment Definitions: Rules to categorize users (e.g., "Visited > 3 times").
+Evaluation:
+- Edge: Evaluated instantly on data collection.
+- Streaming: Evaluated as data flows in.
+- Batch: Evaluated on scheduled interval (daily).</code></pre>
+            </li>
+            <li>Destinations
+                <pre><code>Activates segments to external platforms (Facebook, Google Ads, Email).
+Types:
+- Dataset Export: S3, Blob storage.
+- Streaming: HTTP API forwarding.</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🚀 Adobe Journey Optimizer (AJO)</summary>
+        <ul>
+            <li>Core Components
+                <pre><code>Journeys: Unitary interactions, real-time logic (e.g., Abandoned Cart).
+Campaigns: Scheduled, batch messaging (e.g., Weekly Newsletter).
+Offers: Personalized content via Offer Decisioning Engine.</code></pre>
+            </li>
+            <li>Channels
+                <pre><code>- Email (Design via Email Designer)
+- Push Notifications (Mobile App)
+- SMS
+- In-App Messages
+- Direct Mail</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>📈 Customer Journey Analytics (CJA)</summary>
+        <ul>
+            <li>Architecture
+                <pre><code>Data Views: Virtual reporting suites on top of AEP Datasets.
+Connections: Mapping AEP datasets to CJA.
+Analysis Workspace: Drag-and-drop analysis UI (same as Adobe Analytics).</code></pre>
+            </li>
+            <li>Key Features
+                <pre><code>- Cross-channel analysis (Online + Offline data).
+- Stitching: Merging visitor IDs across devices.
+- Derived Fields: Create fields on the fly without schema changes.</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🎯 Adobe Target</summary>
+        <ul>
+            <li>Activity Types
+                <pre><code>A/B Test: Compare two or more versions to see which performs better.
+XT (Experience Targeting): Deliver specific content to specific audiences.
+MVT (Multivariate Testing): Test combinations of elements.
+AP (Automated Personalization): ML-driven personalization.</code></pre>
+            </li>
+            <li>Implementation
+                <pre><code>VEC (Visual Experience Composer): WYSIWYG editor for DOM manipulation.
+Form-Based: For non-visual changes (JSON, redirects).
+at.js / aloe.js: Client-side libraries.
+Server-Side: Delivery API for headless implementation.</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>📊 Adobe Analytics</summary>
+        <ul>
+            <li>Variables
+                <pre><code>eVars (Conversion Settings): Persistent variables (e.g., Campaign ID). Expires on event/visit.
+Props (Traffic Variables): Hit-level variables (e.g., Page Name). No persistence.
+Events (Success Events): Counters/Metrics (e.g., Orders, Logins).</code></pre>
+            </li>
+            <li>Processing
+                <pre><code>Processing Rules: Transform data server-side before storage.
+VISTA Rules: Advanced server-side logic (requires engineering).
+Marketing Channels: Rules to categorize incoming traffic (SEO, Paid Search).</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🏷️ Adobe Tags (Launch)</summary>
+        <ul>
+            <li>Core Components
+                <pre><code>Extensions: Plugins (e.g., Core, Analytics, Facebook Pixel).
+Data Elements: Variables mapped to JS objects, cookies, or DOM elements.
+Rules: Event + Condition + Action (e.g., "If click btn, fire pixel").,</code></pre>
+            </li>
+            <li>Workflow
+                <pre><code>Development -> Staging -> Production.
+Environments: Define which library loads where.</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details>
+        <summary>🔒 Privacy & Governance</summary>
+        <ul>
+            <li>DULE (Data Usage Labeling & Enforcement)
+                <pre><code>Labels: Tag data fields with sensitivity (e.g., I1 for Identity, C1 for Contractual).
+Policies: Rules blocking actions based on labels (e.g., "Don't export I1 data to Facebook").
+Marketing Actions: Defined purposes for data use (e.g., "Email Targeting").</code></pre>
+            </li>
+        </ul>
+    </details>
+
+    <details open>
+        <summary>references</summary>
+        <h2>References</h2>
+            <button><a href="https://experienceleague.adobe.com/en/docs/experience-platform" target="_blank">AEP
+                    Documentation</a></button>
+            <button><a href="https://experienceleague.adobe.com/en/docs/experience-platform/query/home"
+                    target="_blank">Query Service Guide</a></button>
+    </details>
+</body>
+
+</html>
